@@ -2,6 +2,8 @@
 
 A small project to showcase the use of React, Redux and React Router in a full stack application.
 
+You can see a live work-in-progress here: https://codesandbox.io/s/currying-river-k8h8t?file=/src/App.tsx
+
 
 ## Todos
 

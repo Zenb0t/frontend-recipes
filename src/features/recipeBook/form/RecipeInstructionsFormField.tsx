@@ -1,5 +1,6 @@
-import { Avatar, Button, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack, TextField } from "@mui/material";
+import { Avatar, Box, Button, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import { capitalizeFirstLetter } from "../../../app/utils";
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -32,37 +33,39 @@ export default function RecipeInstructionsField(props: { formik: any, fieldName:
 
     return (
         <Paper sx={{ p: 1 }}>
-            <Stack
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-                spacing={2}
-            >
-                <TextField
-                    id={"item-input"}
-                    value={fieldValue}
-                    onChange={(e) => setFieldValue(e.target.value)}
-                    type={'text'}
-                    name={fieldName}
-                    label={capitalizeFirstLetter(fieldName)}
-                    variant={'outlined'}
-                    margin={'normal'}
-                    multiline
+            <Typography variant="h6">Instructions</Typography>
+            <Box sx={{ p: 2 }} />
+                <Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
+                >
+                    <TextField
+                        id={"item-input"}
+                        value={fieldValue}
+                        onChange={(e) => setFieldValue(e.target.value)}
+                        type={'text'}
+                        name={fieldName}
+                        label={capitalizeFirstLetter(fieldName)}
+                        variant={'outlined'}
+                        margin={'normal'}
+                        multiline
+                        fullWidth
+                    />
+                </Stack>
+                <Button
+                    variant={'contained'}
+                    color={'secondary'}
+                    onClick={() => {
+                        addItem(fieldValue)
+                        clearFieldValue()
+                    }}
                     fullWidth
-                />
-            </Stack>
-            <Button
-                variant={'contained'}
-                color={'secondary'}
-                onClick={() => {
-                    addItem(fieldValue)
-                    clearFieldValue()
-                }}
-                fullWidth
-            >
-                Add {capitalizeFirstLetter(fieldName)}
-            </Button>
-            <DisplayInstructions instructions={instructions} removeItem={removeItem} />
+                >
+                    Add {capitalizeFirstLetter(fieldName)}
+                </Button>
+                <DisplayInstructions instructions={instructions} removeItem={removeItem} />
         </Paper>
     );
 };
@@ -73,7 +76,7 @@ const DisplayInstructions = (props: { instructions: string[], removeItem: Functi
     return (
         <List dense>
             {instructions.map((item: string, index: number) => (
-                <ListItem key={index}
+                <ListItem key={uuidv4()}
                     secondaryAction={
                         <IconButton edge="end" aria-label="delete" onClick={() => removeItem(index)}>
                             <DeleteIcon />

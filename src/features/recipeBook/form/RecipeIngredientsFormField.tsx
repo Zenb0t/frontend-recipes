@@ -1,5 +1,6 @@
-import { Avatar, Box, Button, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField } from "@mui/material";
+import { Avatar, Box, Button, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IngredientModel } from "../RecipeBookModels";
 
@@ -39,17 +40,8 @@ export default function RecipeIngredientsField(props: { formik: any, fieldName: 
     return (
         <Paper sx={{ p: 1 }}>
             <Box>
-                <TextField
-                    id={"ingredient-name-input"}
-                    value={ingredientName}
-                    onChange={(e) => setIngredientName(e.target.value)}
-                    type={'text'}
-                    name={'ingredient-name'}
-                    label={'Ingredient Name'}
-                    variant={'outlined'}
-                    margin={'normal'}
-                    fullWidth
-                />
+                <Typography variant="h6">Instructions</Typography>
+                <Box sx={{ p: 2 }} />
                 <TextField
                     id={"ingredient-amount-input"}
                     value={ingredientAmount}
@@ -57,6 +49,17 @@ export default function RecipeIngredientsField(props: { formik: any, fieldName: 
                     type={'text'}
                     name={'ingredient-amount'}
                     label={'Amount'}
+                    variant={'outlined'}
+                    margin={'normal'}
+                    fullWidth
+                />
+                <TextField
+                    id={"ingredient-name-input"}
+                    value={ingredientName}
+                    onChange={(e) => setIngredientName(e.target.value)}
+                    type={'text'}
+                    name={'ingredient-name'}
+                    label={'Ingredient Name'}
                     variant={'outlined'}
                     margin={'normal'}
                     fullWidth
@@ -84,7 +87,7 @@ const DisplayIngredients = (props: { ingredients: IngredientModel[], removeItem:
     return (
         <List dense>
             {ingredients.map((item: IngredientModel, index: number) => (
-                <ListItem key={index}
+                <ListItem key={uuidv4()}
                     secondaryAction={
                         <IconButton edge="end" aria-label="delete" onClick={() => removeItem(index)}>
                             <DeleteIcon />

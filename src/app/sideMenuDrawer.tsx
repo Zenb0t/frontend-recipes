@@ -4,7 +4,7 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import MenuIcon from '@mui/icons-material/Menu';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import React from "react";
-import { MagicButton } from "../MagicButton";
+import { MagicButton } from "./MagicButton";
 import { NavLink } from "react-router-dom";
 
 export const drawerWidth = 240;

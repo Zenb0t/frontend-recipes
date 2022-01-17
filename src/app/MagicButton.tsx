@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
-import { useAppDispatch } from "./app/hooks";
-import  genRecipe, { genChickenSoupRecipe }  from "./fakeData";
-import { addRecipe } from './features/recipeBook/RecipeSlice';
+import { useAppDispatch } from "./hooks";
+import  genRecipe, { genChickenSoupRecipe }  from "../fakeData";
+import { addRecipe } from '../features/recipeBook/RecipeSlice';
 
 export const MagicButton = () => {
 

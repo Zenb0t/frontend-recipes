@@ -7,6 +7,8 @@ import { addRecipe } from '../RecipeSlice';
 import { RecipeTextField } from './RecipeTextField';
 import RecipeInstructionsFormField from './RecipeInstructionsFormField';
 import RecipeIngredientsField from './RecipeIngredientsFormField';
+import ImageUpload from './ImageUploadFormField';
+import {ImagePreview} from '../../../app/ImagePreview';
 
 export const RecipeForm = (props: { handleClose: Function }) => {
 
@@ -61,17 +63,20 @@ export const RecipeForm = (props: { handleClose: Function }) => {
         <form className='recipe-form' onSubmit={formik.handleSubmit}>
             <h1>Add Recipe</h1>
             <Grid container spacing={2}>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={5}>
                     <RecipeTextField formik={formik} fieldName={"title"} />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={5}>
                     <RecipeTextField formik={formik} fieldName={"description"} />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={2}>
                     <RecipeTextField formik={formik} fieldName={"totalTime"} />
                 </Grid>
-                <Grid item xs={12}>
-                    <RecipeTextField formik={formik} fieldName={"imageUrl"} />
+                <Grid item xs={12} md={6}>
+                    <ImagePreview image={formik.values.imageUrl} width={300} height={300}/>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <ImageUpload formik={formik} fieldName={"imageUrl"} />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <RecipeIngredientsField formik={formik} fieldName={"ingredients"} />

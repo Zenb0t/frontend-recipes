@@ -19,9 +19,7 @@ export default function RecipeDetail() {
     // Recipe Detail Components
     const RecipeTitle = () => <Typography align='center' fontWeight={"bolder"} variant="h3" sx={{ p: 3 }}>{recipe?.title}</Typography>;
     const RecipeDescription = () => <Typography variant="body1">{recipe?.description}</Typography>;
-    const RecipeImage = () => <ImagePreview image={recipe?.imageUrl} width={300} height={400} />;
-
-
+    const RecipeImage = () => <ImagePreview image={recipe?.imageUrl} minWidth={300} minHeight={400} />;
     const RecipeTime = () => (<Typography variant="body1" sx={{ display: "inline" }}>{recipe?.totalTime}</Typography>);
 
     const RecipeInstructions = () =>

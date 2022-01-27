@@ -1,11 +1,10 @@
-import { Button, Container, Stack } from "@mui/material";
-import { Box, spacing } from "@mui/system";
-import { url } from "inspector";
-import { ChangeEvent, useState } from "react";
+import { Input, Stack } from "@mui/material";
+import { ChangeEvent, useEffect, useState } from "react";
+import { ImagePreview } from "../../../app/ImagePreview";
 
 
 const MB = Math.pow(2, 20);
-const MAX_SIZE = 2 * MB;
+const MAX_SIZE = 3 * MB;
 
 //Defines the UI and behaviour of the ImageUpload component
 export default function ImageUpload(props: { formik: any, fieldName: string }) {
@@ -16,8 +15,12 @@ export default function ImageUpload(props: { formik: any, fieldName: string }) {
     const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
         let files = event.currentTarget.files;
         if (files && isValidImage(files[0])) {
-            setSelectedImage(URL.createObjectURL(files[0]));
-            props.formik.setFieldValue(props.fieldName, selectedImage);
+            console.group("ImageUpload");
+            let image = URL.createObjectURL(files[0]);
+            console.log(image);
+            setSelectedImage(image);
+            console.info(`Image added: ${files[0].name}`);
+            console.groupEnd();
         } else {
             console.log(imageError);
         }
@@ -40,29 +43,23 @@ export default function ImageUpload(props: { formik: any, fieldName: string }) {
         return true;
     }
 
+    //Adding the other dependencies to the useEffect hook will cause the component to re-render when the formik state changes
+    //which might create extra overhead and unkown side effects. Hence, linting is disabled for this hook.
+    useEffect(() => {
+        props.formik.setFieldValue(props.fieldName, selectedImage, false);
+        console.log(selectedImage)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedImage]);
+
     return (
-        <Stack spacing={3} justifyContent="center" alignItems="center">
-            {/*
-            Can't use [Input] from MUI due to wrong ChangeEvent return type, <HTMLInputElement> | <HTMLTextAreaElement>
-            best solution is to implement a custom input component, but a Box will do the work for now.
-            TODO: implement a custom input component
-            */}
-            <Box component="input" type="file" onChange={(e: ChangeEvent<HTMLInputElement>) => handleUpload(e)} />
-            <Button variant="contained" color="secondary" onClick={(e) => imageError ? console.log(imageError) : console.log(selectedImage)}>
-                Upload Image
-            </Button>
+        <Stack spacing={3} m={3} justifyContent="center" alignItems="center">
+            <ImagePreview image={selectedImage} width={200} height={200} />
+            <label htmlFor="upload-image">
+                <Input id="upload-image" type="file" onChange={(e: ChangeEvent<HTMLInputElement>) => handleUpload(e)} />
+            </label>
         </Stack>
     );
 }
-
-// export const ImagePreview = (props: { image: string }) => {
-//     return (
-//         <Container >
-//             <Box component="img" src={props.image} alt="image preview" width={"100%"} maxWidth={350} sx={{ border: "dotted" }} />
-//         </Container>
-//     );
-// }
-
 
 
 

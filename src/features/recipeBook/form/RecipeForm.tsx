@@ -8,7 +8,6 @@ import { RecipeTextField } from './RecipeTextField';
 import RecipeInstructionsFormField from './RecipeInstructionsFormField';
 import RecipeIngredientsField from './RecipeIngredientsFormField';
 import ImageUpload from './ImageUploadFormField';
-import {ImagePreview} from '../../../app/ImagePreview';
 
 export const RecipeForm = (props: { handleClose: Function }) => {
 
@@ -71,9 +70,6 @@ export const RecipeForm = (props: { handleClose: Function }) => {
                 </Grid>
                 <Grid item xs={12} md={2}>
                     <RecipeTextField formik={formik} fieldName={"totalTime"} />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <ImagePreview image={formik.values.imageUrl} width={300} height={300}/>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <ImageUpload formik={formik} fieldName={"imageUrl"} />

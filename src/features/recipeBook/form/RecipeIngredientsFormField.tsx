@@ -31,16 +31,16 @@ export default function RecipeIngredientsField(props: { formik: any, fieldName: 
         formik.setFieldValue(fieldName, ingredients.filter((item: IngredientModel, i: number) => i !== index));
     }
 
-    const updateItem = (index: number, value: IngredientModel) => {
-        const newIngredients = [...ingredients];
-        newIngredients[index] = value;
-        formik.setFieldValue(fieldName, newIngredients);
-    }
+    // const updateItem = (index: number, value: IngredientModel) => {
+    //     const newIngredients = [...ingredients];
+    //     newIngredients[index] = value;
+    //     formik.setFieldValue(fieldName, newIngredients);
+    // }
 
     return (
         <Paper sx={{ p: 1 }}>
             <Box>
-                <Typography variant="h6">Instructions</Typography>
+                <Typography variant="h6">Ingredients</Typography>
                 <Box sx={{ p: 2 }} />
                 <TextField
                     id={"ingredient-amount-input"}

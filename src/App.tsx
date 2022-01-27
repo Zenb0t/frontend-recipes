@@ -1,16 +1,16 @@
 import './App.css';
-import SideDrawer from './app/sideMenuDrawer';
+import MenuBar from './app/MenuBar';
 import { Box, Toolbar } from '@mui/material';
-import drawerWidth from './app/sideMenuDrawer';
+import drawerWidth from './app/MenuBar';
 import { Outlet } from 'react-router-dom';
 
 
-
+/** The entry point to the main application */
 function App() {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <SideDrawer />
+      <MenuBar />
       <Box component="main"
         sx={{
           flexGrow: 1, p: 3, 

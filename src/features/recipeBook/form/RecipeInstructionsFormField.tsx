@@ -25,11 +25,12 @@ export default function RecipeInstructionsField(props: { formik: any, fieldName:
         formik.setFieldValue(fieldName, instructions.filter((item: string, i: number) => i !== index));
     }
 
-    const updateItem = (index: number, value: string) => {
-        const newInstructions = [...instructions];
-        newInstructions[index] = value;
-        formik.setFieldValue(fieldName, newInstructions);
-    }
+    //TODO: Remove commented when making recipe editable
+    // const updateItem = (index: number, value: string) => {
+    //     const newInstructions = [...instructions];
+    //     newInstructions[index] = value;
+    //     formik.setFieldValue(fieldName, newInstructions);
+    // }
 
     return (
         <Paper sx={{ p: 1 }}>

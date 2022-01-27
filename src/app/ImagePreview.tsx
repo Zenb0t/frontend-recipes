@@ -1,12 +1,17 @@
 import { Box } from "@mui/material";
 
-export  const ImagePreview = (props: { image: string | undefined, width: number, height: number }) => {
+export const ImagePreview = (props: { image?: string, width?: number, height?: number, minWidth?: number, minHeight?: number}) => {
     return (
-        <Box component="div" minWidth={props.width}  minHeight={props.height}  sx={{
-            backgroundImage: `url(${props.image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-        }} />
+        <Box component="div"
+            width={props?.width}
+            height={props?.height}
+            minWidth={props?.minWidth}
+            minHeight={props?.minHeight}
+            sx={{
+                backgroundImage: `url(${props.image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+            }} />
     );
 }

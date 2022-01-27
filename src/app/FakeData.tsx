@@ -1,9 +1,9 @@
-import { IngredientModel, RecipeModel } from "./features/recipeBook/RecipeBookModels";
+import { IngredientModel, RecipeModel } from "../features/recipeBook/RecipeBookModels";
 import { v4 as uuidv4 } from 'uuid';
-import bananaPancake from './img/chad-montano-eeqbbemH9-c-unsplash.jpg';
-import bluberryPancake from './img/calum-lewis-8Nc_oQsc2qQ-unsplash.jpg';
-import iceCream from './img/ian-dooley-TLD6iCOlyb0-unsplash.jpg';
-import soup from './img/cala-w6ftFbPCs9I-unsplash.jpg';
+import bananaPancake from '../img/chad-montano-eeqbbemH9-c-unsplash.jpg';
+import bluberryPancake from '../img/calum-lewis-8Nc_oQsc2qQ-unsplash.jpg';
+import iceCream from '../img/ian-dooley-TLD6iCOlyb0-unsplash.jpg';
+import soup from '../img/cala-w6ftFbPCs9I-unsplash.jpg';
 
 const chickenSoupIngredients: IngredientModel[] = [
     { name: 'Chicken', amount: '1 lb' },

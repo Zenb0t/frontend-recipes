@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import {RecipeModel} from './RecipeBookModels';
+import { RecipeModel } from './RecipeBookModels';
+import recipesAPI from '../../services/RecipesAPI';
 
 
 //TODO: Replace with real API call
@@ -9,11 +10,36 @@ import {RecipeModel} from './RecipeBookModels';
 
 export interface RecipeState {
     recipeList: RecipeModel[];
+    status: string;
+    error: any;
 }
 
 const initialState: RecipeState = {
     recipeList: [] as RecipeModel[], // will be initialized from async external API call.
+    status: 'idle',
+    error: null,
 };
+
+export const createRecipe = createAsyncThunk(
+    'recipeBook/createRecipe',
+    async (recipe: RecipeModel, thunkAPI) => {
+        try {
+            const response = await recipesAPI.createRecipe(recipe);
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+);
+
+export const fetchRecipes = createAsyncThunk(
+    'recipes/fetchRecipes',
+    async () => {
+        const response = await recipesAPI.getRecipes();
+        console.log(response);
+        return response.data;
+    }
+);
 
 export const recipeSlice = createSlice({
     name: 'recipe',
@@ -38,6 +64,11 @@ export const recipeSlice = createSlice({
             }
         },
     },
+    extraReducers: {
+        [fetchRecipes.fulfilled.type]: (state, action: PayloadAction<RecipeModel[]>) => {
+            state.recipeList = action.payload;
+        }
+    }
 });
 
 export const selectRecipes = (state: RootState) => state.recipeBook.recipeList;
@@ -46,6 +77,6 @@ export const selectFavoriteRecipes = (state: RootState) => state.recipeBook.reci
 
 export const selectRecipeById = (state: RootState, id: string) => state.recipeBook.recipeList.find(recipe => recipe.id === id);
 
-export const { addRecipe, removeRecipe, updateRecipe, toggleFavorite } = recipeSlice.actions;
+export const { addRecipe, removeRecipe, updateRecipe, toggleFavorite, } = recipeSlice.actions;
 
 export default recipeSlice.reducer;

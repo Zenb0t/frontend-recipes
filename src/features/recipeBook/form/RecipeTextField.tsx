@@ -6,6 +6,7 @@ export const RecipeTextField = (props: { formik: any, fieldName: string }) => {
 
     const { formik, fieldName } = props;
     return <TextField
+        autoFocus
         id={`recipe-${fieldName}`}
         defaultValue={formik.values[fieldName]}
         onChange={formik.handleChange}

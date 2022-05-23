@@ -1,6 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { TextField, useTheme, alpha, IconButton } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export default function SearchBar() {
@@ -15,11 +15,18 @@ export default function SearchBar() {
     };
 
     function handleSearch() {
-        setSearchParams({ recipe: searchQuery });
-        navigate(`/recipes?recipe=${searchQuery}`, { replace: true });
+        navigate(`/recipes`, { replace: true });
+        console.log(`Search Query: ${searchQuery}`);
+        setSearchParams({ title: searchQuery});
+        console.log(`Search Params: ${searchParams}`);
     }
 
     const theme = useTheme();
+
+    useEffect(() => {
+        console.log(`Search Params: ${searchParams}`);
+    }, [searchParams]);
+
 
     return (
         <>
@@ -42,7 +49,7 @@ export default function SearchBar() {
                         marginLeft: theme.spacing(1),
                         width: 'auto',
                     },
-                }}               
+                }}
             />
             <IconButton onClick={handleSearch}>
                 <SearchIcon />

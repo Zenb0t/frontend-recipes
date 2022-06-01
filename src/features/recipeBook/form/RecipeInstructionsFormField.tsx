@@ -36,37 +36,39 @@ export default function RecipeInstructionsField(props: { formik: any, fieldName:
         <Paper sx={{ p: 1 }}>
             <Typography variant="h6">Instructions</Typography>
             <Box sx={{ p: 2 }} />
-                <Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    spacing={2}
-                >
-                    <TextField
-                        id={"item-input"}
-                        value={fieldValue}
-                        onChange={(e) => setFieldValue(e.target.value)}
-                        type={'text'}
-                        name={fieldName}
-                        label={capitalizeFirstLetter(fieldName)}
-                        variant={'outlined'}
-                        margin={'normal'}
-                        multiline
-                        fullWidth
-                    />
-                </Stack>
-                <Button
-                    variant={'contained'}
-                    color={'secondary'}
-                    onClick={() => {
-                        addItem(fieldValue)
-                        clearFieldValue()
-                    }}
+            <Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                spacing={2}
+            >
+                <TextField
+                    id={"item-input"}
+                    value={fieldValue}
+                    onChange={(e) => setFieldValue(e.target.value)}
+                    type={'text'}
+                    name={fieldName}
+                    label={capitalizeFirstLetter(fieldName)}
+                    variant={'outlined'}
+                    margin={'normal'}
+                    multiline
                     fullWidth
-                >
-                    Add {capitalizeFirstLetter(fieldName)}
-                </Button>
-                <DisplayInstructions instructions={instructions} removeItem={removeItem} />
+                />
+            </Stack>
+            <Button
+                sx={{
+                    marginTop: '1rem'
+                }}
+                variant={'contained'}
+                color={'secondary'}
+                onClick={() => {
+                    addItem(fieldValue)
+                    clearFieldValue()
+                }}
+            >
+                Add {capitalizeFirstLetter(fieldName)}
+            </Button>
+            <DisplayInstructions instructions={instructions} removeItem={removeItem} />
         </Paper>
     );
 };

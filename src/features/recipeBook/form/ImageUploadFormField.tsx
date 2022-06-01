@@ -44,7 +44,7 @@ export default function ImageUpload(props: { formik: any, fieldName: string }) {
     }
 
     //Adding the other dependencies to the useEffect hook will cause the component to re-render when the formik state changes
-    //which might create extra overhead and unkown side effects. Hence, linting is disabled for this hook.
+    //which might create extra overhead and unknown side effects. Hence, linting is disabled for this hook.
     useEffect(() => {
         props.formik.setFieldValue(props.fieldName, selectedImage, false);
         console.log(selectedImage)
@@ -53,7 +53,8 @@ export default function ImageUpload(props: { formik: any, fieldName: string }) {
 
     return (
         <Stack spacing={3} m={3} justifyContent="center" alignItems="center">
-            <ImagePreview image={selectedImage} width={200} height={200} />
+            {selectedImage && <ImagePreview image={selectedImage} width={200} height={200} />}
+            {/* <ImagePreview image={selectedImage} width={200} height={200} /> */}
             <label htmlFor="upload-image">
                 <Input id="upload-image" type="file" onChange={(e: ChangeEvent<HTMLInputElement>) => handleUpload(e)} />
             </label>

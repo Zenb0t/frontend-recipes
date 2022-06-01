@@ -69,13 +69,13 @@ export default function RecipeDetail() {
                 <Spacer spacing={2} />
                 <RecipeDescription />
             </Grid>
-            <Grid item xs={12} md={6} >
+            <Grid item xs={12} md={12} >
                 <Paper elevation={1}>
                     <Spacer spacing={1} />
                     <RecipeIngredients />
                 </Paper>
             </Grid>
-            <Grid item xs={12} md={6} >
+            <Grid item xs={12} md={12} >
                 <Paper elevation={1}>
                     <Spacer spacing={1} />
                     <RecipeInstructions />

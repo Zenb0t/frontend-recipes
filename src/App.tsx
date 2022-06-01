@@ -13,6 +13,7 @@ function App() {
       <MenuBar />
       <Box component="main"
         sx={{
+          marginTop: '56px',
           flexGrow: 1, p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           justifyContent: 'center',

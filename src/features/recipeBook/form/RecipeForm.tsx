@@ -62,22 +62,22 @@ export const RecipeForm = (props: { handleClose: Function }) => {
         <form className='recipe-form' onSubmit={formik.handleSubmit}>
             <h1>Add Recipe</h1>
             <Grid container spacing={2}>
-                <Grid item xs={12} md={5}>
-                    <RecipeTextField formik={formik} fieldName={"title"} />
-                </Grid>
-                <Grid item xs={12} md={5}>
-                    <RecipeTextField formik={formik} fieldName={"description"} />
-                </Grid>
-                <Grid item xs={12} md={2}>
-                    <RecipeTextField formik={formik} fieldName={"totalTime"} />
-                </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={12}>
                     <ImageUpload formik={formik} fieldName={"imageUrl"} />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} >
+                    <RecipeTextField formik={formik} fieldName={"title"} />
+                </Grid>
+                <Grid item xs={12} md={9}>
+                    <RecipeTextField formik={formik} fieldName={"description"} />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                    <RecipeTextField formik={formik} fieldName={"totalTime"} />
+                </Grid>
+                <Grid item xs={12} md={12}>
                     <RecipeIngredientsField formik={formik} fieldName={"ingredients"} />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={12}>
                     <RecipeInstructionsFormField formik={formik} fieldName={"instructions"} />
                 </Grid>
                 <Grid item xs={12}>

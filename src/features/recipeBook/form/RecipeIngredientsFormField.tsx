@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -42,37 +42,41 @@ export default function RecipeIngredientsField(props: { formik: any, fieldName: 
             <Box>
                 <Typography variant="h6">Ingredients</Typography>
                 <Box sx={{ p: 2 }} />
-                <TextField
-                    id={"ingredient-amount-input"}
-                    value={ingredientAmount}
-                    onChange={(e) => setIngredientAmount(e.target.value)}
-                    type={'text'}
-                    name={'ingredient-amount'}
-                    label={'Amount'}
-                    variant={'outlined'}
-                    margin={'normal'}
-                    fullWidth
-                />
-                <TextField
-                    id={"ingredient-name-input"}
-                    value={ingredientName}
-                    onChange={(e) => setIngredientName(e.target.value)}
-                    type={'text'}
-                    name={'ingredient-name'}
-                    label={'Ingredient Name'}
-                    variant={'outlined'}
-                    margin={'normal'}
-                    fullWidth
-                />
+                <Stack direction={{ sm: 'column', md: "row" }} justifyContent="center" alignItems="baseline" spacing={2} >
+                    <TextField
+                        id={"ingredient-amount-input"}
+                        value={ingredientAmount}
+                        onChange={(e) => setIngredientAmount(e.target.value)}
+                        type={'text'}
+                        name={'ingredient-amount'}
+                        label={'Amount'}
+                        variant={'outlined'}
+                        margin={'normal'}
+                        fullWidth
+                    />
+                    <TextField
+                        id={"ingredient-name-input"}
+                        value={ingredientName}
+                        onChange={(e) => setIngredientName(e.target.value)}
+                        type={'text'}
+                        name={'ingredient-name'}
+                        label={'Ingredient Name'}
+                        variant={'outlined'}
+                        margin={'normal'}
+                        fullWidth
+                    />
+                </Stack>
             </Box>
             <Button
+            sx={{
+                marginTop: '1rem'
+            }}
                 variant={'contained'}
                 color={'secondary'}
                 onClick={() => {
                     addItem(ingredientName, ingredientAmount)
                     clearFields()
                 }}
-                fullWidth
             >
                 Add Ingredient
             </Button>

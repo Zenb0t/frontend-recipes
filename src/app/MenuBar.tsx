@@ -48,7 +48,6 @@ function RecipeAppBar(props: { drawerToggle: Function }) {
                 <Typography variant="h6" noWrap component="div" sx={{flexGrow: 1}}>
                     Full Stack Recipes App
                 </Typography>
-                <SearchBar />
             </Toolbar>
         </AppBar>
     );

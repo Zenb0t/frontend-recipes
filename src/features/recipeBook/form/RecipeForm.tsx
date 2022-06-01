@@ -3,7 +3,7 @@ import { Button, Grid, } from '@mui/material';
 import { IngredientModel, RecipeModel } from '../RecipeBookModels';
 import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch } from '../../../app/hooks';
-import { addRecipe } from '../RecipeSlice';
+import { createRecipe } from '../RecipeSlice';
 import { RecipeTextField } from './RecipeTextField';
 import RecipeInstructionsFormField from './RecipeInstructionsFormField';
 import RecipeIngredientsField from './RecipeIngredientsFormField';
@@ -53,7 +53,7 @@ export const RecipeForm = (props: { handleClose: Function }) => {
         onSubmit: values => {
             console.log(values);
             const recipe: RecipeModel = { ...values, favorite: false, id: uuidv4() };
-            dispatch(addRecipe(recipe));
+            dispatch(createRecipe(recipe));
             props.handleClose();
         },
     });

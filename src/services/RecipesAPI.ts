@@ -11,8 +11,9 @@ function recipesAPI() {
         }
     });
 
-    const createRecipe = (recipe: RecipeModel) => {
-        return http.post(`api/recipes`, recipe);
+    const createRecipe = async(recipe: RecipeModel) => {
+        const res = await http.post(`api/recipes`, recipe);
+        return res;
     }
 
     const getRecipes = async () => {
@@ -33,12 +34,18 @@ function recipesAPI() {
         return http.delete(`api/recipes/${id}`);
     }
 
+    const deleteAllRecipes = () => {
+        return http.delete(`api/recipes`);
+    }
+
+
     return {
         createRecipe,
         getRecipes,
         getRecipe,
         updateRecipe,
-        deleteRecipe
+        deleteRecipe,
+        deleteAllRecipes
     }
 }
 

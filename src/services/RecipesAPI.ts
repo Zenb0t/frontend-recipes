@@ -11,7 +11,7 @@ function recipesAPI() {
         }
     });
 
-    const createRecipe = async(recipe: RecipeModel) => {
+    const createRecipe = async (recipe: RecipeModel) => {
         const res = await http.post(`api/recipes`, recipe);
         return res;
     }
@@ -45,7 +45,7 @@ function recipesAPI() {
         getRecipe,
         updateRecipe,
         deleteRecipe,
-        deleteAllRecipes
+        deleteAllRecipes,
     }
 }
 

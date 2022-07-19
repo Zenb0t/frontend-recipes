@@ -2,9 +2,9 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { RecipeModel } from './RecipeBookModels';
 import recipesAPI from '../../services/RecipesAPI';
+import clone from 'just-clone';
 
 
-//TODO: Replace with real API call
 //TODO: Add error handling and loading state for async actions
 
 
@@ -15,7 +15,7 @@ export interface RecipeState {
 }
 
 const initialState: RecipeState = {
-    recipeList: [] as RecipeModel[], // will be initialized from async external API call.
+    recipeList: [] as RecipeModel[], // TODO: will be initialized from async external API call.
     status: 'idle',
     error: null,
 };
@@ -47,6 +47,7 @@ export const updateRecipe = createAsyncThunk(
     async (recipe: RecipeModel, thunkAPI) => {
         try {
             const response = await recipesAPI.updateRecipe(recipe.id, recipe);
+            console.log(`Update Recipe resp: ${response.data}`);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -68,7 +69,7 @@ export const deleteRecipe = createAsyncThunk(
 
 export const deleteAllRecipes = createAsyncThunk(
     'recipeBook/deleteAllRecipes',
-    async (thunkAPI) => {
+    async () => {
         try {
             const response = await recipesAPI.deleteAllRecipes();
             return response.data;
@@ -78,17 +79,27 @@ export const deleteAllRecipes = createAsyncThunk(
     }
 );
 
+export const toggleFavorite = createAsyncThunk(
+    'recipeBook/toggleFavorite',
+    async (recipe: RecipeModel, thunkAPI) => {
+        try {
+            if (recipe) {
+                const clonedRecipe = clone(recipe);
+
+                clonedRecipe.favorite = !clonedRecipe.favorite;
+                const response = await recipesAPI.updateRecipe(clonedRecipe.id, clonedRecipe);
+                return response.data;
+            }
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+);
+
 export const recipeSlice = createSlice({
     name: 'recipe',
     initialState,
-    reducers: {
-        toggleFavorite: (state, action: PayloadAction<RecipeModel>) => {
-            const recipe = state.recipeList.find(recipe => recipe.id === action.payload.id);
-            if (recipe) {
-                recipe.favorite = !recipe.favorite;
-            }
-        },
-    },
+    reducers: {},
     extraReducers: {
         [fetchRecipes.fulfilled.type]: (state, action: PayloadAction<RecipeModel[]>) => {
             state.recipeList = action.payload;
@@ -116,6 +127,7 @@ export const recipeSlice = createSlice({
                 ...state.recipeList[index],
                 ...action.payload
             };
+            console.log(`Updated recipe: ${state.recipeList[index]}`);
         },
         [updateRecipe.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
             state.status = 'loading';
@@ -137,6 +149,19 @@ export const recipeSlice = createSlice({
             state.status = 'error';
             state.error = action.payload;
         },
+        [toggleFavorite.fulfilled.type]: (state, action: PayloadAction<RecipeModel>) => {
+            const recipe = state.recipeList.find(recipe => recipe.id === action.payload.id);
+            if (recipe) {
+                recipe.favorite = !recipe.favorite;
+            }
+        },
+        [toggleFavorite.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
+            state.status = 'loading';
+        },
+        [toggleFavorite.rejected.type]: (state, action: PayloadAction<any>) => {
+            state.status = 'error';
+            state.error = action.payload;
+        },
     },
 });
 
@@ -145,7 +170,5 @@ export const selectRecipes = (state: RootState) => state.recipeBook.recipeList;
 export const selectFavoriteRecipes = (state: RootState) => state.recipeBook.recipeList.filter(recipe => recipe.favorite);
 
 export const selectRecipeById = (state: RootState, id: string) => state.recipeBook.recipeList.find(recipe => recipe.id === id);
-
-export const { toggleFavorite, } = recipeSlice.actions;
 
 export default recipeSlice.reducer;

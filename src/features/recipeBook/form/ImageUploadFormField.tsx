@@ -1,14 +1,16 @@
-import { Input, Stack } from "@mui/material";
+import { Input, Skeleton, Stack } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { ImagePreview } from "../../../app/ImagePreview";
 
 
 const MB = Math.pow(2, 20);
 const MAX_SIZE = 3 * MB;
+const IMAGE_WIDTH = 200;
+const IMAGE_HEIGHT = 200;
 
 //Defines the UI and behaviour of the ImageUpload component
 export default function ImageUpload(props: { formik: any, fieldName: string }) {
-    const [selectedImage, setSelectedImage] = useState(''); //TODO: add a placeholder image
+    const [selectedImage, setSelectedImage] = useState('');
     const [imageError, setImageError] = useState('');
 
 
@@ -48,13 +50,14 @@ export default function ImageUpload(props: { formik: any, fieldName: string }) {
     useEffect(() => {
         props.formik.setFieldValue(props.fieldName, selectedImage, false);
         console.log(selectedImage)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedImage]);
 
     return (
         <Stack spacing={3} m={3} justifyContent="center" alignItems="center">
-            {selectedImage && <ImagePreview image={selectedImage} width={200} height={200} />}
-            {/* <ImagePreview image={selectedImage} width={200} height={200} /> */}
+            {selectedImage
+                ? <ImagePreview image={selectedImage} width={IMAGE_WIDTH} height={IMAGE_HEIGHT} />
+                : <Skeleton variant="rectangular" animation={false} width={IMAGE_WIDTH} height={IMAGE_HEIGHT}></Skeleton>}
             <label htmlFor="upload-image">
                 <Input id="upload-image" type="file" onChange={(e: ChangeEvent<HTMLInputElement>) => handleUpload(e)} />
             </label>

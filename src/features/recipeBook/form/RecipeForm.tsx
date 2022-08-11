@@ -85,7 +85,7 @@ export const RecipeForm = (props: { handleClose: Function }) => {
                         type={'submit'}
                         variant={'contained'}
                         color={'primary'}
-                        fullWidth
+                        size={'large'}
                     >
                         Add Recipe
                     </Button>

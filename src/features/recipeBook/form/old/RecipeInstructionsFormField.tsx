@@ -1,7 +1,6 @@
 import { Avatar, Box, Button, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { capitalizeFirstLetter } from "../../../app/utils";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
@@ -48,7 +47,7 @@ export default function RecipeInstructionsField(props: { formik: any, fieldName:
                     onChange={(e) => setFieldValue(e.target.value)}
                     type={'text'}
                     name={fieldName}
-                    label={capitalizeFirstLetter(fieldName)}
+                    label={fieldName}
                     variant={'outlined'}
                     margin={'normal'}
                     multiline
@@ -66,7 +65,7 @@ export default function RecipeInstructionsField(props: { formik: any, fieldName:
                     clearFieldValue()
                 }}
             >
-                Add {capitalizeFirstLetter(fieldName)}
+                Add {fieldName}
             </Button>
             <DisplayInstructions instructions={instructions} removeItem={removeItem} />
         </Paper>

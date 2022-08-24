@@ -1,6 +1,6 @@
 import { Input, Stack } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
-import { ImagePreview } from "../../../app/ImagePreview";
+import { ImagePreview } from "../../../../app/ImagePreview";
 
 
 const MB = Math.pow(2, 20);

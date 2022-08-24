@@ -2,7 +2,7 @@ import React from "react";
 import { CardActionArea, CardContent, Dialog } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Card from '@mui/material/Card';
-import { RecipeForm } from "./form/RecipeForm";
+import { RecipeForm } from "./form/old/RecipeForm";
 
 export default function AddRecipeCard() {
     const [open, setOpen] = React.useState(false);

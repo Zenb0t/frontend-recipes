@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { selectRecipes, selectFavoriteRecipes, fetchRecipes } from "./features/recipeBook/RecipeSlice";
 import App from "./App";
 import RecipeDetail from "./features/recipeBook/RecipeDetail";
-import { RecipeForm } from "./features/recipeBook/form/RecipeForm";
+import { RecipeForm } from "./features/recipeBook/form/old/RecipeForm";
 import { Box, Typography } from "@mui/material";
 import { useEffect } from "react";
 
@@ -18,12 +18,12 @@ export default function AppRouter() {
     const Welcome = () => {
 
         useEffect(() => {
-            if(recipes.length > 0) {
+            if (recipes.length > 0) {
                 navigate("/allrecipes");
             }
         }
-        , []);
-                
+            , []);
+
         return (<Box>
             <Typography p={6} mb={4} align="center" variant="h3">Welcome to the Recipe Book</Typography>
             <Typography p={6} align="center" variant="h5">
@@ -36,6 +36,9 @@ export default function AppRouter() {
     const Favorites = () => <RecipeCardList recipes={useAppSelector(selectFavoriteRecipes)} />;
     const NoMatch = () => <Typography p={6} mb={4} align="center" variant="h3">No match, try a different URL</Typography>;
     const AddRecipe = () => <RecipeForm handleClose={() => navigate(`/allrecipes`, { replace: true })} />;
+    const Login = () => {
+        return <Typography p={6} mb={4} align="center" variant="h3">Login</Typography>;
+    };
 
     //Fetch recipes on mount
     useEffect(() => {
@@ -54,6 +57,7 @@ export default function AppRouter() {
                 <Route path="/allrecipes" element={<AllRecipes />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/recipes/:recipeId" element={<RecipeDetail />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="*" element={<NoMatch />} />
             </Route>
         </Routes>);

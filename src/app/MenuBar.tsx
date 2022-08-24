@@ -3,10 +3,12 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import MenuIcon from '@mui/icons-material/Menu';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import LoginIcon from '@mui/icons-material/Login';
 import React from "react";
 import { MagicButton } from "./MagicButton";
 import { NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
+
 
 export const drawerWidth = 240;
 
@@ -105,6 +107,13 @@ const drawerContent = (<>
                 <FavoriteIcon />
             </ListItemIcon>
             <ListItemText primary="Favorite Recipes" />
+        </ListItemButton>
+        {/*TODO: remove me later */}
+        <ListItemButton component={NavLink} to={'login'}>
+            <ListItemIcon>
+                <LoginIcon />
+            </ListItemIcon>
+            <ListItemText primary="Login Screen" />
         </ListItemButton>
     </List>
 </>);

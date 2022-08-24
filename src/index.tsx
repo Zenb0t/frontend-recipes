@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './AppRouter';
 import { ThemeProvider } from '@mui/material';
 import theme from './app/theme';
+import { ChakraProvider } from '@chakra-ui/react';
 
 
 
@@ -15,8 +16,10 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-      <ThemeProvider theme={theme}>
-          <AppRouter />
+        <ThemeProvider theme={theme}>
+          <ChakraProvider>
+            <AppRouter />
+          </ChakraProvider>
         </ThemeProvider>
       </BrowserRouter>
     </Provider>

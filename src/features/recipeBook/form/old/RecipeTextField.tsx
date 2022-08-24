@@ -1,5 +1,4 @@
 import { TextField } from "@mui/material";
-import { capitalizeFirstLetter } from "../../../app/utils";
 
 
 export const RecipeTextField = (props: { formik: any, fieldName: string }) => {
@@ -12,7 +11,7 @@ export const RecipeTextField = (props: { formik: any, fieldName: string }) => {
         onChange={formik.handleChange}
         type={'text'}
         name={fieldName}
-        label={capitalizeFirstLetter(fieldName)}
+        label={fieldName}
         variant={'outlined'}
         fullWidth
         margin={'normal'}

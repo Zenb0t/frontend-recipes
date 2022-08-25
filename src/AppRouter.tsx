@@ -5,8 +5,9 @@ import { selectRecipes, selectFavoriteRecipes, fetchRecipes } from "./features/r
 import App from "./App";
 import RecipeDetail from "./features/recipeBook/RecipeDetail";
 import { RecipeForm } from "./features/recipeBook/form/old/RecipeForm";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useEffect } from "react";
+import { Text } from "@chakra-ui/react";
 
 /**Contains the routes for the application */
 export default function AppRouter() {
@@ -25,19 +26,19 @@ export default function AppRouter() {
             , []);
 
         return (<Box>
-            <Typography p={6} mb={4} align="center" variant="h3">Welcome to the Recipe Book</Typography>
-            <Typography p={6} align="center" variant="h5">
+            <Text p={6} mb={4} align="center" variant="h3">Welcome to the Recipe Book</Text>
+            <Text p={6} align="center" variant="h5">
                 Please select a recipe from the list or add a new one.
                 You can also mark a recipe as favorite.
-            </Typography>
+            </Text>
         </Box>)
     };
     const AllRecipes = () => <RecipeCardList recipes={recipes} />;
     const Favorites = () => <RecipeCardList recipes={useAppSelector(selectFavoriteRecipes)} />;
-    const NoMatch = () => <Typography p={6} mb={4} align="center" variant="h3">No match, try a different URL</Typography>;
+    const NoMatch = () => <Text p={6} mb={4} align="center" variant="h3">No match, try a different URL</Text>;
     const AddRecipe = () => <RecipeForm handleClose={() => navigate(`/allrecipes`, { replace: true })} />;
     const Login = () => {
-        return <Typography p={6} mb={4} align="center" variant="h3">Login</Typography>;
+        return <Text p={6} mb={4} align="center" variant="h3">Login</Text>;
     };
 
     //Fetch recipes on mount

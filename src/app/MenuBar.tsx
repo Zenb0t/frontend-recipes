@@ -1,4 +1,4 @@
-import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from "@mui/material";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -7,7 +7,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import React from "react";
 import { MagicButton } from "./MagicButton";
 import { NavLink } from "react-router-dom";
-import SearchBar from "./SearchBar";
+import { Text } from "@chakra-ui/react";
 
 
 export const drawerWidth = 240;
@@ -35,7 +35,7 @@ function RecipeAppBar(props: { drawerToggle: Function }) {
     return (
         <AppBar
             position="fixed"
-            sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, }}
+            sx={{ zIndex: 999, }}
         >
             <Toolbar>
                 <IconButton
@@ -47,9 +47,9 @@ function RecipeAppBar(props: { drawerToggle: Function }) {
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" noWrap component="div" sx={{flexGrow: 1}}>
+                <Text variant="h6" as="div" sx={{flexGrow: 1}}>
                     Full Stack Recipes App
-                </Typography>
+                </Text>
             </Toolbar>
         </AppBar>
     );

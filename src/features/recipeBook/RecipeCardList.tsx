@@ -1,6 +1,7 @@
 import { Grid, Typography } from "@mui/material";
-import RecipeCard from "./RecipeCard";
+import {RecipeCard, RecipeCard2 } from "./RecipeCard";
 import { RecipeModel } from "./RecipeBookModels";
+import { Text , SimpleGrid, Box} from "@chakra-ui/react";
 
 
 export default function RecipeCardList(props: { recipes: RecipeModel[] }) {
@@ -8,16 +9,16 @@ export default function RecipeCardList(props: { recipes: RecipeModel[] }) {
     const recipes = props.recipes;
 
     return (
-        <Grid container spacing={2}>
+        <SimpleGrid  spacing="40px" >
 
-            {recipes.length === 0 ? <Typography p={6} mb={4} variant="h5" align="center">No recipes found. Create a new Recipe or Generate one!</Typography> :
+            {recipes.length === 0 ? <Text p={6} mb={4} variant="h5" align="center">No recipes found. Create a new Recipe or Generate one!</Text> :
 
                 recipes.map((recipe: RecipeModel) => (
-                    <Grid key={recipe.id} minWidth={"320px"} item sm={2}>
-                        <RecipeCard recipe={recipe} />
-                    </Grid>
+                    <Box key={recipe.id}>
+                        <RecipeCard2 recipe={recipe} />
+                    </Box>
                 ))
             }
-        </Grid>
+        </SimpleGrid>
     );
 }

@@ -10,7 +10,7 @@ function App() {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <MenuBar />
+      {/* <MenuBar /> */}
       <Box component="main"
         sx={{
           marginTop: '56px',

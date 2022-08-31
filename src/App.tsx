@@ -1,17 +1,19 @@
 import './App.css';
 import MenuBar from './app/MenuBar';
-import { Box } from '@mui/material';
+import { Box as MdBox } from '@mui/material';
 import drawerWidth from './app/MenuBar';
 import { Outlet } from 'react-router-dom';
+//Chakra imports
+import { Grid, GridItem } from '@chakra-ui/react';
 
 
 /** The entry point to the main application */
 function App() {
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <MdBox sx={{ display: 'flex' }}>
       {/* <MenuBar /> */}
-      <Box component="main"
+      <MdBox component="main"
         sx={{
           marginTop: '56px',
           flexGrow: 1, p: 3,
@@ -20,8 +22,8 @@ function App() {
         }}
       >
         <Outlet />
-      </Box>
-    </Box>
+      </MdBox>
+    </MdBox>
   );
 }
 

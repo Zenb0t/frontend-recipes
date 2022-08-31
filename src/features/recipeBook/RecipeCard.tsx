@@ -5,9 +5,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { CardActionArea, CardMedia, CardContent, Stack, IconButton as IconButtonMd } from '@mui/material';
 import Card from '@mui/material/Card';
 //Chakra imports
-import { Icon } from '@chakra-ui/icons';
-import { Box, IconButton, Image, LinkOverlay, Text } from '@chakra-ui/react';
-import { MdFavorite, MdOutlineFavorite, MdOutlineFavoriteBorder } from 'react-icons/md';
+import { Box, Flex, Heading, IconButton, Link, Tag, TagLabel, TagLeftIcon, } from '@chakra-ui/react';
+import { MdAttachMoney, MdFavorite, MdOutlineFavoriteBorder, MdOutlineWatchLater } from 'react-icons/md';
 
 
 //RecipeCard component
@@ -16,7 +15,7 @@ import { useAppDispatch } from '../../app/hooks';
 import { RecipeModel } from './RecipeBookModels';
 import { toggleFavorite, updateRecipe } from './RecipeSlice';
 
-export function RecipeCard2(props: { recipe: RecipeModel }) {
+export function RecipeCard(props: { recipe: RecipeModel }) {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -29,19 +28,43 @@ export function RecipeCard2(props: { recipe: RecipeModel }) {
 
     const favIcon = (recipe.favorite) ? <MdFavorite color='red' /> : < MdOutlineFavoriteBorder color='black' />;
 
-    return (
-        <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden'>
-
-            <Image src={recipe.imageUrl} alt={recipe.title} onClick={handleAction} />
-            <Text fontSize='xl'>{recipe.title}</Text>
-            <IconButton icon={favIcon} aria-label={'Favorite'} onClick={() => dispatch(toggleFavorite(recipe))} />
-        </Box>);
+    return (<Box
+        maxH='200px'
+        maxW='200px'
+        shadow="md" bg='whiteAlpha.300'
+        pl='4' py='4'
+        borderWidth='1px' borderRadius='lg'
+    >
+        <Link onClick={handleAction}>
+            <Heading size="md" noOfLines={2}>{recipe.title}</Heading>
+        </Link>
+        <Flex py='4' alignItems='center' justifyItems="center" gap='2'>
+            <Tag size='md' colorScheme='blackAlpha'>
+                <TagLeftIcon boxSize='16px' as={MdAttachMoney} />
+                <TagLabel >{recipe.cost}</TagLabel>
+            </Tag>
+            <Tag size='md' colorScheme='blackAlpha'>
+                <TagLeftIcon boxSize='16px' as={MdOutlineWatchLater} />
+                <TagLabel>{recipe.totalTime}</TagLabel>
+            </Tag>
+        </Flex>
+        <Tag size='lg' colorScheme='blackAlpha'>
+            <TagLabel lineHeight="2.2">{recipe.ingredients.length} Ingredients </TagLabel>
+        </Tag>
+        <IconButton
+            onClick={() => dispatch(toggleFavorite(recipe))}
+            size="md"
+            colorScheme="" color="red.500"
+            aria-label='Toogle Favorite' icon={favIcon}
+        />
+    </Box>
+    );
 
 
 }
 
 
-export function RecipeCard(props: { recipe: RecipeModel }) {
+export function RecipeCard2(props: { recipe: RecipeModel }) {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();

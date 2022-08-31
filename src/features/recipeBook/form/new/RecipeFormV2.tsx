@@ -19,6 +19,7 @@ export const RecipeForm2 = (props: { handleClose: Function }) => {
         imageUrl: string;
         favorite: boolean;
         id: string;
+        cost: number;
     }
 
     const initialValues: Values = {
@@ -29,7 +30,8 @@ export const RecipeForm2 = (props: { handleClose: Function }) => {
         instructions: [] as string[],
         imageUrl: '',
         favorite: false,
-        id: ''
+        id: '',
+        cost: 0,
     };
 
     const validationSchema = yup.object({
@@ -43,6 +45,7 @@ export const RecipeForm2 = (props: { handleClose: Function }) => {
         })).required('At least one ingredient is required'),
         instructions: yup.array().of(yup.string().required('Required')),
         imageUrl: yup.string().required('Required').url('Invalid URL'),
+        cost: yup.number().required('Required').min(0, 'Must be greater than 0'),
     });
 
     function handleSubmit(values: Values) {

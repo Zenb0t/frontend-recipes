@@ -35,6 +35,9 @@ export const RecipeForm = (props: { handleClose: Function }) => {
         } else if (/^(ht|f)tp(s?):\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-.?,'/\\+&amp;%$#_]*)?$^/.test(values.imageUrl)) {
             errors.imageUrl = 'Invalid URL';
         }
+        if (!values.cost) {
+            errors.cost = 'Required';
+        }
         console.log(errors);
         return errors;
     };
@@ -48,7 +51,8 @@ export const RecipeForm = (props: { handleClose: Function }) => {
             instructions: [] as string[],
             imageUrl: '',
             favorite: false,
-            id: ''
+            id: '',
+            cost: 0,
         }, validate: validate,
         onSubmit: values => {
             console.log(values);

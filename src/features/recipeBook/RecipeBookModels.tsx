@@ -2,6 +2,7 @@
 
 export interface RecipeModel {
 
+
     title: string;
     description: string;
     totalTime: string;
@@ -10,6 +11,7 @@ export interface RecipeModel {
     imageUrl: string;
     favorite: boolean;
     id: string;
+    cost: number;
 }
 
 export interface IngredientModel {

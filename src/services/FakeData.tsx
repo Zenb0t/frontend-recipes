@@ -43,6 +43,7 @@ export const chickenSoup: RecipeModel = {
     imageUrl: imagesrc,
     favorite: false,
     id: uuidv4(),
+    cost: 5.00,
 };
 
 
@@ -56,6 +57,7 @@ export default function genRecipe(ingredientQuantity: number): RecipeModel {
         imageUrl: randomImage(),
         favorite: true,
         id: uuidv4(),
+        cost: 6.00,
     };
     return recipe;
 }
@@ -69,6 +71,7 @@ export function genChickenSoupRecipe(): RecipeModel {
         imageUrl: randomImage(),
         favorite: false,
         id: uuidv4(),
+        cost: chickenSoup.cost,
     };
     return recipe;
 

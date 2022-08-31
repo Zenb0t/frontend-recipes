@@ -9,13 +9,13 @@ export default function RecipeCardList(props: { recipes: RecipeModel[] }) {
     const recipes = props.recipes;
 
     return (
-        <SimpleGrid  spacing="40px" >
+        <SimpleGrid p="4" minChildWidth='200px' spacing="24px" >
 
             {recipes.length === 0 ? <Text p={6} mb={4} variant="h5" align="center">No recipes found. Create a new Recipe or Generate one!</Text> :
 
                 recipes.map((recipe: RecipeModel) => (
                     <Box key={recipe.id}>
-                        <RecipeCard2 recipe={recipe} />
+                        <RecipeCard recipe={recipe} />
                     </Box>
                 ))
             }

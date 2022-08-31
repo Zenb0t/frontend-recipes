@@ -1,13 +1,13 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Outlet } from "react-router-dom";
 import RecipeCardList from "./features/recipeBook/RecipeCardList";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { selectRecipes, selectFavoriteRecipes, fetchRecipes } from "./features/recipeBook/RecipeSlice";
-import App from "./App";
 import RecipeDetail from "./features/recipeBook/RecipeDetail";
 import { RecipeForm } from "./features/recipeBook/form/old/RecipeForm";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
-import { Text } from "@chakra-ui/react";
+import { Grid, GridItem, HStack, Icon, StackDivider, Text, VStack } from "@chakra-ui/react";
+import { GiCookingPot } from 'react-icons/gi';
 
 /**Contains the routes for the application */
 export default function AppRouter() {
@@ -40,6 +40,42 @@ export default function AppRouter() {
     const Login = () => {
         return <Text p={6} mb={4} align="center" variant="h3">Login</Text>;
     };
+    const GridTest = () => {
+        return <Grid
+            templateAreas={`"header header"
+                  "nav main"
+                  "footer footer"`}
+            gridTemplateRows={'50px 1fr 50px'}
+            gridTemplateColumns={'200px 1fr'}
+            h='100vh'
+            gap='1'
+        >
+            <GridItem pl='2' bg='green.300' area={'header'}>
+                <HStack align='center' justify='left'>
+                    <Icon as={GiCookingPot} boxSize="2.5rem" /><Text fontSize='3xl' fontWeight='bold' >Panela</Text>
+                </HStack>
+            </GridItem>
+            <GridItem h={500} pl='4' pt='4' bg='pink.300' area={'nav'}>
+                <VStack
+                    align='left'
+                    spacing={2}
+                    divider={<StackDivider borderColor='gray.200' />}
+                >
+                    <Text fontSize='xl' fontWeight='bold' >Dashboard</Text>
+                    <Text fontSize='xl' fontWeight='bold'>Recipes</Text>
+                    <Text fontSize='xl' fontWeight='bold'>Ingredients</Text>
+                    <Text fontSize='xl' fontWeight='bold'>Account</Text>
+                </VStack>
+
+            </GridItem>
+            <GridItem pl='2' bg='whiteAlpha.50' area={'main'}>
+                <Outlet />
+            </GridItem>
+            <GridItem pl='2' bg='blue.300' area={'footer'}>
+                Footer
+            </GridItem>
+        </Grid>
+    };
 
     //Fetch recipes on mount
     useEffect(() => {
@@ -52,13 +88,14 @@ export default function AppRouter() {
 
     return (
         <Routes>
-            <Route path="/" element={<App />} >
+            <Route path="/" element={<GridTest />} >
                 <Route index element={<Welcome />} />
                 <Route path="add-recipe" element={<AddRecipe />} />
                 <Route path="/allrecipes" element={<AllRecipes />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/recipes/:recipeId" element={<RecipeDetail />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/grid" element={<GridTest />} /> {/*TODO:Remove me later */}
                 <Route path="*" element={<NoMatch />} />
             </Route>
         </Routes>);

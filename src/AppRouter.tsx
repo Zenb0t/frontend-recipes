@@ -8,6 +8,7 @@ import { Box } from "@mui/material";
 import { useEffect } from "react";
 import { Grid, GridItem, HStack, Icon, StackDivider, Text, VStack } from "@chakra-ui/react";
 import { GiCookingPot } from 'react-icons/gi';
+import App from "./App";
 
 /**Contains the routes for the application */
 export default function AppRouter() {
@@ -88,7 +89,7 @@ export default function AppRouter() {
 
     return (
         <Routes>
-            <Route path="/" element={<GridTest />} >
+            <Route path="/" element={<App />} >
                 <Route index element={<Welcome />} />
                 <Route path="add-recipe" element={<AddRecipe />} />
                 <Route path="/allrecipes" element={<AllRecipes />} />

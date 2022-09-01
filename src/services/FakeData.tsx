@@ -43,7 +43,7 @@ export const chickenSoup: RecipeModel = {
     imageUrl: imagesrc,
     favorite: false,
     id: uuidv4(),
-    cost: 5.00,
+    cost: 5.20,
 };
 
 

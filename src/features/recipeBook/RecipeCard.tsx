@@ -26,16 +26,25 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
 
     let recipe = props.recipe;
 
+    console.log(recipe);
+
     const favIcon = (recipe.favorite) ? <MdFavorite color='red' /> : < MdOutlineFavoriteBorder color='black' />;
 
     return (<Box
-        maxH='200px'
-        maxW='200px'
-        shadow="md" bg='whiteAlpha.300'
-        pl='4' py='4'
-        borderWidth='1px' borderRadius='lg'
+        maxH="200px"
+        maxW="200px"
+        shadow="md"
+        bg="whiteAlpha.900"
+        pl="4"
+        py="4"
+        borderWidth="1px"
+        borderRadius="lg"
+        _hover={{
+            bg: "whiteAlpha.800",
+            shadow: "lg"
+        }}
     >
-        <Link onClick={handleAction}>
+        <Link _hover={{}} onClick={handleAction}>
             <Heading size="md" noOfLines={2}>{recipe.title}</Heading>
         </Link>
         <Flex py='4' alignItems='center' justifyItems="center" gap='2'>

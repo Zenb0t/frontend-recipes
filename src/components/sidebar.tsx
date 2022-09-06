@@ -34,6 +34,7 @@ import { CgSmartHomeRefrigerator } from "react-icons/cg";
 import { IconType } from "react-icons";
 import { ReactNode } from "react";
 import {PanelaLogo} from "./logo";
+import {Link as RouterLink} from "react-router-dom";
 import {MagicButton} from "../app/MagicButton";
 
 interface LinkItemProps {
@@ -57,8 +58,8 @@ interface NavItemProps extends FlexProps {
 }
 const NavItem = ({ icon, href, children, ...rest }: NavItemProps) => {
     return (
-        <Link
-            href={href}
+        <Link as={RouterLink}
+            to={href}
             style={{ textDecoration: "none" }}
             _focus={{ boxShadow: "none" }}
         >

@@ -127,7 +127,7 @@ export const recipeSlice = createSlice({
                 ...state.recipeList[index],
                 ...action.payload
             };
-            console.log(`Updated recipe: ${state.recipeList[index]}`);
+            console.log(`Updated recipe: ${state.recipeList[index]}`); //TODO: remove
         },
         [updateRecipe.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
             state.status = 'loading';
@@ -159,6 +159,16 @@ export const recipeSlice = createSlice({
             state.status = 'loading';
         },
         [toggleFavorite.rejected.type]: (state, action: PayloadAction<any>) => {
+            state.status = 'error';
+            state.error = action.payload;
+        },
+        [deleteAllRecipes.fulfilled.type]: (state, action: PayloadAction<RecipeModel>) => {
+            state.recipeList = [];
+        },
+        [deleteAllRecipes.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
+            state.status = 'loading';
+        },
+        [deleteAllRecipes.rejected.type]: (state, action: PayloadAction<any>) => {
             state.status = 'error';
             state.error = action.payload;
         },

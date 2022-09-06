@@ -3,8 +3,11 @@ import { useAppDispatch } from '../../../../app/hooks';
 import { IngredientModel, RecipeModel } from '../../RecipeBookModels';
 import { createRecipe } from '../../RecipeSlice';
 import { v4 as uuidv4 } from 'uuid';
-import yup from 'yup';
+import { yup } from '../../../../app/utils';
 import { TextField } from 'formik-mui';
+import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputLeftElement, Textarea, VStack } from '@chakra-ui/react';
+import { MdOutlineEmail } from 'react-icons/md';
+import { BsPerson } from 'react-icons/bs';
 
 export const RecipeForm2 = (props: { handleClose: Function }) => {
 
@@ -62,16 +65,52 @@ export const RecipeForm2 = (props: { handleClose: Function }) => {
     });
 
     return <form onSubmit={formik.handleSubmit}>
-        {/* <TextField
-            label='Title'
-            variant='outlined'
-            fullWidth
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.title}
-            error={formik.touched.title && formik.errors.title ? true : false}
-            helperText={formik.touched.title && formik.errors.title ? formik.errors.title : ''}
-        /> */}
+        <Box bg="white" borderRadius="lg">
+            <Box m={8} color="#0B0E3F">
+                <VStack spacing={5}>
+                    <FormControl id="name">
+                        <FormLabel>Your Name</FormLabel>
+                        <InputGroup borderColor="#E0E1E7">
+                            <InputLeftElement
+                                pointerEvents="none"
+                                children={<BsPerson color="gray.800" />}
+                            />
+                            <Input type="text" size="md" />
+                        </InputGroup>
+                    </FormControl>
+                    <FormControl id="name">
+                        <FormLabel>Mail</FormLabel>
+                        <InputGroup borderColor="#E0E1E7">
+                            <InputLeftElement
+                                pointerEvents="none"
+                                children={<MdOutlineEmail color="gray.800" />}
+                            />
+                            <Input type="text" size="md" />
+                        </InputGroup>
+                    </FormControl>
+                    <FormControl id="name">
+                        <FormLabel>Message</FormLabel>
+                        <Textarea
+                            borderColor="gray.300"
+                            _hover={{
+                                borderRadius: 'gray.300',
+                            }}
+                            placeholder="message"
+                        />
+                    </FormControl>
+                    <FormControl id="name" float="right">
+                        <Button
+                            type="submit"
+                            variant="solid"
+                            bg="#0D74FF"
+                            color="white"
+                            _hover={{}}>
+                            Send Message
+                        </Button>
+                    </FormControl>
+                </VStack>
+            </Box>
+        </Box>
 
     </form>
 }

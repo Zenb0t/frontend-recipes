@@ -2,13 +2,13 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import RecipeCardList from "./features/recipeBook/RecipeCardList";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { selectRecipes, selectFavoriteRecipes, fetchRecipes } from "./features/recipeBook/RecipeSlice";
-import RecipeDetail from "./features/recipeBook/RecipeDetail";
 import { RecipeForm } from "./features/recipeBook/form/old/RecipeForm";
 import { RecipeForm2 as FormPlaceholder} from "./features/recipeBook/form/new/RecipeFormV2";
 import { Box } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Text } from "@chakra-ui/react";
 import App from "./App";
+import { RecipePage } from "./pages/recipe-details";
 
 /**Contains the routes for the application */
 export default function AppRouter() {
@@ -51,6 +51,7 @@ export default function AppRouter() {
     }
         , [dispatch]);
 
+        
 
     return (
         <Routes>
@@ -59,7 +60,7 @@ export default function AppRouter() {
                 <Route path="add-recipe" element={<AddRecipe />} />
                 <Route path="/allrecipes" element={<AllRecipes />} />
                 <Route path="/favorites" element={<Favorites />} />
-                <Route path="/recipes/:recipeId" element={<RecipeDetail />} />
+                <Route path="/recipes/:recipeId" element={<RecipePage />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="*" element={<NoMatch />} />
             </Route>

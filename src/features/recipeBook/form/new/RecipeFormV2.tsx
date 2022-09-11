@@ -52,10 +52,10 @@ export const RecipeForm2 = (props: { handleClose: Function }) => {
     });
 
     function handleSubmit(values: Values) {
-        console.log(values);
-        const recipe: RecipeModel = { ...values, favorite: false, id: uuidv4() };
-        dispatch(createRecipe(recipe));
-        props.handleClose();
+        // console.log(values);
+        // const recipe: RecipeModel = { ...values, favorite: false, id: uuidv4() };
+        // dispatch(createRecipe(recipe));
+        // props.handleClose();
     }
 
     const formik = useFormik({

@@ -54,7 +54,7 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
             </Tag>
             <Tag size='md' colorScheme='blackAlpha'>
                 <TagLeftIcon boxSize='16px' as={MdOutlineWatchLater} />
-                <TagLabel>{recipe.totalTime}</TagLabel>
+                <TagLabel>{recipe.totalTime.toString()}</TagLabel>
             </Tag>
         </Flex>
         <Tag size='lg' colorScheme='blackAlpha'>
@@ -99,7 +99,7 @@ export function RecipeCard2(props: { recipe: RecipeModel }) {
             <CardContent>
                 <h2 style={{ textAlign: "center" }}>{recipe.title}</h2>
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                    <span style={{ fontWeight: "bold" }}>{recipe.totalTime}</span>
+                    <span style={{ fontWeight: "bold" }}>{recipe.totalTime.toString()}</span>
                     <IconButtonMd onClick={() => dispatch(toggleFavorite(recipe))}>{favoriteIcon}</IconButtonMd>
                     <IconButtonMd onClick={() => dispatch(updateRecipe(recipe))}>{settingsIcon}</IconButtonMd>
                 </Stack>

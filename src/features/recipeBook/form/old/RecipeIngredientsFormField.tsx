@@ -23,8 +23,8 @@ export default function RecipeIngredientsField(props: { formik: any, fieldName: 
 
     const addItem = (name: string, amount: string) => {
         if (name && amount) {
-            let newIngredient: IngredientModel = { name, amount };
-            formik.setFieldValue(fieldName, [...ingredients, newIngredient]);
+            // // let newIngredient: IngredientModel = { name, amount };
+            // formik.setFieldValue(fieldName, [...ingredients, newIngredient]);
         }
     }
 
@@ -102,7 +102,7 @@ const DisplayIngredients = (props: { ingredients: IngredientModel[], removeItem:
                     <ListItemAvatar>
                         <Avatar>{index + 1}</Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={`${item.amount} ${item.name} `} />
+                    {/* <ListItemText primary={`${item.amount} ${item.name} `} /> */}
                 </ListItem>
             )
             )}

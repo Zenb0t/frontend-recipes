@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { Button, Grid, } from '@mui/material';
-import { IngredientModel, RecipeModel } from '../../RecipeBookModels';
+import { IngredientItem, IngredientModel, RecipeModel } from '../../RecipeBookModels';
 import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch } from '../../../../app/hooks';
 import { createRecipe } from '../../RecipeSlice';
@@ -8,6 +8,7 @@ import { RecipeTextField } from './RecipeTextField';
 import RecipeInstructionsFormField from './RecipeInstructionsFormField';
 import RecipeIngredientsField from './RecipeIngredientsFormField';
 import ImageUpload from './ImageUploadFormField';
+import { Time } from '../../../../app/utils';
 
 export const RecipeForm = (props: { handleClose: Function }) => {
 
@@ -46,8 +47,8 @@ export const RecipeForm = (props: { handleClose: Function }) => {
         initialValues: {
             title: '',
             description: '',
-            totalTime: '',
-            ingredients: [] as IngredientModel[],
+            totalTime: new Time(0, 0),
+            ingredients: [] as IngredientItem[],
             instructions: [] as string[],
             imageUrl: '',
             favorite: false,

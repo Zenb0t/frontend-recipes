@@ -20,7 +20,7 @@ export default function RecipeDetail() {
     const RecipeTitle = () => <Typography align='center' fontWeight={"bolder"} variant="h3" sx={{ p: 3 }}>{recipe?.title}</Typography>;
     const RecipeDescription = () => <Typography variant="body1">{recipe?.description}</Typography>;
     const RecipeImage = () => <ImagePreview image={recipe?.imageUrl} minWidth={300} minHeight={400} />;
-    const RecipeTime = () => (<Typography variant="body1" sx={{ display: "inline" }}>{recipe?.totalTime}</Typography>);
+    const RecipeTime = () => (<Typography variant="body1" sx={{ display: "inline" }}>{recipe?.totalTime.toString()}</Typography>);
 
     const RecipeInstructions = () =>
         <Box>
@@ -40,9 +40,9 @@ export default function RecipeDetail() {
             {recipe?.ingredients.map((ingredient, index) => {
                 return (
                     <Stack key={uuidv4()} direction={"row"} spacing={2} justifyContent={"flex-start"} alignItems={"center"} sx={{ p: 1 }}>
-                        <Avatar>{ingredient.name.charAt(0).toUpperCase()}</Avatar>
-                        <Typography variant="body1">{ingredient.amount}</Typography>
-                        <Typography variant="body1">{ingredient.name}</Typography>
+                        {/* <Avatar>{ingredient.name.charAt(0).toUpperCase()}</Avatar>
+                        <Typography variant="body1">{ingredient.unit}</Typography>
+                        <Typography variant="body1">{ingredient.name}</Typography> */}
                     </Stack>
                 )
             })}
@@ -84,3 +84,4 @@ export default function RecipeDetail() {
         </Grid>
     );
 }
+

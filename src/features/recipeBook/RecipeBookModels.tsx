@@ -1,12 +1,12 @@
-
+import { Time } from "../../app/utils";
 
 export interface RecipeModel {
 
 
     title: string;
     description: string;
-    totalTime: string;
-    ingredients: IngredientModel[];
+    totalTime: Time;
+    ingredients: IngredientItem[];
     instructions: string[];
     imageUrl: string;
     favorite: boolean;
@@ -16,5 +16,27 @@ export interface RecipeModel {
 
 export interface IngredientModel {
     name: string;
-    amount: string;
-}
+    unit: number;
+    measuringUnit: string;
+    cost: number;
+    unitCost: number;
+  }
+
+export class IngredientItem {
+    ingredient: IngredientModel;
+    quantity: number;
+    cost: number;
+    constructor(ingredient: IngredientModel, quantity: number) {
+      this.ingredient = ingredient;
+      this.quantity = quantity;
+      this.cost = this.calculateCost();
+    }
+    calculateCost(): number {
+      let cost = this.ingredient.unitCost * this.quantity;
+      return cost;
+    }
+
+    toString(): string {
+      return `${this.quantity} ${this.ingredient.measuringUnit} ${this.ingredient.name}`;
+    } 
+  }

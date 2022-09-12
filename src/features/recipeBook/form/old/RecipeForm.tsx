@@ -47,7 +47,7 @@ export const RecipeForm = (props: { handleClose: Function }) => {
         initialValues: {
             title: '',
             description: '',
-            totalTime: new Time(0, 0),
+            totalTime: { hours: 0, minutes: 0 },
             ingredients: [] as IngredientItem[],
             instructions: [] as string[],
             imageUrl: '',

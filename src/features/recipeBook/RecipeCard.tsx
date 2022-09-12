@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
 import { RecipeModel } from './RecipeBookModels';
 import { toggleFavorite, updateRecipe } from './RecipeSlice';
+import { timeToStringShort } from '../../app/utils';
 
 export function RecipeCard(props: { recipe: RecipeModel }) {
 
@@ -26,7 +27,7 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
 
     let recipe = props.recipe;
 
-    console.log(recipe);
+    console.log(timeToStringShort(recipe.totalTime));
 
     const favIcon = (recipe.favorite) ? <MdFavorite color='red' /> : < MdOutlineFavoriteBorder color='black' />;
 
@@ -35,8 +36,7 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
         maxW="200px"
         shadow="md"
         bg="whiteAlpha.900"
-        pl="4"
-        py="4"
+        p="4"
         borderWidth="1px"
         borderRadius="lg"
         _hover={{
@@ -49,12 +49,11 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
         </Link>
         <Flex py='4' alignItems='center' justifyItems="center" gap='2'>
             <Tag size='md' colorScheme='blackAlpha'>
-                <TagLeftIcon boxSize='16px' as={MdAttachMoney} />
-                <TagLabel >{recipe.cost}</TagLabel>
+                <TagLabel >{`$ ${recipe.cost.toFixed(2)}`}</TagLabel>
             </Tag>
             <Tag size='md' colorScheme='blackAlpha'>
-                <TagLeftIcon boxSize='16px' as={MdOutlineWatchLater} />
-                <TagLabel>{recipe.totalTime.toString()}</TagLabel>
+                <TagLeftIcon boxSize='12px' as={MdOutlineWatchLater} />
+                <TagLabel>{`${timeToStringShort(recipe.totalTime)}`}</TagLabel>
             </Tag>
         </Flex>
         <Tag size='lg' colorScheme='blackAlpha'>

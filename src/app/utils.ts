@@ -8,18 +8,16 @@ export function capitalizeFirstLetter(str: string) {
 }
 
 
-//Wrapper
-export class Time {
+//Wrapper around a Time object
+export interface Time {
   hours: number;
   minutes: number;
-
-  constructor(hours = 0, minutes = 0) {
-    this.hours = hours;
-    this.minutes = minutes;
-  }
-
-  toString() {
-    return `${this.hours}h ${this.minutes} min`;
-  }
 }
+
+
+
+  //**Returns in Time in the format h mm */
+  export function timeToStringShort(time: Time): string {
+    return `${time.hours} h ${time.minutes} min`;
+  }
 

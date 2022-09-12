@@ -4,7 +4,6 @@ import bananaPancake from '../img/chad-montano-eeqbbemH9-c-unsplash.jpg';
 import bluberryPancake from '../img/calum-lewis-8Nc_oQsc2qQ-unsplash.jpg';
 import iceCream from '../img/ian-dooley-TLD6iCOlyb0-unsplash.jpg';
 import soup from '../img/cala-w6ftFbPCs9I-unsplash.jpg';
-import { Time } from "../app/utils";
 
 const chickenSoupIngredients: IngredientItem[] = [
     createIngredientItem(createIngredient("mock 1", 35), 100),
@@ -30,7 +29,7 @@ export const chickenSoup: RecipeModel = {
     Instead of long-simmered stock, we start with store-bought chicken broth and water but enrich 
     them with stock vegetables and the carcass, bones and meat of a leftover roast chicken. `,
     ingredients: chickenSoupIngredients,
-    totalTime: new Time(1, 30),
+    totalTime: { hours: 1, minutes: 30 },
     instructions: [`Put the bones and carcass from a leftover chicken (they can be in pieces) in a 
     large pot. Cover with the broth and 4 cups water. Bring to a boil over medium-high heat, reduce 
     to a simmer and cook for 20 minutes. Skim any foam or fat from the broth with a ladle as necessary. `,
@@ -54,7 +53,7 @@ export default function genRecipe(ingredientQuantity: number): RecipeModel {
         title: 'Recipe Title',
         description: description,
         ingredients: genIngredients(ingredientQuantity),
-        totalTime: new Time(1, 30),
+        totalTime: {hours: 1, minutes: 30},
         instructions: ['First Step', 'Second Step', 'Third Step'],
         imageUrl: randomImage(),
         favorite: true,

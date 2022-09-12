@@ -9,7 +9,6 @@ import { FavoriteButton } from "../components/favorite-button";
 
 export function RecipePage() {
     let { recipeId } = useParams();
-    console.log(`recipeId: ${recipeId}`);
 
     const recipe = useAppSelector((state) => selectRecipeById(state, recipeId!));
 

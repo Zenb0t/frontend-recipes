@@ -26,9 +26,6 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
     };
 
     let recipe = props.recipe;
-
-    console.log(timeToStringShort(recipe.totalTime));
-
     const favIcon = (recipe.favorite) ? <MdFavorite color='red' /> : < MdOutlineFavoriteBorder color='black' />;
 
     return (<Box

@@ -5,7 +5,7 @@ import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
-import AppRouter from './AppRouter';
+import AppRouter from './app/app-router';
 // import { ThemeProvider } from '@mui/material';
 import { chakraTheme } from './app/theme';
 import { ChakraProvider } from '@chakra-ui/react';

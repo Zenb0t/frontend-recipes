@@ -1,13 +1,12 @@
 import { useFormik } from 'formik';
 import { Button, Grid, } from '@mui/material';
-import { IngredientItem, IngredientModel, RecipeModel } from '../../RecipeBookModels';
+import { IngredientItem, IngredientModel, RecipeModel } from '../../models';
 import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch } from '../../../../app/hooks';
-import { createRecipe } from '../../RecipeSlice';
+import { createRecipe } from '../../recipe-slice';
 import { RecipeTextField } from './RecipeTextField';
 import RecipeInstructionsFormField from './RecipeInstructionsFormField';
 import RecipeIngredientsField from './RecipeIngredientsFormField';
-import ImageUpload from './ImageUploadFormField';
 import { Time } from '../../../../app/utils';
 
 export const RecipeForm = (props: { handleClose: Function }) => {
@@ -67,9 +66,6 @@ export const RecipeForm = (props: { handleClose: Function }) => {
         <form className='recipe-form' onSubmit={formik.handleSubmit}>
             <h1>Add Recipe</h1>
             <Grid container spacing={2} justifyContent={'center'}>
-                <Grid item xs={12} md={3}>
-                    <ImageUpload formik={formik} fieldName={"imageUrl"} />
-                </Grid>
                 <Grid item xs={12} md={9} >
                     <RecipeTextField formik={formik} fieldName={"title"} />
                 </Grid>

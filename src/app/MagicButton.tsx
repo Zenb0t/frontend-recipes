@@ -1,7 +1,7 @@
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { useAppDispatch } from "./hooks";
-import genRecipe, { genChickenSoupRecipe } from "../services/FakeData"
-import { createRecipe, deleteAllRecipes, fetchRecipes } from '../features/recipeBook/RecipeSlice';
+import genRecipe, { genChickenSoupRecipe } from "../services/fake-data"
+import { createRecipe, deleteAllRecipes, fetchRecipes } from '../features/recipeBook/recipe-slice';
 
 export const MagicButton = () => {
 

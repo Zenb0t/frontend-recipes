@@ -1,4 +1,4 @@
-import { IngredientItem, IngredientModel, RecipeModel } from "../features/recipeBook/RecipeBookModels";
+import { IngredientItem, IngredientModel, RecipeModel } from "../features/recipeBook/models";
 import { v4 as uuidv4 } from 'uuid';
 import bananaPancake from '../img/chad-montano-eeqbbemH9-c-unsplash.jpg';
 import bluberryPancake from '../img/calum-lewis-8Nc_oQsc2qQ-unsplash.jpg';
@@ -17,6 +17,14 @@ function randomImage(): string {
     const randomIndex = Math.floor(Math.random() * images.length);
     return images[randomIndex];
 }
+
+export const demoList = [
+    ingredientBuilder("Tomato", 25, "lbs", 45.0),
+    ingredientBuilder("Onion", 25, "lbs", 45.0),
+    ingredientBuilder("Chicken Breast", 40, "lbs", 100.4),
+    ingredientBuilder("Stock", 5000, "ml", 5.0),
+    ingredientBuilder("Spaguetti", 400, "g", 3.0)
+  ];
 
 const description = `Bacon ipsum dolor amet rump burgdoggen bacon filet mignon, spare ribs ribeye ham meatball.
  Alcatra capicola landjaeger pork chop, filet mignon tenderloin chislic meatloaf spare ribs flank meatball. Corned beef chislic drumstick capicola sausage.`;
@@ -86,7 +94,7 @@ export function ingredientBuilder(
 ): IngredientModel {
     let ingredient: IngredientModel;
     const unitCost = cost / unit;
-    ingredient = { name, unit, measuringUnit, cost, unitCost };
+    ingredient = { name, unit, measuringUnit, cost, unitCost, id: uuidv4() };
     return ingredient;
 }
 

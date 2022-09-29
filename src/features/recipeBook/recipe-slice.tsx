@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { RecipeModel } from './RecipeBookModels';
-import recipesAPI from '../../services/RecipesAPI';
+import { RecipeModel } from './models';
+import recipesAPI from '../../services/recipes-api';
 import clone from 'just-clone';
 
 

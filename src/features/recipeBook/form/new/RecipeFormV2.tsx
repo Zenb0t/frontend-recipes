@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import { useAppDispatch } from '../../../../app/hooks';
-import { IngredientModel, RecipeModel } from '../../RecipeBookModels';
-import { createRecipe } from '../../RecipeSlice';
+import { IngredientModel, RecipeModel } from '../../models';
+import { createRecipe } from '../../recipe-slice';
 import { v4 as uuidv4 } from 'uuid';
 import { yup } from '../../../../app/utils';
 import { TextField } from 'formik-mui';

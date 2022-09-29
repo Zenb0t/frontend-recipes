@@ -2,7 +2,7 @@ import { Avatar, Box, Button,IconButton, List, ListItem, ListItemAvatar, ListIte
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IngredientModel } from "../../RecipeBookModels";
+import { IngredientModel } from "../../models";
 
 
 

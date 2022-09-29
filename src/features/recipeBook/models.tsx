@@ -20,6 +20,7 @@ export interface IngredientModel {
     measuringUnit: string;
     cost: number;
     unitCost: number;
+    id: string;
   }
 
 export class IngredientItem {

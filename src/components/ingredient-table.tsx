@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DataTable } from "./datatable";
-import { IngredientItem } from "../features/recipeBook/RecipeBookModels";
+import { IngredientItem } from "../features/recipeBook/models";
 
 interface IngredientTableProps {
   ingredients: IngredientItem[];

@@ -3,7 +3,7 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 import { IngredientTable } from "../components/ingredient-table";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
-import { selectRecipeById } from "../features/recipeBook/RecipeSlice";
+import { selectRecipeById } from "../features/recipeBook/recipe-slice";
 import { FavoriteButton } from "../components/favorite-button";
 
 

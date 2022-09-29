@@ -12,8 +12,8 @@ import { MdAttachMoney, MdFavorite, MdOutlineFavoriteBorder, MdOutlineWatchLater
 //RecipeCard component
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
-import { RecipeModel } from './RecipeBookModels';
-import { toggleFavorite, updateRecipe } from './RecipeSlice';
+import { RecipeModel } from './models';
+import { toggleFavorite, updateRecipe } from './recipe-slice';
 import { timeToStringShort } from '../../app/utils';
 
 export function RecipeCard(props: { recipe: RecipeModel }) {

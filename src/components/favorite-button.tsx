@@ -1,8 +1,8 @@
 import { IconButton } from '@chakra-ui/react';
 import { MdFavorite, MdOutlineFavoriteBorder, } from 'react-icons/md';
 import { useAppDispatch } from '../app/hooks';
-import { RecipeModel } from '../features/recipeBook/RecipeBookModels';
-import { toggleFavorite } from '../features/recipeBook/RecipeSlice';
+import { RecipeModel } from '../features/recipeBook/models';
+import { toggleFavorite } from '../features/recipeBook/recipe-slice';
 
 export const FavoriteButton = (props: { recipe: RecipeModel }) => {
     const dispatch = useAppDispatch();

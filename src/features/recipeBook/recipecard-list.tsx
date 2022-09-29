@@ -1,5 +1,5 @@
-import { RecipeCard } from "./RecipeCard";
-import { RecipeModel } from "./RecipeBookModels";
+import { RecipeCard } from "./recipe-card";
+import { RecipeModel } from "./models";
 import { Text, SimpleGrid, Box } from "@chakra-ui/react";
 
 

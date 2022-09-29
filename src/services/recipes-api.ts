@@ -1,5 +1,5 @@
 import axios from "axios";
-import { RecipeModel } from "../features/recipeBook/RecipeBookModels";
+import { RecipeModel } from "../features/recipeBook/models";
 
 function recipesAPI() {
 

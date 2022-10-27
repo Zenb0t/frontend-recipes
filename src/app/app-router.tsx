@@ -4,11 +4,12 @@ import { useAppDispatch, useAppSelector } from "./hooks";
 import { selectRecipes, selectFavoriteRecipes, fetchRecipes } from "../features/recipeBook/recipe-slice";
 import { RecipeForm } from "../features/recipeBook/form/old/RecipeForm";
 import { RecipeForm2 as FormPlaceholder} from "../features/recipeBook/form/new/RecipeFormV2";
+import { AddRecipePage } from "../pages/add-recipe-form";
 import { Box } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Text } from "@chakra-ui/react";
 import App from "../App";
-import { RecipePage } from "../pages/recipe-details";
+import { RecipeDetailsPage } from "../pages/recipe-details";
 import { SearchIngredient } from "../components/search-ingredient";
 import { demoList } from "../services/fake-data";
 
@@ -39,12 +40,13 @@ export default function AppRouter() {
     const AllRecipes = () => <RecipeCardList recipes={recipes} />;
     const Favorites = () => <RecipeCardList recipes={useAppSelector(selectFavoriteRecipes)} />;
     const NoMatch = () => <Text p={6} mb={4} align="center" variant="h3">No match, try a different URL</Text>;
-    const AddRecipe = () => <RecipeForm handleClose={() => navigate(`/allrecipes`, { replace: true })} />;
+    const AddRecipe = () => <AddRecipePage />;
     const Login = () => {
         return <Text p={6} mb={4} align="center" variant="h3">Login</Text>;
     };
     const Ingredients = () => <SearchIngredient list={demoList}/>;
     const Settings = () => <FormPlaceholder handleClose={() => navigate(`/allrecipes`, { replace: true })} />;
+
 
     //Fetch recipes on mount
     useEffect(() => {
@@ -60,10 +62,10 @@ export default function AppRouter() {
         <Routes>
             <Route path="/" element={<App />} >
                 <Route index element={<Welcome />} />
-                <Route path="add-recipe" element={<AddRecipe />} />
+                <Route path="/addrecipe" element={<AddRecipe />} />
                 <Route path="/allrecipes" element={<AllRecipes />} />
                 <Route path="/favorites" element={<Favorites />} />
-                <Route path="/recipes/:recipeId" element={<RecipePage />} />
+                <Route path="/recipes/:recipeId" element={<RecipeDetailsPage />} />
                 <Route path="/ingredients" element={<Ingredients />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="*" element={<NoMatch />} />

@@ -1,9 +1,12 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
-import { createTheme } from "@mui/material/styles";
 
-//TODO: Implement new theme
-export const chakraTheme = extendTheme({});
+const config: ThemeConfig = {
+    initialColorMode: 'light',
+    useSystemColorMode: false,
+  }
+  
+export const chakraTheme = extendTheme({config});
 
 // //TODO: Remove Old theme
 // export const theme = {

@@ -15,7 +15,7 @@ export interface RecipeState {
 }
 
 const initialState: RecipeState = {
-    recipeList: [] as RecipeModel[], // TODO: will be initialized from async external API call.
+    recipeList: [] as RecipeModel[],
     status: 'idle',
     error: null,
 };

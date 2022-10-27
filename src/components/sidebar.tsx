@@ -24,11 +24,10 @@ import {
 import {
     MdHome,
     MdMenuBook,
-    MdSettings,
     MdMenu,
-    MdNotificationsNone,
     MdArrowDropDown,
-    MdOutlineStarBorder
+    MdOutlineStarBorder,
+    MdNoteAdd
 } from "react-icons/md";
 import { CgSmartHomeRefrigerator } from "react-icons/cg";
 import { IconType } from "react-icons";
@@ -36,6 +35,7 @@ import { ReactNode } from "react";
 import {PanelaLogo} from "./logo";
 import {Link as RouterLink} from "react-router-dom";
 import {MagicButton} from "../app/MagicButton";
+import { ColorModeSwitcher } from "./colour-switcher";
 
 interface LinkItemProps {
     name: string;
@@ -45,10 +45,11 @@ interface LinkItemProps {
 
 const LinkItems: Array<LinkItemProps> = [
     { name: "Home", icon: MdHome, href: "/" },
+    { name: "Add Recipe", icon: MdNoteAdd , href: "/addrecipe" },
     { name: "Recipes", icon: MdMenuBook , href: "/allrecipes" },
-    { name: "Ingredients", icon: CgSmartHomeRefrigerator, href: "/ingredients" },
+    // { name: "Ingredients", icon: CgSmartHomeRefrigerator, href: "/ingredients" }, TODO: Finish this component
     { name: "Favorites", icon: MdOutlineStarBorder , href: "/favorites" },
-    { name: "Settings", icon: MdSettings , href: "/settings" },
+    // { name: "Settings", icon: MdSettings , href: "/settings" }, TODO: Finish this component
 ];
 
 interface NavItemProps extends FlexProps {
@@ -149,12 +150,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             </Box>
 
             <HStack spacing={{ base: "0", md: "6" }}>
-                <IconButton
-                    size="lg"
-                    variant="ghost"
-                    aria-label="open menu"
-                    icon={<MdNotificationsNone />}
-                />
+                <ColorModeSwitcher/>
                 <Flex alignItems={"center"}>
                     <Menu>
                         <MenuButton

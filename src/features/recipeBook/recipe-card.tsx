@@ -2,7 +2,6 @@
 import { Box, Heading, IconButton, Link, Tag, TagLabel, TagLeftIcon, useColorModeValue, Image, Center, Wrap, WrapItem } from '@chakra-ui/react';
 import { MdFavorite, MdOutlineFavoriteBorder, MdOutlineWatchLater } from 'react-icons/md';
 
-
 //RecipeCard component
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';

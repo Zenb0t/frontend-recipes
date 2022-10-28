@@ -1,9 +1,9 @@
-import { RecipeCard } from "./recipe-card";
-import { RecipeModel } from "./models";
+import { RecipeCard } from "../components/recipe-card";
+import { RecipeModel } from "../features/recipeBook/models";
 import { Text, SimpleGrid, Box } from "@chakra-ui/react";
 
 
-export default function RecipeCardList(props: { recipes: RecipeModel[] }) {
+export default function RecipeCardListPage(props: { recipes: RecipeModel[] }) {
 
     const recipes = props.recipes;
 

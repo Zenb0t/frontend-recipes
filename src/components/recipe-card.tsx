@@ -4,10 +4,10 @@ import { MdFavorite, MdOutlineFavoriteBorder, MdOutlineWatchLater } from 'react-
 
 //RecipeCard component
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../app/hooks';
-import { RecipeModel } from './models';
-import { toggleFavorite } from './recipe-slice';
-import { timeToStringShort } from '../../app/utils';
+import { useAppDispatch } from '../app/hooks';
+import { RecipeModel } from '../features/recipeBook/models';
+import { toggleFavorite } from '../features/recipeBook/recipe-slice';
+import { timeToStringShort } from '../app/utils';
 
 export function RecipeCard(props: { recipe: RecipeModel }) {
 

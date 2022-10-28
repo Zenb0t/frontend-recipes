@@ -1,9 +1,7 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
-import RecipeCardList from "../features/recipeBook/recipecard-list";
+import RecipeCardListPage from "../pages/recipecard-list";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { selectRecipes, selectFavoriteRecipes, fetchRecipes } from "../features/recipeBook/recipe-slice";
-import { RecipeForm } from "../features/recipeBook/form/old/RecipeForm";
-import { RecipeForm2 as FormPlaceholder} from "../features/recipeBook/form/new/RecipeFormV2";
 import { AddRecipePage } from "../pages/add-recipe-form";
 import { Box } from "@chakra-ui/react";
 import { useEffect } from "react";
@@ -37,15 +35,15 @@ export default function AppRouter() {
             </Text>
         </Box>)
     };
-    const AllRecipes = () => <RecipeCardList recipes={recipes} />;
-    const Favorites = () => <RecipeCardList recipes={useAppSelector(selectFavoriteRecipes)} />;
+    const AllRecipes = () => <RecipeCardListPage recipes={recipes} />;
+    const Favorites = () => <RecipeCardListPage recipes={useAppSelector(selectFavoriteRecipes)} />;
     const NoMatch = () => <Text p={6} mb={4} align="center" variant="h3">No match, try a different URL</Text>;
     const AddRecipe = () => <AddRecipePage />;
     const Login = () => {
         return <Text p={6} mb={4} align="center" variant="h3">Login</Text>;
     };
     const Ingredients = () => <SearchIngredient list={demoList}/>;
-    const Settings = () => <FormPlaceholder handleClose={() => navigate(`/allrecipes`, { replace: true })} />;
+    // const Settings = () => <FormPlaceholder handleClose={() => navigate(`/allrecipes`, { replace: true })} />;
 
 
     //Fetch recipes on mount
@@ -67,7 +65,7 @@ export default function AppRouter() {
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/recipes/:recipeId" element={<RecipeDetailsPage />} />
                 <Route path="/ingredients" element={<Ingredients />} />
-                <Route path="/settings" element={<Settings />} />
+                {/* <Route path="/settings" element={<Settings />} /> */}
                 <Route path="*" element={<NoMatch />} />
             </Route>
             <Route path="/login" element={<Login />} />

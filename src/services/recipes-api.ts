@@ -1,10 +1,11 @@
 import axios from "axios";
+import sanitizedConfig from "../config";
 import { RecipeModel } from "../features/recipeBook/models";
 
 function recipesAPI() {
 
     const http = axios.create({
-        baseURL: "http://localhost:8000/",
+        baseURL: sanitizedConfig.API_URL,
         timeout: 1000,
         headers: {
             "Content-Type": "application/json"

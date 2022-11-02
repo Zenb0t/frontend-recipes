@@ -1,4 +1,4 @@
-import { Formik, Field } from "formik";
+import { Formik, Field, FieldProps, Form, } from "formik";
 import {
     Box,
     Button,
@@ -8,23 +8,36 @@ import {
     FormErrorMessage,
     Input,
     VStack,
-    NumberDecrementStepper,
-    NumberIncrementStepper,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper
+    Textarea,
+    useColorModeValue,
+    Avatar,
+    Center,
+    CloseButton,
+    Divider,
+    Icon,
+    InputGroup,
+    InputLeftElement,
+    Text,
 } from "@chakra-ui/react";
 import { yup } from '../app/utils';
-import { IngredientModel } from "../features/recipeBook/models";
+import { IngredientItem, IngredientModel } from "../features/recipeBook/models";
+import FileUpload from "../components/fileUpload";
+import { useState, ChangeEvent, useEffect } from "react";
+import { MdSearch } from "react-icons/md";
+import { demoList } from "../services/fake-data";
+
+
+//TODO: Review this form to use HOC
 
 export function AddRecipePage() {
 
     interface Values {
         title: string;
         description: string;
-        totalTime: string;
-        ingredients: IngredientModel[];
-        instructions: string[];
+        hours: number;
+        minutes: number;
+        ingredients: { ingredientId: string, quantity: number }[];
+        instructions: string;
         imageUrl: string;
         favorite: boolean;
         id: string;
@@ -34,9 +47,10 @@ export function AddRecipePage() {
     const initialValues: Values = {
         title: '',
         description: '',
-        totalTime: '',
-        ingredients: [] as IngredientModel[],
-        instructions: [] as string[],
+        hours: 0,
+        minutes: 0,
+        ingredients: [],
+        instructions: '',
         imageUrl: '',
         favorite: false,
         id: '',
@@ -46,31 +60,67 @@ export function AddRecipePage() {
     const recipeValidation = yup.object({
         title: yup.string().required('Required'),
         description: yup.string().required('Required'),
-        totalTime: yup.string().required('Required'),
-        ingredients: yup.array().of(yup.object({
-            name: yup.string().required('Required'),
-            amount: yup.string().required('Required'),
-            unit: yup.string().required('Required'),
-        })).required('At least one ingredient is required'),
-        instructions: yup.array().of(yup.string().required('Required')),
-        imageUrl: yup.string().required('Required').url('Invalid URL'),
-        cost: yup.number().required('Required').min(0, 'Must be greater than 0'),
+        hours: yup.number().required('Required').max(24, 'Must be less than 24').min(-1, 'Must be positive'),
+        minutes: yup.number().required('Required'),
+        ingredients: yup.array().of(yup.object().shape({
+            ingredientId: yup.string().required('Required'),
+            quantity: yup.number().moreThan(0, 'Must be greater than 0').required('Required'),
+        })),
+        instructions: yup.string().required('Must provide instructions'),
+        imageUrl: yup.string().required('Required'),
+        // cost: yup.number().required('Required').min(0, 'Must be greater than 0'),
     });
 
+    function validateIngredients(ingredients: { ingredientId: string, quantity: number }[]) {
+        console.log("Validating ingredients");
+        if (ingredients.length === 0) {
+            console.log("No ingredients");
+            return 'Must provide at least one ingredient';
+        } else if (ingredients.some(ingredient => ingredient.ingredientId === '')) {
+            console.log("Empty ingredient");
+            return 'Must provide an ingredient';
+        } else if (ingredients.some(ingredient => ingredient.quantity <= 0)) {
+            console.log("Invalid quantity");
+            return 'Must provide a quantity greater than 0';
+        } else {
+            console.log("Ingredients are valid");
+        }
+    }
+
+    /***
+     * Helper function to build the ingredient list from the form values
+     */
+    function IngredientListBuilder(ingredients: { ingredientId: string, quantity: number }[]) {
+        let ingredientList = ingredients.map((item) => {
+            let ingredient = demoList.find(ingredient => ingredient.id === item.ingredientId);
+            if (ingredient) {
+                let ingredientItem = new IngredientItem(ingredient, item.quantity);
+                return ingredientItem;
+            } else {
+                throw new Error("Ingredient not found");
+            }
+        }
+        );
+        return ingredientList;
+    }
+
     return (
-        <Flex bg="gray.100" align="center" justify="center">
-            <Box bg="white" p={6} rounded="md" w="md">
+        <Flex align="center" justify="center">
+            <Box bg={useColorModeValue("white", "gray.800")} p={6} rounded="md" minW={{ base: 200, sm: 300, md: 440, lg: 700 }} mx={"auto"}>
                 <Formik
                     initialValues={initialValues}
                     validationSchema={recipeValidation}
                     onSubmit={(values) => {
+                        let ingredientList = IngredientListBuilder(values.ingredients);
+                        values.cost = ingredientList.reduce((sum, ing) => sum + ing.cost, 0);
+                        console.log("Submitted");
                         alert(JSON.stringify(values, null, 2));
                     }}
                 >
                     {({ handleSubmit, errors, touched }) => (
-                        <form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit}>
                             <VStack spacing={4} align="flex-start">
-                                <FormControl>
+                                <FormControl isInvalid={!!errors.title && touched.title}>
                                     <FormLabel htmlFor="title">Recipe Title</FormLabel>
                                     <Field
                                         as={Input}
@@ -79,79 +129,258 @@ export function AddRecipePage() {
                                         type="title"
                                         variant="filled"
                                     />
+                                    <FormErrorMessage>{errors.title}</FormErrorMessage>
+                                </FormControl>
+                                <FormControl isInvalid={!!errors.imageUrl && touched.imageUrl}>
+                                    <FormLabel htmlFor="imageUrl">Image URL</FormLabel>
+                                    <Field
+                                        component={FileUpload}
+                                        id="imageUrl"
+                                        name="imageUrl"
+                                    />
+                                    <FormErrorMessage>{errors.imageUrl}</FormErrorMessage>
+                                </FormControl>
+                                <FormControl isInvalid={!!errors.description && touched.description}>
+                                    <FormLabel htmlFor="Description">Description</FormLabel>
+                                    <Field
+                                        as={Textarea}
+                                        id="description"
+                                        name="description"
+                                        type="description"
+                                        variant="filled"
+                                    />
+                                    <FormErrorMessage>{errors.description}</FormErrorMessage>
                                 </FormControl>
                                 <Flex gap={4}>
-                                    <FormControl>
+                                    <FormControl isInvalid={!!errors.hours && touched.hours}>
                                         <FormLabel htmlFor="Hours">Hours</FormLabel>
-                                        <NumberInput variant="filled" max={50} min={0}>
-                                            <Field
-                                                as={NumberInputField}
-                                                id="hours"
-                                                name="hours"
-                                                type="hours"
-                                                inputMode="numeric"
-                                            />
-                                            <NumberInputStepper>
-                                                <NumberIncrementStepper />
-                                                <NumberDecrementStepper />
-                                            </NumberInputStepper>
-                                        </NumberInput>
+                                        <Field
+                                            as={Input}
+                                            id="hours"
+                                            name="hours"
+                                            type="hours"
+                                            variant="filled"
+
+                                        />
+                                        <FormErrorMessage>{errors.hours}</FormErrorMessage>
                                     </FormControl>
-                                    <FormControl>
-                                        <FormLabel htmlFor="Hours">Min</FormLabel>
-                                        <NumberInput variant="filled" max={59} min={0}>
-                                            <Field
-                                                as={NumberInputField}
-                                                id="minutes"
-                                                name="minutes"
-                                                type="minutes"
-                                                inputMode="numeric"
-                                            />
-                                            <NumberInputStepper>
-                                                <NumberIncrementStepper />
-                                                <NumberDecrementStepper />
-                                            </NumberInputStepper>
-                                        </NumberInput>
+                                    <FormControl isInvalid={!!errors.minutes && touched.minutes}>
+                                        <FormLabel htmlFor="Minutes">Minutes</FormLabel>
+                                        <Field
+                                            as={Input}
+                                            id="minutes"
+                                            name="minutes"
+                                            type="minutes"
+                                            variant="filled"
+                                        />
+                                        <FormErrorMessage>{errors.minutes}</FormErrorMessage>
                                     </FormControl>
                                 </Flex>
-                                {/* <FormControl>
-                                    <FormLabel htmlFor="email">Email Address</FormLabel>
+                                <FormControl isInvalid={!!errors.instructions && touched.instructions}>
+                                    <FormLabel htmlFor="instructions">Instructions</FormLabel>
                                     <Field
-                                        as={Input}
-                                        id="email"
-                                        name="email"
-                                        type="email"
+                                        as={Textarea}
+                                        id="instructions"
+                                        name="instructions"
+                                        type="instructions"
                                         variant="filled"
                                     />
+                                    <FormErrorMessage>{errors.instructions}</FormErrorMessage>
                                 </FormControl>
-                                <FormControl isInvalid={!!errors.password && touched.password}>
-                                    <FormLabel htmlFor="password">Password</FormLabel>
+                                <FormControl isInvalid={!!errors.ingredients && touched.ingredients as boolean | undefined}>
+                                    <FormLabel htmlFor="ingredients">Ingredients</FormLabel>
                                     <Field
-                                        as={Input}
-                                        id="password"
-                                        name="password"
-                                        type="password"
+                                        component={AddIngredientField}
+                                        id="ingredients"
+                                        name="ingredients"
+                                        type="ingredients"
                                         variant="filled"
-                                        validate={(value) => {
-                                            let error;
-
-                                            if (value.length < 5) {
-                                                error = "Password must contain at least 6 characters";
-                                            }
-
-                                            return error;
-                                        }}
+                                        validate={validateIngredients}
                                     />
-                                    <FormErrorMessage>{errors.password}</FormErrorMessage>
-                                </FormControl> */}
+                                    <FormErrorMessage>{errors.ingredients as string | undefined}</FormErrorMessage> {/*FIXME: Errors not showing up properly */}
+                                </FormControl>
                                 <Button type="submit" colorScheme="green" width="full">
-                                    Login
+                                    Submit
                                 </Button>
                             </VStack>
-                        </form>
+                        </Form>
                     )}
                 </Formik>
             </Box>
         </Flex>
     );
+}
+
+
+/***
+ * This component adds a list of ingredients id and quantities to the [Formik] form field. It displays all the UI elements
+ * to allow this, both a new ingredient or an existing one. It gets the ingredients from the redux store.
+ * 
+ */
+function AddIngredientField({ field, form }: FieldProps) {
+
+    type IdList = { ingredientId: string, quantity: number }[];
+
+    const list = demoList; //TODO: Replace me with the store list
+    const [ingredientList, setIngredientList] = useState<IngredientItem[]>([]);
+    const [searchValue, setSeachValue] = useState("");
+    const searchResults = searchValue === ""
+        ? []
+        : list.filter(
+            (ing) => ing.name.toLowerCase().includes(searchValue.toLowerCase()) && !ingredientList.some((item) => item.ingredient.id === ing.id));
+    const [ingredientIdList, setIngredientIdList] = useState<IdList>([]);
+
+    // Handlers
+
+    const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+        setSeachValue(event.target.value);
+    };
+
+    const handleAddToIdList = (ingredients: IngredientItem[]) => {
+        let idList = ingredients.map((item) => {
+            let value = { ingredientId: item.ingredient.id, quantity: item.quantity };
+            return value;
+        }
+        );
+        setIngredientIdList(idList);
+    };
+
+    const handleAddIngredient = (ingredient: IngredientModel, quantity: number) => {
+        if (ingredientList.some((item) => item.ingredient.id === ingredient.id)) {
+            return;
+        }
+        const newIngredient: IngredientItem = new IngredientItem(ingredient, quantity);
+        const newIngredientList = [...ingredientList, newIngredient];
+        setIngredientList(newIngredientList);
+        handleAddToIdList(newIngredientList);
+    };
+
+    const handleRemoveIngredient = (ingredient: IngredientModel) => {
+        const newIngredientList = ingredientList.filter((item) => item.ingredient.id !== ingredient.id);
+        setIngredientList(newIngredientList);
+        handleAddToIdList(newIngredientList);
+    };
+
+
+    //Disabled linting has form and field.name should not cause a change
+    useEffect(() => {
+        form.setFieldValue(field.name, ingredientIdList);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ingredientIdList]);
+
+
+    // Local UI Components
+
+    const IngredientListItem = (props: { ing: IngredientModel }) => {
+        const [quantity, setQuantity] = useState(0);
+        const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined)
+
+        const handleQuantityChange = (e: ChangeEvent<HTMLInputElement>) => {
+            const value = Number(e.target.value);
+            if (value < 0) {
+                setErrorMsg("Quantity must be greater than 0");
+                return;
+            }
+            setErrorMsg(undefined);
+            setQuantity(value);
+        };
+
+        const handleAdd = () => {
+            if (quantity > 0) {
+                setErrorMsg("");
+                handleAddIngredient(props.ing, quantity);
+            } else {
+                setErrorMsg("Quantity must be greater than 0");
+            }
+        };
+
+        return (
+            // <VStack>
+            <>
+                <Flex p={2} alignItems="center">
+                    <Avatar name={props.ing.name} src="htto://" />
+                    <Text pl={2}>{props.ing.name}</Text>
+                    {ingredientList.some((item) => item.ingredient.id === props.ing.id) ?
+                        <Flex ml='auto'>
+                            <CloseButton onClick={() => handleRemoveIngredient(props.ing)} />
+                        </Flex> :
+                        <Flex ml='auto' >
+                            <Input
+                                isInvalid={!!errorMsg}
+                                textAlign={"right"}
+                                w={20}
+                                type="number"
+                                value={quantity}
+                                onChange={handleQuantityChange}
+                                onKeyUpCapture={(e) => {
+                                    if (e.key === "Enter") {
+                                        handleAdd();
+                                    }
+
+                                }}
+                            />
+                            <Center>
+                                <Text verticalAlign={'middle'} minW={"30px"} pl={2}>{props.ing.measuringUnit}</Text>
+                            </Center>
+                            <Button
+                                ml={4}
+                                onClick={handleAdd}
+                            >
+                                Add
+                            </Button>
+                        </Flex>
+                    }
+                </Flex >
+                {errorMsg && <Text color="red.500">{errorMsg}</Text>}
+            </>
+        );
+    };
+
+    const AddedIngredientItem = (props: { item: IngredientItem; key: any }) => {
+        const item = props.item;
+        return (
+            <Flex p={2} alignItems="center">
+                <Avatar name={item.ingredient.name} src="htto://" />
+                <Text pl={2}>{item.ingredient.name}</Text>
+                <Flex ml='auto'>
+                    <Center>
+                        <Text>{item.quantity}</Text>
+                        <Text verticalAlign={'middle'} minW={"30px"} ml={2}>{item.ingredient.measuringUnit}</Text>
+                    </Center>
+                    <CloseButton ml={2} onClick={() => handleRemoveIngredient(item.ingredient)} />
+                </Flex>
+            </Flex>
+        );
+    }
+
+
+    //TODO: Review UI and style of the component
+    return (
+        <Flex pt={4} align="center" justify="center">
+            <Box bg={useColorModeValue("white", "gray.800")} rounded="md" w="md">
+                {/* Add a popover which contains the AddIngredientForm, in case of adding a new ingredient during recipe creation */}
+
+                <InputGroup size="md">
+                    <InputLeftElement pointerEvents="none" children={<Icon as={MdSearch} zIndex={1} />} />
+                    <Input
+                        type="text"
+                        placeholder="Search Ingredients"
+                        value={searchValue}
+                        onChange={handleSearch}
+                    />
+                </InputGroup>
+                {searchResults.map((ing) => (
+                    <IngredientListItem key={ing.id} ing={ing} />
+                ))}
+                <Divider py={2} />
+                <Center py={2}>
+                    <Text fontSize="xl">Added Ingredients</Text>
+                </Center>
+                {ingredientList.map((item, i) => (
+                    <AddedIngredientItem key={item.ingredient.id} item={item} />
+                ))}
+            </Box>
+        </Flex>
+    );
+
 }

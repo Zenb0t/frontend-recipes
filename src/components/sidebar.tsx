@@ -26,7 +26,7 @@ import {
     MdMenuBook,
     MdMenu,
     MdArrowDropDown,
-    MdOutlineStarBorder,
+    MdFavorite,
     MdNoteAdd
 } from "react-icons/md";
 import { CgSmartHomeRefrigerator } from "react-icons/cg";
@@ -47,8 +47,8 @@ const LinkItems: Array<LinkItemProps> = [
     { name: "Home", icon: MdHome, href: "/" },
     { name: "Add Recipe", icon: MdNoteAdd , href: "/addrecipe" },
     { name: "Recipes", icon: MdMenuBook , href: "/allrecipes" },
-    // { name: "Ingredients", icon: CgSmartHomeRefrigerator, href: "/ingredients" }, TODO: Finish this component
-    { name: "Favorites", icon: MdOutlineStarBorder , href: "/favorites" },
+    { name: "Ingredients", icon: CgSmartHomeRefrigerator, href: "/ingredients" }, //TODO: Finish this component
+    { name: "Favorites", icon: MdFavorite , href: "/favorites" },
     // { name: "Settings", icon: MdSettings , href: "/settings" }, TODO: Finish this component
 ];
 
@@ -80,7 +80,7 @@ const NavItem = ({ icon, href, children, ...rest }: NavItemProps) => {
                 {icon && (
                     <Icon
                         mr="4"
-                        fontSize="16"
+                        fontSize="24"
                         _groupHover={{
                             color: "white"
                         }}

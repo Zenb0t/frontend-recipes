@@ -10,6 +10,7 @@ import App from "../App";
 import { RecipeDetailsPage } from "../pages/recipe-details";
 import { SearchIngredient } from "../components/search-ingredient";
 import { demoList } from "../services/fake-data";
+import { IngredientPage } from "../pages/ingredient-page";
 
 /**Contains the routes for the application */
 export default function AppRouter() {
@@ -42,7 +43,7 @@ export default function AppRouter() {
     const Login = () => {
         return <Text p={6} mb={4} align="center" variant="h3">Login</Text>;
     };
-    const Ingredients = () => <SearchIngredient list={demoList}/>;
+    const Ingredients = () => <IngredientPage/>;
     // const Settings = () => <FormPlaceholder handleClose={() => navigate(`/allrecipes`, { replace: true })} />;
 
 

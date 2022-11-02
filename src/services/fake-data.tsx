@@ -88,13 +88,13 @@ export function genChickenSoupRecipe(): RecipeModel {
 
 export function ingredientBuilder(
     name: string,
-    unit: number,
+    amount: number,
     measuringUnit: string,
     cost: number
 ): IngredientModel {
     let ingredient: IngredientModel;
-    const unitCost = cost / unit;
-    ingredient = { name, unit, measuringUnit, cost, unitCost, id: uuidv4() };
+    const unitCost = cost / amount;
+    ingredient = { name, amount, measuringUnit, cost, unitCost, id: uuidv4() };
     return ingredient;
 }
 

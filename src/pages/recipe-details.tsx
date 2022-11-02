@@ -1,5 +1,5 @@
 import { Box, Flex, Heading, Text, useColorModeValue } from "@chakra-ui/react";
-import { IngredientTable } from "../components/ingredient-table";
+import { IngredientItemTable } from "../components/ingredient-table";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
 import { selectRecipeById } from "../features/recipeBook/recipe-slice";
@@ -36,7 +36,7 @@ export function RecipeDetailsPage() {
                 </Text>
                 <Text>Cost: {recipe!.cost.toFixed(2)}</Text>
                 <FavoriteButton recipe={recipe!} />
-                <IngredientTable ingredients={recipe!.ingredients} />
+                <IngredientItemTable ingredients={recipe!.ingredients} />
             </Box>
         </Box >
     );

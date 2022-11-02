@@ -18,20 +18,17 @@ export default function FileUpload({ field, form}: FieldProps) {
 
     const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
         let files = event.currentTarget.files;
-        console.group("ImageUpload");
+        
         if (files && isValidImage(files[0])) {
             setImgFile(files[0]);
             let image = URL.createObjectURL(files[0]);
-            console.log(image);
+            
             setSelectedImage(image);
-            console.info(`Image added: ${files[0].name}`);
+            
             form.setFieldValue(field.name, image);
-            console.info('Field value set');
         } else {
             setImgFile(null);
             setSelectedImage(undefined);
-            console.error(form.errors);
-            console.groupEnd();
         }
     }
 

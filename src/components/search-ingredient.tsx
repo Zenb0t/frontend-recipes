@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState } from "react";
 import {
     Avatar,
     Box,
@@ -10,104 +10,105 @@ import {
     InputLeftElement,
     Text,
     CloseButton,
-    HStack,
-    useNumberInput,
-    VStack
+    useColorModeValue,
+    Center,
+    Icon,
 } from "@chakra-ui/react";
 import { IngredientItem, IngredientModel } from "../features/recipeBook/models";
 import { MdSearch } from "react-icons/md";
 
 
 
-//TODO: List should come from the store, when fully implemented
+
+
+//TODO: Refactor this component to use the store and be simpler
 export function SearchIngredient(props: { list: IngredientModel[] }) {
     //TODO: Add to state the list of ingredients that are selected
-    const [ingredientList, setIngredientList] = useState([] as IngredientModel[]); //TODO: Change to IngredientItem[]
+    const [ingredientList, setIngredientList] = useState([] as IngredientItem[]);
     const [searchValue, setSeachValue] = useState("");
+    const searchResults = searchValue === ""
+        ? []
+        : props.list.filter(
+            (ing) => ing.name.toLowerCase().includes(searchValue.toLowerCase()) && !ingredientList.some((item) => item.ingredient.id === ing.id));
 
     const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
         setSeachValue(event.target.value);
     };
 
-    const handleAddIngredient = (ingredient: IngredientModel) => {
-        if (ingredientList.some((item) => item.id === ingredient.id)) {
+    const handleAddIngredient = (ingredient: IngredientModel, quantity: number) => {
+        if (ingredientList.some((item) => item.ingredient.id === ingredient.id)) {
             return;
         }
-        const newIngredientList = [...ingredientList, ingredient];
+        const newIngredient: IngredientItem = new IngredientItem(ingredient, quantity);
+        const newIngredientList = [...ingredientList, newIngredient];
         setIngredientList(newIngredientList);
     };
 
     const handleRemoveIngredient = (ingredient: IngredientModel) => {
-        const newIngredientList = ingredientList.filter((item) => item.id !== ingredient.id);
+        const newIngredientList = ingredientList.filter((item) => item.ingredient.id !== ingredient.id);
         setIngredientList(newIngredientList);
     };
 
-    //TODO: Add to state the quantity of the ingredient
-    function QuantityButton() {
-        const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
-            useNumberInput({
-                step: 1,
-                defaultValue: 0,
-                min: 1,
-                max: 99,
-                precision: 2,
-                onChange(valueAsString, valueAsNumber) {
-                    console.log(valueAsString, valueAsNumber);
-                },
-            })
-
-        const inc = getIncrementButtonProps()
-        const dec = getDecrementButtonProps()
-        const input = getInputProps()
-
-        return (
-            <VStack maxW={100}>
-                < Input {...input} />
-                < HStack >
-                    <Button {...dec}>-</Button>
-                    <Button {...inc}>+</Button>
-                </HStack >
-            </VStack >
-        )
-    }
-
-    const IngredientItem = (props: { ing: IngredientModel; key: any }) => {
+    const IngredientListItem = (props: { ing: IngredientModel; key: any }) => {
+        const [quantity, setQuantity] = useState(0);
         return (
             <Flex key={props.key} p={2} alignItems="center">
                 <Avatar name={props.ing.name} src="htto://" />
                 <Text pl={2}>{props.ing.name}</Text>
-                {/**Show either the add or the close button */}
-                {ingredientList.some((item) => item.id === props.ing.id) ? (
+                {ingredientList.some((item) => item.ingredient.id === props.ing.id) ?
                     <Flex ml='auto'>
-                        <QuantityButton />
                         <CloseButton onClick={() => handleRemoveIngredient(props.ing)} />
+                    </Flex> :
+                    <Flex ml='auto' >
+                        <Input
+                            textAlign={"right"}
+                            w={20}
+                            type="number"
+                            value={quantity}
+                            onChange={(e) => setQuantity(Number(e.target.value))}
+                            onKeyUpCapture={(e) => {
+                                e.key === "Enter" && handleAddIngredient(props.ing, quantity);
+                            }}
+                        />
+                        <Center>
+                            <Text verticalAlign={'middle'} minW={"30px"} pl={2}>{props.ing.measuringUnit}</Text>
+                        </Center>
+                        <Button
+                            ml={4}
+                            onClick={() => handleAddIngredient(props.ing, quantity)}
+                        >
+                            Add
+                        </Button>
                     </Flex>
-                ) : (
-                    <Button ml='auto' onClick={() => handleAddIngredient(props.ing)}>Add</Button>
-                )}
+                }
             </Flex>
         );
     };
 
-    const AddedIngredientItem = (props: { ing: IngredientModel; key: any }) => {
+    const AddedIngredientItem = (props: { item: IngredientItem; key: any }) => {
+        const item = props.item;
         return (
             <Flex key={props.key} p={2} alignItems="center">
-                <Avatar name={props.ing.name} src="htto://" />
-                <Text pl={2}>{props.ing.name}</Text>
+                <Avatar name={item.ingredient.name} src="htto://" />
+                <Text pl={2}>{item.ingredient.name}</Text>
                 <Flex ml='auto'>
-                    <CloseButton onClick={() => handleRemoveIngredient(props.ing)} />
+                    <Center>
+                        <Text>{item.quantity}</Text>
+                        <Text verticalAlign={'middle'} minW={"30px"} ml={2}>{item.ingredient.measuringUnit}</Text>
+                    </Center>
+                    <CloseButton ml={2} onClick={() => handleRemoveIngredient(item.ingredient)} />
                 </Flex>
             </Flex>
         );
     }
 
-    const filteredList = props.list.filter((ing) => ing.name.toLowerCase().includes(searchValue.toLowerCase()));
 
+    //TODO: Review UI and style of the component
     return (
-        <Flex pt={4} bg="gray.100" align="center" justify="center">
-            <Box bg="white" p={6} rounded="md" w="md">
+        <Flex pt={4} align="center" justify="center">
+            <Box bg={useColorModeValue("white", "gray.800")} p={6} rounded="md" w="md">
                 <InputGroup size="md">
-                    <InputLeftElement pointerEvents="none" children={<MdSearch />} />
+                    <InputLeftElement pointerEvents="none" children={<Icon as={MdSearch} zIndex={1} />} />
                     <Input
                         type="text"
                         placeholder="Search Ingredients"
@@ -115,13 +116,15 @@ export function SearchIngredient(props: { list: IngredientModel[] }) {
                         onChange={handleSearch}
                     />
                 </InputGroup>
-                <Divider py={2} />
-                {filteredList.map((ing, i) => (
-                    <IngredientItem key={i} ing={ing} />
+                {searchResults.map((ing, i) => (
+                    <IngredientListItem key={i} ing={ing} />
                 ))}
                 <Divider py={2} />
-                {ingredientList.map((ing, i) => (
-                    <AddedIngredientItem key={i} ing={ing} />
+                <Center py={2}>
+                    <Text fontSize="xl">Added Ingredients</Text>
+                </Center>
+                {ingredientList.map((item, i) => (
+                    <AddedIngredientItem key={i} item={item} />
                 ))}
             </Box>
         </Flex>

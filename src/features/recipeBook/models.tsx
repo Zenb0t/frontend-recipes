@@ -2,7 +2,6 @@ import { Time } from "../../app/utils";
 
 export interface RecipeModel {
 
-
     title: string;
     description: string;
     totalTime: Time;
@@ -16,7 +15,7 @@ export interface RecipeModel {
 
 export interface IngredientModel {
     name: string;
-    unit: number;
+    amount: number;
     measuringUnit: string;
     cost: number;
     unitCost: number;

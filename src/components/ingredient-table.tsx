@@ -1,13 +1,13 @@
 import * as React from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DataTable } from "./datatable";
-import { IngredientItem } from "../features/recipeBook/models";
+import { IngredientItem, IngredientModel } from "../features/recipeBook/models";
 
 interface IngredientTableProps {
-  ingredients: IngredientItem[];
+  ingredients: IngredientItem[] | IngredientModel[];
 }
 
-export const IngredientTable: React.FC<IngredientTableProps> = ({
+export const IngredientItemTable: React.FC<IngredientTableProps> = ({
   ingredients
 }: IngredientTableProps) => {
   const columnHelper = createColumnHelper<IngredientItem>();
@@ -33,5 +33,31 @@ export const IngredientTable: React.FC<IngredientTableProps> = ({
       }
     })
   ];
-  return <DataTable columns={columns} data={ingredients} />;
+  return <DataTable columns={columns} data={ingredients as IngredientItem[]} />;
 };
+
+export const IngredientListTable: React.FC<IngredientTableProps> = ({
+  ingredients
+}: IngredientTableProps) => {
+  const columnHelper = createColumnHelper<IngredientModel>();
+  
+  //Set accessors according to model
+  const columns = [
+    columnHelper.accessor("name", {
+      cell: (info) => info.getValue(),
+      header: "Ingredient"
+    }),
+    columnHelper.accessor("unitCost", {
+      cell: (info) => info.getValue().toPrecision(2),
+      header: "Unit Cost",
+      meta: {
+        isNumeric: true
+      }
+    }),
+    columnHelper.accessor("measuringUnit", {
+      cell: (info) => info.getValue(),
+      header: "Measuring Unit"
+    }),
+  ];
+  return <DataTable columns={columns} data={ingredients as IngredientModel[]} />;
+}

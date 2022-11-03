@@ -6,15 +6,20 @@ import { demoList } from "../services/fake-data";
 import { yup } from '../app/utils';
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { IngredientItem, IngredientModel } from "../features/recipeBook/models";
+import { useAppSelector } from "../app/hooks";
+import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
 
 export function IngredientPage() {
+
+    const storeIngredients = useAppSelector(selectIngredientList);
+    
     return (
         <Box
             shadow="md"
             bg={useColorModeValue("white", "gray.800")}
             borderRadius="lg">
             <Box bg={useColorModeValue("white", "gray.800")} p={6} rounded="md" minW={{ base: 200, sm: 300, md: 440, lg: 700 }} mx={"auto"}>
-                <IngredientListTable ingredients={demoList} />
+                <IngredientListTable ingredients={storeIngredients} />
             </Box>
             <SearchIngredient list={demoList} />
         </Box>
@@ -56,7 +61,7 @@ export function AddIngredientForm() {
                 initialValues={initialValues}
                 validationSchema={ingredientValidation}
                 onSubmit={(values) => {
-                    values.unitCost = values.cost / values.amount;
+                    values.unitCost = values.cost / values.amount; //FIXME: Calculate this in the backend
                     alert(JSON.stringify(values, null, 2)); //TODO: Remove this, replace with adding to store
                 }}
             >

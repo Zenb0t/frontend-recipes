@@ -24,12 +24,16 @@ import { IngredientItem, IngredientModel } from "../features/recipeBook/models";
 import FileUpload from "../components/fileUpload";
 import { useState, ChangeEvent, useEffect } from "react";
 import { MdSearch } from "react-icons/md";
-import { demoList } from "../services/fake-data";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
 
 
 //TODO: Review this form to use HOC
 
 export function AddRecipePage() {
+
+    const dispatch = useAppDispatch();
+    const storeIngredients = useAppSelector(selectIngredientList);
 
     interface Values {
         title: string;
@@ -92,7 +96,7 @@ export function AddRecipePage() {
      */
     function IngredientListBuilder(ingredients: { ingredientId: string, quantity: number }[]) {
         let ingredientList = ingredients.map((item) => {
-            let ingredient = demoList.find(ingredient => ingredient.id === item.ingredientId);
+            let ingredient = storeIngredients.find(ingredient => ingredient.id === item.ingredientId);
             if (ingredient) {
                 let ingredientItem = new IngredientItem(ingredient, item.quantity);
                 return ingredientItem;
@@ -219,9 +223,12 @@ export function AddRecipePage() {
  */
 function AddIngredientField({ field, form }: FieldProps) {
 
+    const dispatch = useAppDispatch();
+    const ingredients = useAppSelector(selectIngredientList);
+
     type IdList = { ingredientId: string, quantity: number }[];
 
-    const list = demoList; //TODO: Replace me with the store list
+    const list = ingredients;
     const [ingredientList, setIngredientList] = useState<IngredientItem[]>([]);
     const [searchValue, setSeachValue] = useState("");
     const searchResults = searchValue === ""

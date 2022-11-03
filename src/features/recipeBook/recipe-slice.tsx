@@ -21,7 +21,7 @@ const initialState: RecipeState = {
 };
 
 export const createRecipe = createAsyncThunk(
-    'recipeBook/createRecipe',
+    'recipes/createRecipe',
     async (recipe: RecipeModel, thunkAPI) => {
         try {
             const response = await recipesAPI.createRecipe(recipe);
@@ -43,7 +43,7 @@ export const fetchRecipes = createAsyncThunk(
 );
 
 export const updateRecipe = createAsyncThunk(
-    'recipeBook/updateRecipe',
+    'recipes/updateRecipe',
     async (recipe: RecipeModel, thunkAPI) => {
         try {
             const response = await recipesAPI.updateRecipe(recipe.id, recipe);
@@ -56,7 +56,7 @@ export const updateRecipe = createAsyncThunk(
 );
 
 export const deleteRecipe = createAsyncThunk(
-    'recipeBook/deleteRecipe',
+    'recipes/deleteRecipe',
     async (recipeId: string, thunkAPI) => {
         try {
             const response = await recipesAPI.deleteRecipe(recipeId);
@@ -68,7 +68,7 @@ export const deleteRecipe = createAsyncThunk(
 );
 
 export const deleteAllRecipes = createAsyncThunk(
-    'recipeBook/deleteAllRecipes',
+    'recipes/deleteAllRecipes',
     async () => {
         try {
             const response = await recipesAPI.deleteAllRecipes();
@@ -80,7 +80,7 @@ export const deleteAllRecipes = createAsyncThunk(
 );
 
 export const toggleFavorite = createAsyncThunk(
-    'recipeBook/toggleFavorite',
+    'recipes/toggleFavorite',
     async (recipe: RecipeModel, thunkAPI) => {
         try {
             if (recipe) {
@@ -175,7 +175,7 @@ export const recipeSlice = createSlice({
     },
 });
 
-export const selectRecipes = (state: RootState) => state.recipeBook.recipeList;
+export const selectRecipes = (state: RootState) => state.recipeBook.recipeList as RecipeModel[];
 
 export const selectFavoriteRecipes = (state: RootState) => state.recipeBook.recipeList.filter(recipe => recipe.favorite);
 

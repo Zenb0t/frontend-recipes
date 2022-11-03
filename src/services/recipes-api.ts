@@ -1,6 +1,6 @@
 import axios from "axios";
 import sanitizedConfig from "../config";
-import { RecipeModel } from "../features/recipeBook/models";
+import { IngredientModel, RecipeModel } from "../features/recipeBook/models";
 
 function recipesAPI() {
 
@@ -39,6 +39,27 @@ function recipesAPI() {
         return http.delete(`api/recipes`);
     }
 
+    const createIngredient = async (ingredient: IngredientModel) => {
+        const res = await http.post(`api/ingredients`, ingredient);
+        return res;
+    }
+
+    const fetchIngredients = async () => {
+        const res = await http.get(`api/ingredients`);
+        return res;
+    }
+
+    const fetchIngredient = (id: string) => {
+        return http.get(`api/ingredients/${id}`);
+    }
+
+    const updateIngredient = (id: string, ingredient: IngredientModel) => {
+        return http.put(`api/ingredients/${id}`, ingredient);
+    }
+
+    const deleteIngredient = (id: string) => {
+        return http.delete(`api/ingredients/${id}`);
+    }
 
     return {
         createRecipe,
@@ -47,6 +68,11 @@ function recipesAPI() {
         updateRecipe,
         deleteRecipe,
         deleteAllRecipes,
+        createIngredient,
+        fetchIngredients,
+        fetchIngredient,
+        updateIngredient,
+        deleteIngredient
     }
 }
 

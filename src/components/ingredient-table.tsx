@@ -36,6 +36,9 @@ export const IngredientItemTable: React.FC<IngredientTableProps> = ({
   return <DataTable columns={columns} data={ingredients as IngredientItem[]} />;
 };
 
+
+//TODO: Check the values needed for this component
+//FIXME: Refactor information to be displayed
 export const IngredientListTable: React.FC<IngredientTableProps> = ({
   ingredients
 }: IngredientTableProps) => {
@@ -47,9 +50,9 @@ export const IngredientListTable: React.FC<IngredientTableProps> = ({
       cell: (info) => info.getValue(),
       header: "Ingredient"
     }),
-    columnHelper.accessor("unitCost", {
+    columnHelper.accessor("cost", {
       cell: (info) => info.getValue().toPrecision(2),
-      header: "Unit Cost",
+      header: "Cost",
       meta: {
         isNumeric: true
       }

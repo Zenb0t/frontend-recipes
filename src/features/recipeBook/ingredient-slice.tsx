@@ -2,7 +2,6 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { IngredientModel } from './models';
 import recipesAPI from '../../services/recipes-api';
-import clone from 'just-clone';
 
 export interface IngredientState {
     ingredientList: IngredientModel[];
@@ -89,7 +88,7 @@ export const ingredientSlice = createSlice({
         },
     },
 });
-   
+ 
 export const selectIngredientList = (state: RootState) => state.ingredients.ingredientList as IngredientModel[];
 
 export default ingredientSlice.reducer;

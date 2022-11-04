@@ -18,22 +18,33 @@ import {
     InputGroup,
     InputLeftElement,
     Text,
+    useToast,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    useDisclosure,
 } from "@chakra-ui/react";
 import { yup } from '../app/utils';
-import { IngredientItem, IngredientModel } from "../features/recipeBook/models";
+import { IngredientItem, IngredientModel, RecipeModel } from "../features/recipeBook/models";
 import FileUpload from "../components/fileUpload";
 import { useState, ChangeEvent, useEffect } from "react";
 import { MdSearch } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
+import { createRecipe } from "../features/recipeBook/recipe-slice";
+import { AddIngredientForm } from "./ingredient-page";
 
-
-//TODO: Review this form to use HOC
 
 export function AddRecipePage() {
 
     const dispatch = useAppDispatch();
     const storeIngredients = useAppSelector(selectIngredientList);
+
+    const toast = useToast();
 
     interface Values {
         title: string;
@@ -92,8 +103,8 @@ export function AddRecipePage() {
     }
 
     /***
-     * Helper function to build the ingredient list from the form values
-     */
+ * Helper functions to build the ingredient list from the form values
+ */
     function IngredientListBuilder(ingredients: { ingredientId: string, quantity: number }[]) {
         let ingredientList = ingredients.map((item) => {
             let ingredient = storeIngredients.find(ingredient => ingredient.id === item.ingredientId);
@@ -108,6 +119,18 @@ export function AddRecipePage() {
         return ingredientList;
     }
 
+    /***
+     * Helper function to build the recipe object from the form values
+     */
+
+    function buildRecipe(values: Values): RecipeModel {
+        const ingredientList = IngredientListBuilder(values.ingredients);
+        values.cost = ingredientList.reduce((sum, ing) => sum + ing.cost, 0);
+        const time = { hours: values.hours, minutes: values.minutes };
+        const instructions = values.instructions.split('\r\n');
+        return { ...values, ingredients: ingredientList, totalTime: time, instructions: instructions };
+    }
+
     return (
         <Flex align="center" justify="center">
             <Box bg={useColorModeValue("white", "gray.800")} p={6} rounded="md" minW={{ base: 200, sm: 300, md: 440, lg: 700 }} mx={"auto"}>
@@ -115,10 +138,27 @@ export function AddRecipePage() {
                     initialValues={initialValues}
                     validationSchema={recipeValidation}
                     onSubmit={(values) => {
-                        let ingredientList = IngredientListBuilder(values.ingredients);
-                        values.cost = ingredientList.reduce((sum, ing) => sum + ing.cost, 0);
-                        console.log("Submitted");
-                        alert(JSON.stringify(values, null, 2));
+                        console.log("Submitting");
+                        const newRecipe = buildRecipe(values);
+                        dispatch(createRecipe(newRecipe)).then((status) => {
+                            if (status) {
+                                toast({
+                                    title: "Recipe created",
+                                    description: "Your recipe has been created",
+                                    status: "success",
+                                    duration: 5000,
+                                    isClosable: true,
+                                });
+                            } else {
+                                toast({
+                                    title: "Error",
+                                    description: "There was an error creating your recipe",
+                                    status: "error",
+                                    duration: 5000,
+                                    isClosable: true,
+                                });
+                            }
+                        });
                     }}
                 >
                     {({ handleSubmit, errors, touched }) => (
@@ -164,7 +204,6 @@ export function AddRecipePage() {
                                             name="hours"
                                             type="hours"
                                             variant="filled"
-
                                         />
                                         <FormErrorMessage>{errors.hours}</FormErrorMessage>
                                     </FormControl>
@@ -217,13 +256,11 @@ export function AddRecipePage() {
 
 
 /***
- * This component adds a list of ingredients id and quantities to the [Formik] form field. It displays all the UI elements
- * to allow this, both a new ingredient or an existing one. It gets the ingredients from the redux store.
+ * Adds a list of ingredients id and quantities to the [Formik] form field.
  * 
  */
 function AddIngredientField({ field, form }: FieldProps) {
 
-    const dispatch = useAppDispatch();
     const ingredients = useAppSelector(selectIngredientList);
 
     type IdList = { ingredientId: string, quantity: number }[];
@@ -231,11 +268,11 @@ function AddIngredientField({ field, form }: FieldProps) {
     const list = ingredients;
     const [ingredientList, setIngredientList] = useState<IngredientItem[]>([]);
     const [searchValue, setSeachValue] = useState("");
+    const [ingredientIdList, setIngredientIdList] = useState<IdList>([]);
     const searchResults = searchValue === ""
         ? []
         : list.filter(
-            (ing) => ing.name.toLowerCase().includes(searchValue.toLowerCase()) && !ingredientList.some((item) => item.ingredient.id === ing.id));
-    const [ingredientIdList, setIngredientIdList] = useState<IdList>([]);
+            (ing) => ing.name.toLowerCase().includes(searchValue.toLowerCase()) && !ingredientIdList.some((item) => item.ingredientId === ing.id));
 
     // Handlers
 
@@ -254,6 +291,7 @@ function AddIngredientField({ field, form }: FieldProps) {
 
     const handleAddIngredient = (ingredient: IngredientModel, quantity: number) => {
         if (ingredientList.some((item) => item.ingredient.id === ingredient.id)) {
+            console.log("Ingredient already in list");
             return;
         }
         const newIngredient: IngredientItem = new IngredientItem(ingredient, quantity);
@@ -278,7 +316,7 @@ function AddIngredientField({ field, form }: FieldProps) {
 
     // Local UI Components
 
-    const IngredientListItem = (props: { ing: IngredientModel }) => {
+    const IngredientListItem = (props: { ing: IngredientModel, key: any }) => {
         const [quantity, setQuantity] = useState(0);
         const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined)
 
@@ -302,7 +340,6 @@ function AddIngredientField({ field, form }: FieldProps) {
         };
 
         return (
-            // <VStack>
             <>
                 <Flex p={2} alignItems="center">
                     <Avatar name={props.ing.name} src="htto://" />
@@ -320,10 +357,7 @@ function AddIngredientField({ field, form }: FieldProps) {
                                 value={quantity}
                                 onChange={handleQuantityChange}
                                 onKeyUpCapture={(e) => {
-                                    if (e.key === "Enter") {
-                                        handleAdd();
-                                    }
-
+                                    if (e.key === "Enter") handleAdd();
                                 }}
                             />
                             <Center>
@@ -365,8 +399,7 @@ function AddIngredientField({ field, form }: FieldProps) {
     return (
         <Flex pt={4} align="center" justify="center">
             <Box bg={useColorModeValue("white", "gray.800")} rounded="md" w="md">
-                {/* Add a popover which contains the AddIngredientForm, in case of adding a new ingredient during recipe creation */}
-
+                <AddIngredientModal />
                 <InputGroup size="md">
                     <InputLeftElement pointerEvents="none" children={<Icon as={MdSearch} zIndex={1} />} />
                     <Input
@@ -390,4 +423,30 @@ function AddIngredientField({ field, form }: FieldProps) {
         </Flex>
     );
 
+}
+
+function AddIngredientModal() {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    return (
+        <Box pb={2}>
+            <Button onClick={onOpen} colorScheme="green" width="full">Add new ingredient</Button>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Add new ingredient</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <AddIngredientForm onClose={onClose} />
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme='green' mr={3} onClick={onClose}>
+                            Close
+                        </Button>
+                        <Button variant='outline'>Secondary Action</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </Box>
+    )
 }

@@ -6,13 +6,13 @@ import { demoList } from "../services/fake-data";
 import { yup } from '../app/utils';
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { IngredientItem, IngredientModel } from "../features/recipeBook/models";
-import { useAppSelector } from "../app/hooks";
-import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { createIngredient, selectIngredientList } from "../features/recipeBook/ingredient-slice";
 
 export function IngredientPage() {
 
     const storeIngredients = useAppSelector(selectIngredientList);
-    
+
     return (
         <Box
             shadow="md"
@@ -21,14 +21,15 @@ export function IngredientPage() {
             <Box bg={useColorModeValue("white", "gray.800")} p={6} rounded="md" minW={{ base: 200, sm: 300, md: 440, lg: 700 }} mx={"auto"}>
                 <IngredientListTable ingredients={storeIngredients} />
             </Box>
-            <SearchIngredient list={demoList} />
+            <SearchIngredient list={storeIngredients} />
         </Box>
     );
 }
 
 
-export function AddIngredientForm() {
-    //TODO: When submitting, add ingredient to store list
+export function AddIngredientForm({ onClose: handleClose}: { onClose: () => void }) {
+    
+    const dispatch = useAppDispatch();
 
     interface Values {
         name: string;
@@ -56,17 +57,19 @@ export function AddIngredientForm() {
     });
 
     return (
-        <Box bg={useColorModeValue("white", "gray.800")} p={6} rounded="md" mx={"auto"}>
+        <Box bg={useColorModeValue("white", "gray.800")}>
             <Formik
                 initialValues={initialValues}
                 validationSchema={ingredientValidation}
                 onSubmit={(values) => {
-                    values.unitCost = values.cost / values.amount; //FIXME: Calculate this in the backend
-                    alert(JSON.stringify(values, null, 2)); //TODO: Remove this, replace with adding to store
+                    values.unitCost = values.cost / values.amount;
+                    const newIngredient: IngredientModel = {...values}
+                    dispatch(createIngredient(newIngredient));
+                    handleClose();
                 }}
             >
                 {({ handleSubmit, errors, touched }) => (
-                    <VStack spacing={4} align="flex-start">
+                    <VStack spacing={4} align="center">
                         <Form onSubmit={handleSubmit}>
                             <FormControl isInvalid={!!errors.name && touched.name}>
                                 <FormLabel htmlFor="name">Ingredient Name</FormLabel>

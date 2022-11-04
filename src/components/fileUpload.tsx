@@ -67,6 +67,7 @@ export default function FileUpload({ field, form}: FieldProps) {
                 {selectedImage ? null : <Icon as={MdImage} w={20} h={20} color={"gray.500"} />}
             </Center>
             <Center>
+                {/**TODO: fix the button overflow */}
                 <ButtonGroup isAttached colorScheme={'green'} position="relative">
                     <Button>
                         Upload Image

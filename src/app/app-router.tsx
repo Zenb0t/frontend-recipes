@@ -1,26 +1,23 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import RecipeCardListPage from "../pages/recipecard-list";
-import { useAppDispatch, useAppSelector } from "./hooks";
-import { selectRecipes, selectFavoriteRecipes, fetchRecipes } from "../features/recipeBook/recipe-slice";
+import { useAppSelector } from "./hooks";
+import { selectRecipes, selectFavoriteRecipes, } from "../features/recipeBook/recipe-slice";
 import { AddRecipePage } from "../pages/add-recipe-form";
 import { Box } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Text } from "@chakra-ui/react";
 import App from "../App";
 import { RecipeDetailsPage } from "../pages/recipe-details";
-import { SearchIngredient } from "../components/search-ingredient";
-import { demoList } from "../services/fake-data";
 import { IngredientPage } from "../pages/ingredient-page";
 
 /**Contains the routes for the application */
 export default function AppRouter() {
 
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
     const recipes = useAppSelector(selectRecipes);
 
+    //TODO: Refactor this to their own pages in the page folder
     const Welcome = () => {
-
         useEffect(() => {
             if (recipes.length > 0) {
                 navigate("/allrecipes");
@@ -43,19 +40,8 @@ export default function AppRouter() {
     const Login = () => {
         return <Text p={6} mb={4} align="center" variant="h3">Login</Text>;
     };
-    const Ingredients = () => <IngredientPage/>;
+    const Ingredients = () => <IngredientPage />;
     // const Settings = () => <FormPlaceholder handleClose={() => navigate(`/allrecipes`, { replace: true })} />;
-
-
-    //Fetch recipes on mount
-    useEffect(() => {
-        //TODO: Add loading indicator
-        console.log("fetching recipes");
-        dispatch(fetchRecipes());
-    }
-        , [dispatch]);
-
-        
 
     return (
         <Routes>

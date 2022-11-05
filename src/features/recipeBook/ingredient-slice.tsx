@@ -88,6 +88,10 @@ export const ingredientSlice = createSlice({
         },
     },
 });
+
+export const selectIngredientById = (state: RootState, ingredientId: string) => {
+    return state.ingredients.ingredientList.find(ingredient => ingredient.id === ingredientId);
+};
  
 export const selectIngredientList = (state: RootState) => state.ingredients.ingredientList as IngredientModel[];
 

@@ -2,6 +2,11 @@ import axios from "axios";
 import sanitizedConfig from "../config";
 import { IngredientModel, RecipeModel } from "../features/recipeBook/models";
 
+/***
+ * This is a service that handles all the API calls to the backend
+ * It is used by the redux store to fetch data from the backend
+ * 
+ */
 function recipesAPI() {
 
     const http = axios.create({

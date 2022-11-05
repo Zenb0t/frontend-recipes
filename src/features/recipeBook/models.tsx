@@ -8,6 +8,7 @@ export interface RecipeModel {
     ingredients: IngredientItem[];
     instructions: string[];
     imageUrl: string;
+    // imageFile?: BinaryData; TODO: Add image upload functionality
     favorite: boolean;
     id: string;
     cost: number;

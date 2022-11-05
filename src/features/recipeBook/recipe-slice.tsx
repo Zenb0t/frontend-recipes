@@ -5,9 +5,6 @@ import recipesAPI from '../../services/recipes-api';
 import clone from 'just-clone';
 
 
-//TODO: Add error handling and loading state for async actions
-
-
 export interface RecipeState {
     recipeList: RecipeModel[];
     status: string;
@@ -127,7 +124,6 @@ export const recipeSlice = createSlice({
                 ...state.recipeList[index],
                 ...action.payload
             };
-            console.log(`Updated recipe: ${state.recipeList[index]}`); //TODO: remove
         },
         [updateRecipe.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
             state.status = 'loading';

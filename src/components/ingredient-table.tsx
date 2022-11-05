@@ -36,9 +36,9 @@ export const IngredientItemTable: React.FC<IngredientTableProps> = ({
   return <DataTable columns={columns} data={ingredients as IngredientItem[]} />;
 };
 
-
-//TODO: Check the values needed for this component
-//FIXME: Refactor information to be displayed
+/**
+ * This component is used to display a list of ingredients. Pass a list of [IngredientModel] to the component.
+ */
 export const IngredientListTable: React.FC<IngredientTableProps> = ({
   ingredients
 }: IngredientTableProps) => {
@@ -50,16 +50,20 @@ export const IngredientListTable: React.FC<IngredientTableProps> = ({
       cell: (info) => info.getValue(),
       header: "Ingredient"
     }),
-    columnHelper.accessor("cost", {
-      cell: (info) => info.getValue().toPrecision(2),
-      header: "Cost",
-      meta: {
-        isNumeric: true
-      }
+    columnHelper.accessor("amount", {
+      cell: (info) => info.getValue(),
+      header: "Amount",
     }),
     columnHelper.accessor("measuringUnit", {
       cell: (info) => info.getValue(),
       header: "Measuring Unit"
+    }),
+    columnHelper.accessor("cost", {
+      cell: (info) => info.getValue().toFixed(2),
+      header: "Cost",
+      meta: {
+        isNumeric: true
+      }
     }),
   ];
   return <DataTable columns={columns} data={ingredients as IngredientModel[]} />;

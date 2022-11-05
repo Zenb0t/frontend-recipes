@@ -25,6 +25,9 @@ export type DataTableProps<Data extends object> = {
     columns: ColumnDef<Data, any>[];
 };
 
+/**
+ * Table component that uses the @tanstack/react-table library to render a table.
+ */
 export function DataTable<Data extends object>({
     data,
     columns

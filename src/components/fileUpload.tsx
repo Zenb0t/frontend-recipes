@@ -1,7 +1,44 @@
 import { VStack, Center, Icon, ButtonGroup, Button, Input, Text } from "@chakra-ui/react";
 import { FieldProps } from "formik";
-import {useState, ChangeEvent} from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { MdImage } from "react-icons/md";
+
+
+export function ImageURLFormField({ field, form }: FieldProps) {
+    const [imageURL, setImageURL] = useState<string>("");
+
+    useEffect(() => {
+        form.setFieldValue(field.name, imageURL);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [imageURL]);
+
+    const handleImageURLChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setImageURL(event.target.value);
+    };
+
+    return (
+        <VStack>
+            <Center
+                borderRadius="lg"
+                border={imageURL ? '1px solid #e2e8f0' : '1px dashed #e2e8f0'}
+                boxSize={'200px'}
+                backgroundImage={imageURL}
+                backgroundSize={'cover'}
+                backgroundPosition={'center center'}
+            >
+                {imageURL ? null : <Icon as={MdImage} w={20} h={20} color={"gray.500"} />}
+            </Center>
+            <Center>
+                <Input
+                    type="text"
+                    placeholder="Image URL"
+                    value={imageURL}
+                    onChange={handleImageURLChange}
+                />
+            </Center>
+        </VStack>
+    );
+}
 
 
 /***
@@ -9,7 +46,7 @@ import { MdImage } from "react-icons/md";
  * @param field - FieldProps
  * @param form - FormikProps
  */
-export default function FileUpload({ field, form}: FieldProps) {
+export default function FileUpload({ field, form }: FieldProps) {
     const MB = Math.pow(2, 20);
     const MAX_SIZE = 3 * MB;
 
@@ -18,13 +55,13 @@ export default function FileUpload({ field, form}: FieldProps) {
 
     const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
         let files = event.currentTarget.files;
-        
+
         if (files && isValidImage(files[0])) {
             setImgFile(files[0]);
             let image = URL.createObjectURL(files[0]);
-            
+
             setSelectedImage(image);
-            
+
             form.setFieldValue(field.name, image);
         } else {
             setImgFile(null);
@@ -52,6 +89,15 @@ export default function FileUpload({ field, form}: FieldProps) {
         }
         return isValid;
     }
+
+
+    useEffect(() => {
+        console.log("Image File: ", imgFile);
+        if (imgFile) {
+            form.setFieldValue("imageFile", imgFile);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [imgFile]);
 
     return (
 

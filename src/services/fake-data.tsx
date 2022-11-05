@@ -24,7 +24,7 @@ export const demoList = [
     ingredientBuilder("Chicken Breast", 40, "lbs", 100.4),
     ingredientBuilder("Stock", 5000, "ml", 5.0),
     ingredientBuilder("Spaguetti", 400, "g", 3.0)
-  ];
+];
 
 const description = `Bacon ipsum dolor amet rump burgdoggen bacon filet mignon, spare ribs ribeye ham meatball.
  Alcatra capicola landjaeger pork chop, filet mignon tenderloin chislic meatloaf spare ribs flank meatball. Corned beef chislic drumstick capicola sausage.`;
@@ -61,7 +61,7 @@ export default function genRecipe(ingredientQuantity: number): RecipeModel {
         title: 'Recipe Title',
         description: description,
         ingredients: genIngredients(ingredientQuantity),
-        totalTime: {hours: 1, minutes: 30},
+        totalTime: { hours: 1, minutes: 30 },
         instructions: ['First Step', 'Second Step', 'Third Step'],
         imageUrl: randomImage(),
         favorite: true,
@@ -71,6 +71,7 @@ export default function genRecipe(ingredientQuantity: number): RecipeModel {
     return recipe;
 }
 export function genChickenSoupRecipe(): RecipeModel {
+
     const recipe: RecipeModel = {
         title: chickenSoup.title,
         description: chickenSoup.description,

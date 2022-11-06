@@ -130,7 +130,7 @@ export function AddRecipePage() {
                                     duration: 5000,
                                     isClosable: true,
                                 });
-                                navigate('/recipes');
+                                navigate('/allrecipes');
                             } else {
                                 toast({
                                     title: "Error",

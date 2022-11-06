@@ -1,11 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { RecipeModel } from './RecipeBookModels';
-import recipesAPI from '../../services/RecipesAPI';
+import { RecipeModel } from './models';
+import recipesAPI from '../../services/recipes-api';
 import clone from 'just-clone';
-
-
-//TODO: Add error handling and loading state for async actions
 
 
 export interface RecipeState {
@@ -15,13 +12,13 @@ export interface RecipeState {
 }
 
 const initialState: RecipeState = {
-    recipeList: [] as RecipeModel[], // TODO: will be initialized from async external API call.
+    recipeList: [] as RecipeModel[],
     status: 'idle',
     error: null,
 };
 
 export const createRecipe = createAsyncThunk(
-    'recipeBook/createRecipe',
+    'recipes/createRecipe',
     async (recipe: RecipeModel, thunkAPI) => {
         try {
             const response = await recipesAPI.createRecipe(recipe);
@@ -43,7 +40,7 @@ export const fetchRecipes = createAsyncThunk(
 );
 
 export const updateRecipe = createAsyncThunk(
-    'recipeBook/updateRecipe',
+    'recipes/updateRecipe',
     async (recipe: RecipeModel, thunkAPI) => {
         try {
             const response = await recipesAPI.updateRecipe(recipe.id, recipe);
@@ -56,7 +53,7 @@ export const updateRecipe = createAsyncThunk(
 );
 
 export const deleteRecipe = createAsyncThunk(
-    'recipeBook/deleteRecipe',
+    'recipes/deleteRecipe',
     async (recipeId: string, thunkAPI) => {
         try {
             const response = await recipesAPI.deleteRecipe(recipeId);
@@ -68,7 +65,7 @@ export const deleteRecipe = createAsyncThunk(
 );
 
 export const deleteAllRecipes = createAsyncThunk(
-    'recipeBook/deleteAllRecipes',
+    'recipes/deleteAllRecipes',
     async () => {
         try {
             const response = await recipesAPI.deleteAllRecipes();
@@ -80,7 +77,7 @@ export const deleteAllRecipes = createAsyncThunk(
 );
 
 export const toggleFavorite = createAsyncThunk(
-    'recipeBook/toggleFavorite',
+    'recipes/toggleFavorite',
     async (recipe: RecipeModel, thunkAPI) => {
         try {
             if (recipe) {
@@ -127,7 +124,6 @@ export const recipeSlice = createSlice({
                 ...state.recipeList[index],
                 ...action.payload
             };
-            console.log(`Updated recipe: ${state.recipeList[index]}`);
         },
         [updateRecipe.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
             state.status = 'loading';
@@ -162,10 +158,20 @@ export const recipeSlice = createSlice({
             state.status = 'error';
             state.error = action.payload;
         },
+        [deleteAllRecipes.fulfilled.type]: (state, action: PayloadAction<RecipeModel>) => {
+            state.recipeList = [];
+        },
+        [deleteAllRecipes.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
+            state.status = 'loading';
+        },
+        [deleteAllRecipes.rejected.type]: (state, action: PayloadAction<any>) => {
+            state.status = 'error';
+            state.error = action.payload;
+        },
     },
 });
 
-export const selectRecipes = (state: RootState) => state.recipeBook.recipeList;
+export const selectRecipes = (state: RootState) => state.recipeBook.recipeList as RecipeModel[];
 
 export const selectFavoriteRecipes = (state: RootState) => state.recipeBook.recipeList.filter(recipe => recipe.favorite);
 

@@ -1,14 +1,15 @@
-import { IngredientModel, RecipeModel } from "../features/recipeBook/RecipeBookModels";
+import { IngredientItem, IngredientModel, RecipeModel } from "../features/recipeBook/models";
 import { v4 as uuidv4 } from 'uuid';
 import bananaPancake from '../img/chad-montano-eeqbbemH9-c-unsplash.jpg';
 import bluberryPancake from '../img/calum-lewis-8Nc_oQsc2qQ-unsplash.jpg';
 import iceCream from '../img/ian-dooley-TLD6iCOlyb0-unsplash.jpg';
 import soup from '../img/cala-w6ftFbPCs9I-unsplash.jpg';
 
-const chickenSoupIngredients: IngredientModel[] = [
-    { name: 'Chicken', amount: '1 lb' },
-    { name: 'Chicken Stock', amount: '4 cups' },
-    { name: 'Mixed Vegetables', amount: '1 cup' }
+const chickenSoupIngredients: IngredientItem[] = [
+    createIngredientItem(createIngredient("mock 1", 35), 100),
+    createIngredientItem(createIngredient("mock 2", Math.random() * 10), 10),
+    createIngredientItem(createIngredient("mock 3", Math.random() * 10), 10),
+    createIngredientItem(createIngredient("mock 4", Math.random() * 10), 10)
 ];
 
 function randomImage(): string {
@@ -16,6 +17,14 @@ function randomImage(): string {
     const randomIndex = Math.floor(Math.random() * images.length);
     return images[randomIndex];
 }
+
+export const demoList = [
+    ingredientBuilder("Tomato", 25, "lbs", 45.0),
+    ingredientBuilder("Onion", 25, "lbs", 45.0),
+    ingredientBuilder("Chicken Breast", 40, "lbs", 100.4),
+    ingredientBuilder("Stock", 5000, "ml", 5.0),
+    ingredientBuilder("Spaguetti", 400, "g", 3.0)
+];
 
 const description = `Bacon ipsum dolor amet rump burgdoggen bacon filet mignon, spare ribs ribeye ham meatball.
  Alcatra capicola landjaeger pork chop, filet mignon tenderloin chislic meatloaf spare ribs flank meatball. Corned beef chislic drumstick capicola sausage.`;
@@ -28,7 +37,7 @@ export const chickenSoup: RecipeModel = {
     Instead of long-simmered stock, we start with store-bought chicken broth and water but enrich 
     them with stock vegetables and the carcass, bones and meat of a leftover roast chicken. `,
     ingredients: chickenSoupIngredients,
-    totalTime: '1h 30min',
+    totalTime: { hours: 1, minutes: 30 },
     instructions: [`Put the bones and carcass from a leftover chicken (they can be in pieces) in a 
     large pot. Cover with the broth and 4 cups water. Bring to a boil over medium-high heat, reduce 
     to a simmer and cook for 20 minutes. Skim any foam or fat from the broth with a ladle as necessary. `,
@@ -43,6 +52,7 @@ export const chickenSoup: RecipeModel = {
     imageUrl: imagesrc,
     favorite: false,
     id: uuidv4(),
+    cost: 5.20,
 };
 
 
@@ -51,15 +61,17 @@ export default function genRecipe(ingredientQuantity: number): RecipeModel {
         title: 'Recipe Title',
         description: description,
         ingredients: genIngredients(ingredientQuantity),
-        totalTime: '1h 30min',
+        totalTime: { hours: 1, minutes: 30 },
         instructions: ['First Step', 'Second Step', 'Third Step'],
         imageUrl: randomImage(),
         favorite: true,
         id: uuidv4(),
+        cost: 6.00,
     };
     return recipe;
 }
 export function genChickenSoupRecipe(): RecipeModel {
+
     const recipe: RecipeModel = {
         title: chickenSoup.title,
         description: chickenSoup.description,
@@ -69,16 +81,41 @@ export function genChickenSoupRecipe(): RecipeModel {
         imageUrl: randomImage(),
         favorite: false,
         id: uuidv4(),
+        cost: chickenSoup.cost,
     };
     return recipe;
 
 }
 
-function genIngredients(ingredientQuantity: number): IngredientModel[] {
-    const ingredient: IngredientModel = {
-        name: 'Chicken',
-        amount: '1 lb'
-    };
+export function ingredientBuilder(
+    name: string,
+    amount: number,
+    measuringUnit: string,
+    cost: number
+): IngredientModel {
+    let ingredient: IngredientModel;
+    const unitCost = cost / amount;
+    ingredient = { name, amount, measuringUnit, cost, unitCost, id: uuidv4() };
+    return ingredient;
+}
+
+export function createIngredient(name: string, cost: number): IngredientModel {
+    let ingredient: IngredientModel;
+    ingredient = ingredientBuilder(name, 100, "grams", cost);
+    return ingredient;
+}
+
+export function createIngredientItem(
+    ingredient: IngredientModel,
+    quantity: number
+): IngredientItem {
+    let item = new IngredientItem(ingredient, quantity);
+    return item;
+}
+
+//TODO: remove random later
+function genIngredients(ingredientQuantity: number): IngredientItem[] {
+    const ingredient: IngredientModel = createIngredient('Ingredient', Math.random() * 10);
 
     return Array(ingredientQuantity).fill(ingredient);
 

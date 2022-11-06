@@ -19,13 +19,15 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
 import { createRecipe } from "../features/recipeBook/recipe-slice";
 import AddIngredientField from "../components/add-ingredient-field";
+import { useNavigate } from "react-router-dom";
 
 
 export function AddRecipePage() {
 
+    //Hooks
     const dispatch = useAppDispatch();
     const storeIngredients = useAppSelector(selectIngredientList);
-
+    const navigate = useNavigate();
     const toast = useToast();
 
     interface Values {
@@ -128,6 +130,7 @@ export function AddRecipePage() {
                                     duration: 5000,
                                     isClosable: true,
                                 });
+                                navigate('/recipes');
                             } else {
                                 toast({
                                     title: "Error",

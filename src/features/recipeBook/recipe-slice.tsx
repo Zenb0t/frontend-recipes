@@ -22,7 +22,6 @@ export const createRecipe = createAsyncThunk(
     async (recipe: RecipeModel, thunkAPI) => {
         try {
             const response = await recipesAPI.createRecipe(recipe);
-            console.log(`Create Recipe resp: ${response.data}`);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -34,7 +33,6 @@ export const fetchRecipes = createAsyncThunk(
     'recipes/fetchRecipes',
     async () => {
         const response = await recipesAPI.getRecipes();
-        console.log(`Fetch resp: ${response.data}`);
         return response.data;
     }
 );
@@ -44,7 +42,6 @@ export const updateRecipe = createAsyncThunk(
     async (recipe: RecipeModel, thunkAPI) => {
         try {
             const response = await recipesAPI.updateRecipe(recipe.id, recipe);
-            console.log(`Update Recipe resp: ${response.data}`);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error);

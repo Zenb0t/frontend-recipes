@@ -24,7 +24,6 @@ function recipesAPI() {
 
     const getRecipes = async () => {
         const res = await http.get(`api/recipes`);
-        console.log(res.data);
         return res;
     }
 

@@ -20,6 +20,7 @@ import {
     Text,
     Box,
     Stack,
+    HStack,
 } from "@chakra-ui/react";
 import { FieldProps } from "formik";
 import { useState, ChangeEvent, useEffect } from "react";
@@ -118,18 +119,20 @@ export default function AddIngredientField({ field, form }: FieldProps) {
 
         return (
             <Box>
-                <Flex p={2} alignItems="center" >
-                    <Avatar name={props.ing.name} src="htto://" />
-                    <Text pl={2}>{props.ing.name}</Text>
+                <Flex p={2} alignItems="center" wrap="wrap" >
+                    <Flex alignItems="center">
+                        <Avatar name={props.ing.name} src="htto://" />
+                        <Text pl={2} flexGrow={5} >{props.ing.name}</Text>
+                    </Flex>
                     {ingredientList.some((item) => item.ingredient.id === props.ing.id) ?
                         <Flex ml='auto'>
                             <CloseButton onClick={() => handleRemoveIngredient(props.ing)} />
                         </Flex> :
-                        <Flex ml='auto' >
+                        <HStack flexShrink={3} ml='auto' pl={1}>
                             <Input
+                                maxW="80px"
                                 isInvalid={!!errorMsg}
-                                textAlign={"right"}
-                                w={20}
+                                textAlign="right"
                                 type="number"
                                 value={quantity}
                                 onChange={handleQuantityChange}
@@ -138,7 +141,7 @@ export default function AddIngredientField({ field, form }: FieldProps) {
                                 }}
                             />
                             <Center>
-                                <Text verticalAlign={'middle'} minW={"30px"} pl={2}>{props.ing.measuringUnit}</Text>
+                                <Text verticalAlign={'middle'} minW={"60px"} pl={2} fontSize={"sm"}>{props.ing.measuringUnit}</Text>
                             </Center>
                             <Button
                                 ml={4}
@@ -146,7 +149,7 @@ export default function AddIngredientField({ field, form }: FieldProps) {
                             >
                                 Add
                             </Button>
-                        </Flex>
+                        </HStack>
                     }
                 </Flex >
                 {errorMsg && <Text color="red.500">{errorMsg}</Text>}
@@ -157,11 +160,13 @@ export default function AddIngredientField({ field, form }: FieldProps) {
     const AddedIngredientItem = (props: { item: IngredientItem; key: any }) => {
         const item = props.item;
         return (
-            <Flex p={2} alignItems="center">
-                <Avatar name={item.ingredient.name} src="htto://" />
-                <Text pl={2}>{item.ingredient.name}</Text>
+            <Flex p={2} alignItems="center" wrap="wrap" >
+                <Flex alignItems="center">
+                    <Avatar name={item.ingredient.name} src="htto://" />
+                    <Text pl={2}>{item.ingredient.name}</Text>
+                </Flex>
                 <Flex ml='auto'>
-                    <Center>
+                    <Center pl={2}>
                         <Text>{item.quantity}</Text>
                         <Text verticalAlign={'middle'} minW={"30px"} ml={2}>{item.ingredient.measuringUnit}</Text>
                     </Center>
@@ -186,15 +191,18 @@ export default function AddIngredientField({ field, form }: FieldProps) {
                         variant="filled"
                     />
                 </InputGroup>
-                {searchResults.map((ing) => (
+                {searchResults.map((ing, i , list) => (
+                    <Box key={ing.id}>
                     <IngredientListItem key={ing.id} ing={ing} />
+                    {i < list.length - 1 && <Divider />}
+                    </Box>
                 ))}
-                <AddIngredientModal handleAddIngredient={handleAddIngredient}/>
+                <AddIngredientModal handleAddIngredient={handleAddIngredient} />
                 <Divider py={2} />
                 <Center py={2}>
                     <Text fontSize="xl">Added Ingredients</Text>
                 </Center>
-                {ingredientList.map((item, i) => (
+                {ingredientList.map((item) => (
                     <AddedIngredientItem key={item.ingredient.id} item={item} />
                 ))}
             </Stack>

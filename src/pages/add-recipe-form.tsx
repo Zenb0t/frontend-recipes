@@ -71,7 +71,6 @@ export function AddRecipePage() {
     });
 
     function validateIngredients(ingredients: { ingredientId: string, quantity: number }[]) {
-        console.log("Validating ingredients");
         if (ingredients.length === 0) {
             return 'Must provide at least one ingredient';
         } else if (ingredients.some(ingredient => ingredient.ingredientId === '')) {

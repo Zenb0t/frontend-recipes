@@ -8,10 +8,15 @@ import { IngredientModel } from "../features/recipeBook/models";
 import { v4 as uuid } from 'uuid';
 
 interface AddIngredientFormProps {
-    onClose: () => void;
-    handleAddIngredient: (ingredient: IngredientModel, quantity: number) => void;
+    onClose?: () => void;
+    handleAddIngredient?: (ingredient: IngredientModel, quantity: number) => void;
 }
 
+/***
+ * Form to add a new ingredient to the store list
+ * If using with a closable component, pass in the onClose function to close the modal
+ * if need to capture the ingredient after submission, pass in a handleAddIngredient function.
+ */
 export function AddIngredientForm({ onClose, handleAddIngredient }: AddIngredientFormProps) {
 
     //Redux
@@ -50,12 +55,15 @@ export function AddIngredientForm({ onClose, handleAddIngredient }: AddIngredien
             <Formik
                 initialValues={initialValues}
                 validationSchema={ingredientValidation}
-                onSubmit={(values) => {
+                onSubmit={(values, actions) => {
                     values.unitCost = values.cost / values.amount;
                     const newIngredient: IngredientModel = { ...values }
                     dispatch(createIngredient(newIngredient));
-                    handleAddIngredient(newIngredient, values.quantity);
-                    onClose();
+                    if (handleAddIngredient && onClose) {
+                        handleAddIngredient(newIngredient, values.quantity);
+                        onClose();
+                    }
+                    actions.resetForm();
                 }}
             >
                 {({ handleSubmit, errors, touched }) => (
@@ -112,25 +120,25 @@ export function AddIngredientForm({ onClose, handleAddIngredient }: AddIngredien
                                 />
                                 <FormErrorMessage>{errors.cost}</FormErrorMessage>
                             </FormControl>
-                            <FormControl isInvalid={!!errors.quantity && touched.quantity}>
-                                <FormLabel htmlFor="quantity">Quantity</FormLabel>
-                                <Field
-                                    as={Input}
-                                    id="quantity"
-                                    name="quantity"
-                                    type="quantity"
-                                    variant="filled"
-                                    textAlign={"right"}
-                                />
-                                <FormErrorMessage>{errors.quantity}</FormErrorMessage>
-                            </FormControl>
+                            {handleAddIngredient && (
+                                <FormControl isInvalid={!!errors.quantity && touched.quantity}>
+                                    <FormLabel htmlFor="quantity">Quantity</FormLabel>
+                                    <Field
+                                        as={Input}
+                                        id="quantity"
+                                        name="quantity"
+                                        type="quantity"
+                                        variant="filled"
+                                        textAlign={"right"}
+                                    />
+                                    <FormErrorMessage>{errors.quantity}</FormErrorMessage>
+                                </FormControl>
+                            )}
                             <ButtonGroup spacing={4} >
                                 <Button py={2} type="submit" colorScheme="green">
                                     Submit
                                 </Button>
-                                <Button py={2} onClick={onClose} colorScheme="red">
-                                    Cancel
-                                </Button>
+                                {onClose && <Button py={2} onClick={onClose} colorScheme="red"> Cancel </Button>}
                             </ButtonGroup>
                         </VStack>
                     </Form>

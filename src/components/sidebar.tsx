@@ -32,9 +32,9 @@ import {
 import { CgSmartHomeRefrigerator } from "react-icons/cg";
 import { IconType } from "react-icons";
 import { ReactNode } from "react";
-import {PanelaLogo} from "./logo";
-import {Link as RouterLink} from "react-router-dom";
-import {MagicButton} from "../app/MagicButton";
+import { PanelaLogo } from "./logo";
+import { Link as RouterLink } from "react-router-dom";
+import { MagicButton } from "../app/MagicButton";
 import { ColorModeSwitcher } from "./colour-switcher";
 
 interface LinkItemProps {
@@ -45,10 +45,10 @@ interface LinkItemProps {
 
 const LinkItems: Array<LinkItemProps> = [
     { name: "Home", icon: MdHome, href: "/" },
-    { name: "Add Recipe", icon: MdNoteAdd , href: "/addrecipe" },
-    { name: "Recipes", icon: MdMenuBook , href: "/allrecipes" },
+    { name: "Add Recipe", icon: MdNoteAdd, href: "/addrecipe" },
+    { name: "Recipes", icon: MdMenuBook, href: "/allrecipes" },
     { name: "Ingredients", icon: CgSmartHomeRefrigerator, href: "/ingredients" }, //TODO: Finish this component
-    { name: "Favorites", icon: MdFavorite , href: "/favorites" },
+    { name: "Favorites", icon: MdFavorite, href: "/favorites" },
     // { name: "Settings", icon: MdSettings , href: "/settings" }, TODO: Finish this component
 ];
 
@@ -114,7 +114,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
             </Flex>
             {LinkItems.map((link) => (
-                <NavItem key={link.name} icon={link.icon} href={link.href}>
+                <NavItem key={link.name} icon={link.icon} href={link.href} onClick={onClose}>
                     {link.name}
                 </NavItem>
             ))}
@@ -150,7 +150,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             </Box>
 
             <HStack spacing={{ base: "0", md: "6" }}>
-                <ColorModeSwitcher/>
+                <ColorModeSwitcher />
                 <Flex alignItems={"center"}>
                     <Menu>
                         <MenuButton

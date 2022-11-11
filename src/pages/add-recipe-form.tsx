@@ -67,7 +67,6 @@ export function AddRecipePage() {
         })),
         instructions: yup.string().required('Must provide instructions'),
         imageUrl: yup.string().required('Required'),
-        // cost: yup.number().required('Required').min(0, 'Must be greater than 0'),
     });
 
     function validateIngredients(ingredients: { ingredientId: string, quantity: number }[]) {

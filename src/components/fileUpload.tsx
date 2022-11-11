@@ -5,7 +5,7 @@ import { MdImage } from "react-icons/md";
 
 
 export function ImageURLFormField({ field, form }: FieldProps) {
-    const [imageURL, setImageURL] = useState<string>("");
+    const [imageURL, setImageURL] = useState<string>(form.values.imageUrl);
 
     useEffect(() => {
         form.setFieldValue(field.name, imageURL);

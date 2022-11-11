@@ -1,5 +1,5 @@
 //Chakra imports
-import { Box, Heading, IconButton, Link, Tag, TagLabel, TagLeftIcon, useColorModeValue, Image, Center, Wrap, WrapItem } from '@chakra-ui/react';
+import { Box, Heading, IconButton, Link, Tag, TagLabel, TagLeftIcon, useColorModeValue, Image, Center, Wrap, WrapItem, Flex } from '@chakra-ui/react';
 import { MdFavorite, MdOutlineFavoriteBorder, MdOutlineWatchLater } from 'react-icons/md';
 
 //RecipeCard component
@@ -23,7 +23,7 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
 
     return (<Box
         maxH="400px"
-        maxW="200px"
+        maxW="300px"
         shadow="md"
         bg={useColorModeValue("white", "gray.800")}
         borderWidth="1px"
@@ -36,14 +36,18 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
     >
         <Link _hover={{}} onClick={handleAction}>
             <Center >
-                <Image
-                    borderRadius="lg"
-                    boxSize={'200px'}
-                    objectFit="cover"
-                    src={recipe.imageUrl}
-                    alt={recipe.title} />
+                <Flex
+                    borderRadius={["lg", "lg", "none", "none"]}
+                    w={'full'}
+                    h={'20vh'}
+                    backgroundImage={
+                        recipe.imageUrl
+                    }
+                    backgroundSize={'cover'}
+                    backgroundPosition={'center center'}
+                />
             </Center>
-            <Heading py="2" px='4' size="md" noOfLines={2}>{recipe.title}</Heading>
+            <Heading py="2" px='4' pb={4} size="md" noOfLines={2}>{recipe.title}</Heading>
         </Link>
         <Wrap p="4" alignItems='center' justifyItems="center" gap='2'>
             <WrapItem>

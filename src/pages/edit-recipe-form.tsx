@@ -12,23 +12,31 @@ import {
     useColorModeValue,
     useToast,
 } from "@chakra-ui/react";
-import { yup } from '../app/utils';
+import { IngredientListBuilder, yup } from '../app/utils';
 import { IngredientItem, RecipeModel } from "../features/recipeBook/models";
 import { ImageURLFormField } from "../components/fileUpload";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
-import { createRecipe } from "../features/recipeBook/recipe-slice";
+import { updateRecipe, selectRecipeById } from "../features/recipeBook/recipe-slice";
 import AddIngredientField from "../components/add-ingredient-field";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
 
 
-export function AddRecipePage() {
+export function EditRecipePage() {
+
+    let { recipeId } = useParams();
 
     //Hooks
     const dispatch = useAppDispatch();
-    const storeIngredients = useAppSelector(selectIngredientList);
+    const recipe = useAppSelector((state) => selectRecipeById(state, recipeId!));
     const navigate = useNavigate();
     const toast = useToast();
+
+    //Selectors
+
+    const ingredients = useAppSelector(selectIngredientList);
+
 
     interface Values {
         title: string;
@@ -44,16 +52,17 @@ export function AddRecipePage() {
     }
 
     const initialValues: Values = {
-        title: '',
-        description: '',
-        hours: 0,
-        minutes: 0,
-        ingredients: [],
-        instructions: '',
-        imageUrl: '',
-        favorite: false,
-        id: '',
-        cost: 0,
+        title: recipe!.title,
+        description: recipe!.description,
+        hours: recipe!.totalTime.hours,
+        minutes: recipe!.totalTime.minutes,
+        ingredients: IngredientIdListBuilder(recipe!.ingredients),
+        //Split instructions into an array of strings
+        instructions: recipe!.instructions.join(" "),
+        imageUrl: recipe!.imageUrl,
+        favorite: recipe!.favorite,
+        id: recipe!.id,
+        cost: recipe!.cost,
     };
 
     const recipeValidation = yup.object({
@@ -81,21 +90,13 @@ export function AddRecipePage() {
         }
     }
 
-    /***
- * Helper functions to build the ingredient list from the form values
- */
-    function IngredientListBuilder(ingredients: { ingredientId: string, quantity: number }[]) {
-        let ingredientList = ingredients.map((item) => {
-            let ingredient = storeIngredients.find(ingredient => ingredient.id === item.ingredientId);
-            if (ingredient) {
-                let ingredientItem = new IngredientItem(ingredient, item.quantity);
-                return ingredientItem;
-            } else {
-                throw new Error("Ingredient not found");
-            }
-        }
-        );
-        return ingredientList;
+       /***
+     * Helper function to get a id Ingredient list from the recipe
+     */
+
+    function IngredientIdListBuilder(ingredients: IngredientItem[]) {
+        let idList = ingredients.map((item) => { return { ingredientId: item.ingredient.id, quantity: item.quantity }; });
+        return idList;
     }
 
     /***
@@ -103,12 +104,18 @@ export function AddRecipePage() {
      */
 
     function buildRecipe(values: Values): RecipeModel {
-        const ingredientList = IngredientListBuilder(values.ingredients);
+        const ingredientList = IngredientListBuilder(ingredients, values.ingredients);
         values.cost = ingredientList.reduce((sum, ing) => sum + ing.cost, 0);
         const time = { hours: values.hours, minutes: values.minutes };
         const instructions = values.instructions.split('\r\n');
         return { ...values, ingredients: ingredientList, totalTime: time, instructions: instructions, };
     }
+
+    //Log the form values to the console
+    useEffect (() => {
+        console.log(initialValues);
+    }, []);
+
 
     return (
         <Flex align="center" justify="center">
@@ -118,21 +125,22 @@ export function AddRecipePage() {
                     validationSchema={recipeValidation}
                     onSubmit={(values) => {
                         console.log("Submitting");
-                        const newRecipe = buildRecipe(values);
-                        dispatch(createRecipe(newRecipe)).then((status) => {
+                        console.log(values);
+                        const updatedRecipe = buildRecipe(values);
+                        dispatch(updateRecipe(updatedRecipe)).then((status) => {
                             if (status) {
                                 toast({
-                                    title: "Recipe created",
-                                    description: "Your recipe has been created",
+                                    title: "Recipe Updated",
+                                    description: "Your recipe has been updated",
                                     status: "success",
                                     duration: 5000,
                                     isClosable: true,
                                 });
-                                navigate('/allrecipes');
+                                navigate(`/recipes/${updatedRecipe.id}`, { replace: true });
                             } else {
                                 toast({
                                     title: "Error",
-                                    description: "There was an error creating your recipe",
+                                    description: "There was an error updating your recipe",
                                     status: "error",
                                     duration: 5000,
                                     isClosable: true,

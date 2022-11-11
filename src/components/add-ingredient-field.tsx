@@ -26,6 +26,7 @@ import { FieldProps } from "formik";
 import { useState, ChangeEvent, useEffect } from "react";
 import { MdSearch } from "react-icons/md";
 import { useAppSelector } from "../app/hooks";
+import { IngredientListBuilder } from "../app/utils";
 import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
 import { IngredientItem, IngredientModel } from "../features/recipeBook/models";
 import { AddIngredientForm } from "../pages/add-ingredient-form";
@@ -45,9 +46,9 @@ export default function AddIngredientField({ field, form }: FieldProps) {
 
     //State
 
-    const [ingredientList, setIngredientList] = useState<IngredientItem[]>([]);
+    const [ingredientList, setIngredientList] = useState<IngredientItem[]>(IngredientListBuilder(ingredients, form.values.ingredients));
     const [searchValue, setSeachValue] = useState("");
-    const [ingredientIdList, setIngredientIdList] = useState<IdList>([]);
+    const [ingredientIdList, setIngredientIdList] = useState<IdList>(form.values.ingredients); //TODO: check if this is a breaking change
     const searchResults = searchValue === ""
         ? []
         : ingredients.filter(

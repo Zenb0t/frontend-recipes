@@ -60,10 +60,10 @@ export function RecipeDetailsPage() {
           <Heading pb={4} size='lg'>Instructions</Heading>
           {recipe!.instructions.map((instruction, index) => {
             return (
-              <>
-                <Text key={index}>{instruction}</Text>
+              <Box key={index}>
+                <Text>{instruction}</Text>
                 <br />
-              </>
+              </Box>
             )
           })}
         </Box>

@@ -45,7 +45,7 @@ interface LinkItemProps {
 
 const LinkItems: Array<LinkItemProps> = [
     { name: "Home", icon: MdHome, href: "/" },
-    { name: "Add Recipe", icon: MdNoteAdd, href: "/addrecipe" },
+    { name: "Add Recipe", icon: MdNoteAdd, href: "/add-recipe" },
     { name: "Recipes", icon: MdMenuBook, href: "/allrecipes" },
     { name: "Ingredients", icon: CgSmartHomeRefrigerator, href: "/ingredients" }, //TODO: Finish this component
     { name: "Favorites", icon: MdFavorite, href: "/favorites" },

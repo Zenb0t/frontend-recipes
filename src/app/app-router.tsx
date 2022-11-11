@@ -9,6 +9,7 @@ import { Text } from "@chakra-ui/react";
 import App from "../App";
 import { RecipeDetailsPage } from "../pages/recipe-details";
 import { IngredientPage } from "../pages/ingredient-page";
+import { EditRecipePage } from "../pages/edit-recipe-form";
 
 /**Contains the routes for the application */
 export default function AppRouter() {
@@ -36,7 +37,6 @@ export default function AppRouter() {
     const AllRecipes = () => <RecipeCardListPage recipes={recipes} />;
     const Favorites = () => <RecipeCardListPage recipes={useAppSelector(selectFavoriteRecipes)} />;
     const NoMatch = () => <Text p={6} mb={4} align="center" variant="h3">No match, try a different URL</Text>;
-    const AddRecipe = () => <AddRecipePage />;
     const Login = () => {
         return <Text p={6} mb={4} align="center" variant="h3">Login</Text>;
     };
@@ -47,7 +47,8 @@ export default function AppRouter() {
         <Routes>
             <Route path="/" element={<App />} >
                 <Route index element={<Welcome />} />
-                <Route path="/addrecipe" element={<AddRecipe />} />
+                <Route path="/add-recipe" element={<AddRecipePage/>} />
+                <Route path="/edit-recipe/:recipeId" element={<EditRecipePage/>} />
                 <Route path="/allrecipes" element={<AllRecipes />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/recipes/:recipeId" element={<RecipeDetailsPage />} />

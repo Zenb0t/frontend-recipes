@@ -10,6 +10,7 @@ import App from "../App";
 import { RecipeDetailsPage } from "../pages/recipe-details";
 import { IngredientPage } from "../pages/ingredient-page";
 import { EditRecipePage } from "../pages/edit-recipe-form";
+import LoginForm from "../pages/login-form";
 
 /**Contains the routes for the application */
 export default function AppRouter() {
@@ -37,9 +38,7 @@ export default function AppRouter() {
     const AllRecipes = () => <RecipeCardListPage recipes={recipes} />;
     const Favorites = () => <RecipeCardListPage recipes={useAppSelector(selectFavoriteRecipes)} />;
     const NoMatch = () => <Text p={6} mb={4} align="center" variant="h3">No match, try a different URL</Text>;
-    const Login = () => {
-        return <Text p={6} mb={4} align="center" variant="h3">Login</Text>;
-    };
+    const Login = () => <LoginForm/>
     const Ingredients = () => <IngredientPage />;
     // const Settings = () => <FormPlaceholder handleClose={() => navigate(`/allrecipes`, { replace: true })} />;
 

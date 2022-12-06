@@ -31,9 +31,9 @@ import {
 } from "react-icons/md";
 import { CgSmartHomeRefrigerator } from "react-icons/cg";
 import { IconType } from "react-icons";
-import { ReactNode } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 import { PanelaLogo } from "./logo";
-import { Link as RouterLink } from "react-router-dom";
+import { NavLink as RouterLink } from "react-router-dom";
 import { MagicButton } from "../app/MagicButton";
 import { ColorModeSwitcher } from "./colour-switcher";
 
@@ -47,9 +47,9 @@ const LinkItems: Array<LinkItemProps> = [
     { name: "Home", icon: MdHome, href: "/" },
     { name: "Add Recipe", icon: MdNoteAdd, href: "/add-recipe" },
     { name: "Recipes", icon: MdMenuBook, href: "/allrecipes" },
-    { name: "Ingredients", icon: CgSmartHomeRefrigerator, href: "/ingredients" }, //TODO: Finish this component
+    { name: "Ingredients", icon: CgSmartHomeRefrigerator, href: "/ingredients" },
     { name: "Favorites", icon: MdFavorite, href: "/favorites" },
-    // { name: "Settings", icon: MdSettings , href: "/settings" }, TODO: Finish this component
+    // { name: "Settings", icon: MdSettings , href: "/settings" }, //TODO: Finish this component
 ];
 
 interface NavItemProps extends FlexProps {
@@ -63,6 +63,12 @@ const NavItem = ({ icon, href, children, ...rest }: NavItemProps) => {
             to={href}
             style={{ textDecoration: "none" }}
             _focus={{ boxShadow: "none" }}
+            sx={{
+                "&.active": {
+                    backgroundColor: "green.200",
+                    color: "green.500"
+                }
+            }}
         >
             <Flex
                 align="center"

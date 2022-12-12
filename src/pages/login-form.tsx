@@ -12,8 +12,12 @@ import {
     Text,
     useColorModeValue,
 } from '@chakra-ui/react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function LoginForm() {
+
+    const { loginWithRedirect } = useAuth0();
+
     return (
         <Flex
             minH={'100vh'}
@@ -33,29 +37,16 @@ export default function LoginForm() {
                     boxShadow={'lg'}
                     p={8}>
                     <Stack spacing={4}>
-                        <FormControl id="email">
-                            <FormLabel>Email address</FormLabel>
-                            <Input type="email" />
-                        </FormControl>
-                        <FormControl id="password">
-                            <FormLabel>Password</FormLabel>
-                            <Input type="password" />
-                        </FormControl>
                         <Stack spacing={10}>
-                            <Stack
-                                direction={{ base: 'column', sm: 'row' }}
-                                align={'start'}
-                                justify={'space-between'}>
-                                <Checkbox>Remember me</Checkbox>
-                                <Link color={'green.400'}>Forgot password?</Link>
-                            </Stack>
                             <Button
                                 bg={'green.400'}
                                 color={'white'}
                                 _hover={{
                                     bg: 'green.500',
-                                }}>
-                                Sign in
+                                }}
+                                onClick={() => loginWithRedirect()}
+                                >
+                                Login
                             </Button>
                             <Stack pt={6}>
                                 <Text align={'center'}>

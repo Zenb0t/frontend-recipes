@@ -11,6 +11,8 @@ import { RecipeDetailsPage } from "../pages/recipe-details";
 import { IngredientPage } from "../pages/ingredient-page";
 import { EditRecipePage } from "../pages/edit-recipe-form";
 import LoginForm from "../pages/login-form";
+import CallbackPage from "../pages/callback-page";
+import ProtectedRoute from "./protected-route";
 
 /**Contains the routes for the application */
 export default function AppRouter() {
@@ -22,7 +24,7 @@ export default function AppRouter() {
     const Welcome = () => {
         useEffect(() => {
             if (recipes.length > 0) {
-                navigate("/allrecipes");
+                navigate("/dashboard/allrecipes");
             }
         }
             , []);
@@ -38,24 +40,26 @@ export default function AppRouter() {
     const AllRecipes = () => <RecipeCardListPage recipes={recipes} />;
     const Favorites = () => <RecipeCardListPage recipes={useAppSelector(selectFavoriteRecipes)} />;
     const NoMatch = () => <Text p={6} mb={4} align="center" variant="h3">No match, try a different URL</Text>;
-    const Login = () => <LoginForm/>
+    const Login = () => <LoginForm />
     const Ingredients = () => <IngredientPage />;
     // const Settings = () => <FormPlaceholder handleClose={() => navigate(`/allrecipes`, { replace: true })} />;
 
     return (
         <Routes>
             <Route path="/" element={<App />} >
-                <Route index element={<Welcome />} />
-                <Route path="/add-recipe" element={<AddRecipePage/>} />
-                <Route path="/edit-recipe/:recipeId" element={<EditRecipePage/>} />
-                <Route path="/allrecipes" element={<AllRecipes />} />
-                <Route path="/favorites" element={<Favorites />} />
-                <Route path="/recipes/:recipeId" element={<RecipeDetailsPage />} />
-                <Route path="/ingredients" element={<Ingredients />} />
-                {/* <Route path="/settings" element={<Settings />} /> */}
+                <Route path="/dashboard" element={<ProtectedRoute />}>
+                    <Route index element={<Welcome />} />
+                    <Route path="add-recipe" element={<AddRecipePage />} />
+                    <Route path="edit-recipe/:recipeId" element={<EditRecipePage />} />
+                    <Route path="allrecipes" element={<AllRecipes />} />
+                    <Route path="favorites" element={<Favorites />} />
+                    <Route path="recipes/:recipeId" element={<RecipeDetailsPage />} />
+                    <Route path="ingredients" element={<Ingredients />} />
+                    <Route path="callback" element={<CallbackPage />} />
+                    {/* <Route path="/settings" element={<Settings />} /> */}
+                </Route>
                 <Route path="*" element={<NoMatch />} />
             </Route>
             <Route path="/login" element={<Login />} />
         </Routes>);
-
 }

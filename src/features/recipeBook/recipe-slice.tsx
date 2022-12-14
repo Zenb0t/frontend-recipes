@@ -93,10 +93,11 @@ export const toggleFavorite = createAsyncThunk(
 export const recipeSlice = createSlice({
     name: 'recipe',
     initialState,
-    reducers: {},
+    reducers: {}, 
     extraReducers: {
         [fetchRecipes.fulfilled.type]: (state, action: PayloadAction<RecipeModel[]>) => {
             state.recipeList = action.payload;
+            state.status = 'success';
         },
         [fetchRecipes.pending.type]: (state, action: PayloadAction<RecipeModel[]>) => {
             state.status = 'loading';
@@ -107,6 +108,7 @@ export const recipeSlice = createSlice({
         },
         [createRecipe.fulfilled.type]: (state, action: PayloadAction<RecipeModel>) => {
             state.recipeList.push(action.payload);
+            state.status = 'idle';
         },
         [createRecipe.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
             state.status = 'loading';
@@ -121,6 +123,7 @@ export const recipeSlice = createSlice({
                 ...state.recipeList[index],
                 ...action.payload
             };
+            state.status = 'success';
         },
         [updateRecipe.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
             state.status = 'loading';
@@ -134,6 +137,7 @@ export const recipeSlice = createSlice({
             if (recipeIndex > -1) {
                 state.recipeList.splice(recipeIndex, 1);
             }
+            state.status = 'success';
         },
         [deleteRecipe.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
             state.status = 'loading';

@@ -136,7 +136,7 @@ export function EditRecipePage() {
                                     duration: 5000,
                                     isClosable: true,
                                 });
-                                navigate(`/recipes/${updatedRecipe.id}`, { replace: true });
+                                navigate(`/dashboard/${updatedRecipe.id}`, { replace: true });
                             } else {
                                 toast({
                                     title: "Error",

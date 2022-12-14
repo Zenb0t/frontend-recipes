@@ -98,28 +98,6 @@ export const ingredientSlice = createSlice({
                 }
             })
     },
-
-
-    // extraReducers: {
-    //     [createIngredient.fulfilled.type]: (state, action: PayloadAction<IngredientModel>) => {
-    //         state.ingredientList.push(action.payload);
-    //     },
-    //     [fetchIngredients.fulfilled.type]: (state, action: PayloadAction<IngredientModel[]>) => {
-    //         state.ingredientList = action.payload;
-    //     },
-    //     [updateIngredient.fulfilled.type]: (state, action: PayloadAction<IngredientModel>) => {
-    //         const index = state.ingredientList.findIndex(ingredient => ingredient.id === action.payload.id);
-    //         state.ingredientList[index] = {
-    //             ...state.ingredientList[index],
-    //             ...action.payload};
-    //     },
-    //     [deleteIngredient.fulfilled.type]: (state, action: PayloadAction<IngredientModel>) => {
-    //         const index = state.ingredientList.findIndex(ingredient => ingredient.id === action.payload.id);
-    //         if (index > -1) {
-    //         state.ingredientList.splice(index, 1);
-    //         }
-    //     },
-    // },
 });
 
 export const selectIngredientById = (state: RootState, ingredientId: string) => {

@@ -93,82 +93,83 @@ export const toggleFavorite = createAsyncThunk(
 export const recipeSlice = createSlice({
     name: 'recipe',
     initialState,
-    reducers: {}, 
-    extraReducers: {
-        [fetchRecipes.fulfilled.type]: (state, action: PayloadAction<RecipeModel[]>) => {
-            state.recipeList = action.payload;
-            state.status = 'success';
-        },
-        [fetchRecipes.pending.type]: (state, action: PayloadAction<RecipeModel[]>) => {
-            state.status = 'loading';
-        },
-        [fetchRecipes.rejected.type]: (state, action: PayloadAction<any>) => {
-            state.status = 'error';
-            state.error = action.payload;
-        },
-        [createRecipe.fulfilled.type]: (state, action: PayloadAction<RecipeModel>) => {
-            state.recipeList.push(action.payload);
-            state.status = 'idle';
-        },
-        [createRecipe.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
-            state.status = 'loading';
-        },
-        [createRecipe.rejected.type]: (state, action: PayloadAction<any>) => {
-            state.status = 'error';
-            state.error = action.payload;
-        },
-        [updateRecipe.fulfilled.type]: (state, action: PayloadAction<RecipeModel>) => {
-            const index = state.recipeList.findIndex(recipe => recipe.id === action.payload.id);
-            state.recipeList[index] = {
-                ...state.recipeList[index],
-                ...action.payload
-            };
-            state.status = 'success';
-        },
-        [updateRecipe.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
-            state.status = 'loading';
-        },
-        [updateRecipe.rejected.type]: (state, action: PayloadAction<any>) => {
-            state.status = 'error';
-            state.error = action.payload;
-        },
-        [deleteRecipe.fulfilled.type]: (state, action: PayloadAction<RecipeModel>) => {
-            const recipeIndex = state.recipeList.findIndex(recipe => recipe.id === action.payload.id);
-            if (recipeIndex > -1) {
-                state.recipeList.splice(recipeIndex, 1);
-            }
-            state.status = 'success';
-        },
-        [deleteRecipe.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
-            state.status = 'loading';
-        },
-        [deleteRecipe.rejected.type]: (state, action: PayloadAction<any>) => {
-            state.status = 'error';
-            state.error = action.payload;
-        },
-        [toggleFavorite.fulfilled.type]: (state, action: PayloadAction<RecipeModel>) => {
-            const recipe = state.recipeList.find(recipe => recipe.id === action.payload.id);
-            if (recipe) {
-                recipe.favorite = !recipe.favorite;
-            }
-        },
-        [toggleFavorite.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
-            state.status = 'loading';
-        },
-        [toggleFavorite.rejected.type]: (state, action: PayloadAction<any>) => {
-            state.status = 'error';
-            state.error = action.payload;
-        },
-        [deleteAllRecipes.fulfilled.type]: (state, action: PayloadAction<RecipeModel>) => {
-            state.recipeList = [];
-        },
-        [deleteAllRecipes.pending.type]: (state, action: PayloadAction<RecipeModel>) => {
-            state.status = 'loading';
-        },
-        [deleteAllRecipes.rejected.type]: (state, action: PayloadAction<any>) => {
-            state.status = 'error';
-            state.error = action.payload;
-        },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchRecipes.fulfilled, (state, action: PayloadAction<RecipeModel[]>) => {
+                state.recipeList = action.payload;
+                state.status = 'success';
+            })
+            .addCase(fetchRecipes.pending, (state, action) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchRecipes.rejected, (state, action: PayloadAction<any>) => {
+                state.status = 'error';
+                state.error = action.payload;
+            })
+            .addCase(createRecipe.fulfilled, (state, action: PayloadAction<RecipeModel>) => {
+                state.recipeList.push(action.payload);
+                state.status = 'idle';
+            })
+            .addCase(createRecipe.pending, (state, action) => {
+                state.status = 'loading';
+            })
+            .addCase(createRecipe.rejected, (state, action: PayloadAction<any>) => {
+                state.status = 'error';
+                state.error = action.payload;
+            })
+            .addCase(updateRecipe.fulfilled, (state, action: PayloadAction<RecipeModel>) => {
+                const index = state.recipeList.findIndex(recipe => recipe.id === action.payload.id);
+                state.recipeList[index] = {
+                    ...state.recipeList[index],
+                    ...action.payload,
+                };
+                state.status = 'idle';
+            })
+            .addCase(updateRecipe.pending, (state, action) => {
+                state.status = 'loading';
+            })
+            .addCase(updateRecipe.rejected, (state, action: PayloadAction<any>) => {
+                state.status = 'error';
+                state.error = action.payload;
+            })
+            .addCase(deleteRecipe.fulfilled, (state, action: PayloadAction<RecipeModel>) => {
+                const index = state.recipeList.findIndex(recipe => recipe.id === action.payload.id);
+                state.recipeList.splice(index, 1);
+                state.status = 'idle';
+            })
+            .addCase(deleteRecipe.pending, (state, action) => {
+                state.status = 'loading';
+            })
+            .addCase(deleteRecipe.rejected, (state, action: PayloadAction<any>) => {
+                state.status = 'error';
+                state.error = action.payload;
+            })
+            .addCase(deleteAllRecipes.fulfilled, (state, action: PayloadAction<RecipeModel>) => {
+                state.recipeList = [];
+                state.status = 'idle';
+            })
+            .addCase(deleteAllRecipes.pending, (state, action) => {
+                state.status = 'loading';
+            })
+            .addCase(deleteAllRecipes.rejected, (state, action: PayloadAction<any>) => {
+                state.status = 'error';
+                state.error = action.payload;
+            })
+            .addCase(toggleFavorite.fulfilled, (state, action: PayloadAction<RecipeModel>) => {
+                const index = state.recipeList.findIndex(recipe => recipe.id === action.payload.id);
+                state.recipeList[index] = {
+                    ...state.recipeList[index],
+                    ...action.payload,
+                };
+            })
+            .addCase(toggleFavorite.pending, (state, action) => {
+                state.status = 'loading';
+            })
+            .addCase(toggleFavorite.rejected, (state, action: PayloadAction<any>) => {
+                state.status = 'error';
+                state.error = action.payload;
+            });
     },
 });
 

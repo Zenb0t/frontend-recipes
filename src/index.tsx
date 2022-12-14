@@ -9,18 +9,22 @@ import AppRouter from './app/app-router';
 import { chakraTheme } from './app/theme';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Auth0Provider } from '@auth0/auth0-react';
+import sanitizedConfig from './config';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement!);
+
+
+
 
 root.render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <Auth0Provider
-          domain="zenbot.us.auth0.com"
-          clientId="uwcRPx0Hu0g7B30z37ZRsVxTaEGdW7Tp"
-          redirectUri={window.location.origin}
+          domain={sanitizedConfig.AUTH0_DOMAIN}
+          clientId={sanitizedConfig.AUTH0_CLIENT_ID}
+          redirectUri={sanitizedConfig.AUTH0_CALLBACK_URL}
         >
           <ChakraProvider theme={chakraTheme}>
             <AppRouter />

@@ -1,14 +1,23 @@
 interface ENV {
     API_URL: string | undefined;
+    AUTH0_DOMAIN: string | undefined;
+    AUTH0_CLIENT_ID: string | undefined;
+    AUTH0_CALLBACK_URL: string | undefined;
 }
 
 interface Config {
     API_URL: string;
+    AUTH0_DOMAIN: string;
+    AUTH0_CLIENT_ID: string;
+    AUTH0_CALLBACK_URL: string;
 }
 
 const getConfig = (): ENV => {
     return {
         API_URL: process.env.REACT_APP_API_URL,
+        AUTH0_DOMAIN: process.env.REACT_APP_AUTH0_DOMAIN,
+        AUTH0_CLIENT_ID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+        AUTH0_CALLBACK_URL: process.env.REACT_APP_AUTH0_CALLBACK_URL,
     };
 }
 

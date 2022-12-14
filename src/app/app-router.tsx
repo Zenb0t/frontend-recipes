@@ -1,9 +1,9 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import RecipeCardListPage from "../pages/recipecard-list";
 import { useAppSelector } from "./hooks";
 import { selectRecipes, selectFavoriteRecipes, } from "../features/recipeBook/recipe-slice";
 import { AddRecipePage } from "../pages/add-recipe-form";
-import { Box } from "@chakra-ui/react";
+import { Box, Center, Spinner } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Text } from "@chakra-ui/react";
 import App from "../App";
@@ -13,12 +13,15 @@ import { EditRecipePage } from "../pages/edit-recipe-form";
 import LoginForm from "../pages/login-form";
 import CallbackPage from "../pages/callback-page";
 import ProtectedRoute from "./protected-route";
+import Landing from "../pages/landing";
+import { useAuth0 } from "@auth0/auth0-react";
 
 /**Contains the routes for the application */
 export default function AppRouter() {
 
     const navigate = useNavigate();
     const recipes = useAppSelector(selectRecipes);
+    const { isAuthenticated } = useAuth0();
 
     //TODO: Refactor this to their own pages in the page folder
     const Welcome = () => {
@@ -29,13 +32,12 @@ export default function AppRouter() {
         }
             , []);
 
-        return (<Box p={6}>
-            <Text mb={4} align="center" variant="h3">Welcome to the Recipe Book</Text>
-            <Text align="center" variant="h5">
-                Please select a recipe from the list or add a new one.
-                You can also mark a recipe as favorite.
-            </Text>
-        </Box>)
+        return (
+            <Center>
+                <Spinner size="xl" color={"green.500"} />
+            </Center>
+
+        );
     };
     const AllRecipes = () => <RecipeCardListPage recipes={recipes} />;
     const Favorites = () => <RecipeCardListPage recipes={useAppSelector(selectFavoriteRecipes)} />;
@@ -46,20 +48,21 @@ export default function AppRouter() {
 
     return (
         <Routes>
-            <Route path="/" element={<App />} >
+            <Route path="/" element={<Landing />} />
+            <Route element={<App />}>
+                <Route path="callback" element={<CallbackPage />} />
                 <Route path="/dashboard" element={<ProtectedRoute />}>
                     <Route index element={<Welcome />} />
                     <Route path="add-recipe" element={<AddRecipePage />} />
                     <Route path="edit-recipe/:recipeId" element={<EditRecipePage />} />
                     <Route path="allrecipes" element={<AllRecipes />} />
                     <Route path="favorites" element={<Favorites />} />
-                    <Route path="recipes/:recipeId" element={<RecipeDetailsPage />} />
+                    <Route path=":recipeId" element={<RecipeDetailsPage />} />
                     <Route path="ingredients" element={<Ingredients />} />
-                    <Route path="callback" element={<CallbackPage />} />
                     {/* <Route path="/settings" element={<Settings />} /> */}
                 </Route>
-                <Route path="*" element={<NoMatch />} />
             </Route>
+            <Route path="*" element={<NoMatch />} />
             <Route path="/login" element={<Login />} />
         </Routes>);
 }

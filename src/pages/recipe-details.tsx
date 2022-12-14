@@ -43,7 +43,7 @@ export function RecipeDetailsPage() {
             bg={useColorModeValue("white", "gray.800")}
             color={useColorModeValue("gray.800", "white")}
             onClick={() => { 
-              navigate(`/edit-recipe/${recipeId}`, { replace: true });
+              navigate(`/dashboard/edit-recipe/${recipeId}`, { replace: true });
             }}
           />
         </Tooltip>

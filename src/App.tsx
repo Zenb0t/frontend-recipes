@@ -17,18 +17,16 @@ function App() {
 
   //Fetch recipes on mount
   useEffect(() => {
-      if (recipeStatus === 'idle') {
-          dispatch(fetchRecipes());
-      }
-      if (ingredientStatus === 'idle') {
-          dispatch(fetchIngredients());
-      }
+    if (recipeStatus === 'idle') {
+      dispatch(fetchRecipes());
+    }
+    if (ingredientStatus === 'idle') {
+      dispatch(fetchIngredients());
+    }
   }, [recipeStatus, ingredientStatus, dispatch]);
 
   return (
-    <SidebarWithHeader>
-      <Outlet />
-    </SidebarWithHeader>
+    <Outlet />
   );
 }
 

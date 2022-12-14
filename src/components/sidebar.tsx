@@ -31,7 +31,7 @@ import {
 } from "react-icons/md";
 import { CgSmartHomeRefrigerator } from "react-icons/cg";
 import { IconType } from "react-icons";
-import { MouseEventHandler, ReactNode } from "react";
+import { ReactNode } from "react";
 import { PanelaLogo } from "./logo";
 import { NavLink as RouterLink } from "react-router-dom";
 import { MagicButton } from "../app/MagicButton";
@@ -45,7 +45,7 @@ interface LinkItemProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-    { name: "Home", icon: MdHome, href: "/dashboard" },
+    { name: "Home", icon: MdHome, href: "/dashboard/" },
     { name: "Add Recipe", icon: MdNoteAdd, href: "/dashboard/add-recipe" },
     { name: "Recipes", icon: MdMenuBook, href: "/dashboard/allrecipes" },
     { name: "Ingredients", icon: CgSmartHomeRefrigerator, href: "/dashboard/ingredients" },
@@ -193,7 +193,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             borderColor={useColorModeValue("gray.200", "gray.700")}
                         >
                             {/* <MagicButton/> */}
-                            <MenuItem>Profile</MenuItem>
+                            <MenuItem
+                                onClick={() => console.log(JSON.stringify(user))}
+                            >Profile</MenuItem>
                             <MenuItem>Settings</MenuItem>
                             <MenuItem>Billing</MenuItem>
                             <MenuDivider />

@@ -15,7 +15,7 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
     const dispatch = useAppDispatch();
 
     const handleAction = () => {
-        navigate(`/recipes/${recipe.id}`, { replace: true });
+        navigate(`/dashboard/${recipe.id}`, { replace: true });
     };
 
     let recipe = props.recipe;

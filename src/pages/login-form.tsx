@@ -14,12 +14,12 @@ import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm() {
 
-    const { isAuthenticated, loginWithPopup } = useAuth0();
+    const { isAuthenticated, isLoading, loginWithPopup } = useAuth0();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isAuthenticated) navigate('/dashboard');
-    }, [isAuthenticated, navigate]);
+        if (!isLoading && isAuthenticated) navigate('/dashboard');
+    }, [isAuthenticated, isLoading, navigate]);
     
     return (
         <Flex

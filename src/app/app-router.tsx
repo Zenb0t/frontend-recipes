@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import RecipeCardListPage from "../pages/recipecard-list";
 import { useAppSelector } from "./hooks";
 import { selectRecipes, selectFavoriteRecipes, } from "../features/recipeBook/recipe-slice";
@@ -13,37 +13,31 @@ import { EditRecipePage } from "../pages/edit-recipe-form";
 import LoginForm from "../pages/login-form";
 import ProtectedRoute from "./protected-route";
 import Landing from "../pages/landing";
-import { useAuth0 } from "@auth0/auth0-react";
 
 /**Contains the routes for the application */
 export default function AppRouter() {
 
     const navigate = useNavigate();
     const recipes = useAppSelector(selectRecipes);
-    const { isAuthenticated, logout } = useAuth0();
 
     //TODO: Refactor this to their own pages in the page folder
     const Welcome = () => {
         useEffect(() => {
-            if (recipes.length > 0) {
-                navigate("/dashboard/allrecipes");
-            }
-        }
-            , []);
+            if (recipes.length > 0) navigate("/dashboard/allrecipes");
+        }, []);
 
         return (
-            <Center 
-            w={'full'}
-            h={'50vh'}
+            <Center
+                w={'full'}
+                h={'50vh'}
             >
                 <Spinner size="xl" color={"green.500"} />
             </Center>
-
         );
     };
     const AllRecipes = () => <RecipeCardListPage recipes={recipes} />;
     const Favorites = () => <RecipeCardListPage recipes={useAppSelector(selectFavoriteRecipes)} />;
-    const NoMatch = () => <Text p={6} mb={4} align="center" variant="h3">No match, try a different URL</Text>;
+    const NoMatch = () => <Text p={6} mb={4} align="center" variant="h3">No match, try a different URL</Text>; //TODO: Make this a page
     const Login = () => <LoginForm />
     const Ingredients = () => <IngredientPage />;
     // const Settings = () => <FormPlaceholder handleClose={() => navigate(`/allrecipes`, { replace: true })} />;

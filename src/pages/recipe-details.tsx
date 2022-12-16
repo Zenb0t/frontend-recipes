@@ -42,10 +42,12 @@ export function RecipeDetailsPage() {
             isRound
             bg={useColorModeValue("white", "gray.800")}
             color={useColorModeValue("gray.800", "white")}
-            onClick={() => { 
-              navigate(`/edit-recipe/${recipeId}`, { replace: true });
+            onClick={() => {
+              navigate(`/dashboard/edit-recipe/${recipeId}`, { replace: true });
             }}
-          />
+            _hover={{
+              bg: useColorModeValue("gray.100", "gray.700"),
+            }} />
         </Tooltip>
       </Flex>
       <Box p={8}>
@@ -60,10 +62,10 @@ export function RecipeDetailsPage() {
           <Heading pb={4} size='lg'>Instructions</Heading>
           {recipe!.instructions.map((instruction, index) => {
             return (
-              <>
-                <Text key={index}>{instruction}</Text>
+              <Box key={index}>
+                <Text>{instruction}</Text>
                 <br />
-              </>
+              </Box>
             )
           })}
         </Box>

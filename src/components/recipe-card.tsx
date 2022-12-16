@@ -1,5 +1,5 @@
 //Chakra imports
-import { Box, Heading, IconButton, Link, Tag, TagLabel, TagLeftIcon, useColorModeValue, Image, Center, Wrap, WrapItem, Flex } from '@chakra-ui/react';
+import { Box, Heading, IconButton, Link, Tag, TagLabel, TagLeftIcon, useColorModeValue, Center, Wrap, WrapItem, Flex } from '@chakra-ui/react';
 import { MdFavorite, MdOutlineFavoriteBorder, MdOutlineWatchLater } from 'react-icons/md';
 
 //RecipeCard component
@@ -15,7 +15,7 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
     const dispatch = useAppDispatch();
 
     const handleAction = () => {
-        navigate(`/recipes/${recipe.id}`, { replace: true });
+        navigate(`/dashboard/${recipe.id}`, { replace: true });
     };
 
     let recipe = props.recipe;
@@ -32,6 +32,7 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
             bg: useColorModeValue("white", "gray.700"),
             shadow: "lg",
             borderColor: useColorModeValue("gray.300", ""),
+            transform: "scale(1.02)",
         }}
     >
         <Link _hover={{}} onClick={handleAction}>
@@ -74,6 +75,9 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
                     color="red.500"
                     aria-label='Toogle Favorite'
                     icon={favIcon}
+                    _hover={{
+                        transform: "scale(1.2)",
+                    }}
                 />
             </WrapItem>
         </Wrap>

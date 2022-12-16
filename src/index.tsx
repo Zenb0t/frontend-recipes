@@ -6,22 +6,30 @@ import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './app/app-router';
-// import { ThemeProvider } from '@mui/material';
 import { chakraTheme } from './app/theme';
 import { ChakraProvider } from '@chakra-ui/react';
+import { Auth0Provider } from '@auth0/auth0-react';
+import sanitizedConfig from './config';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement!);
+
+
+
 
 root.render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <ChakraProvider theme={chakraTheme}>
-          {/* <ThemeProvider theme={theme}> */}
+        <Auth0Provider
+          domain={sanitizedConfig.AUTH0_DOMAIN}
+          clientId={sanitizedConfig.AUTH0_CLIENT_ID}
+          redirectUri={sanitizedConfig.AUTH0_CALLBACK_URL}
+        >
+          <ChakraProvider theme={chakraTheme}>
             <AppRouter />
-          {/* </ThemeProvider> */}
-        </ChakraProvider>
+          </ChakraProvider>
+        </Auth0Provider>
       </BrowserRouter>
     </Provider>
   </StrictMode>,

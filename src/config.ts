@@ -1,4 +1,6 @@
-//
+//The config file is used to store the configuration variables that are used in the application.
+// All configuration variables are stored in the .env file in the root of the project.
+// If additional configuration variables are needed, they should be added to the .env file and then added to the interface below.
 
 
 interface ENV {

@@ -9,11 +9,18 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm() {
 
-    const { loginWithRedirect } = useAuth0();
+    const { isAuthenticated, loginWithPopup } = useAuth0();
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        if (isAuthenticated) navigate('/dashboard');
+    }, [isAuthenticated, navigate]);
+    
     return (
         <Flex
             minH={'100vh'}
@@ -26,6 +33,7 @@ export default function LoginForm() {
                     <Text fontSize={'lg'} color={'gray.600'}>
                         Sign-in to your account
                     </Text>
+                    
                 </Stack>
                 <Box
                     rounded={'lg'}
@@ -40,7 +48,7 @@ export default function LoginForm() {
                                 _hover={{
                                     bg: 'green.500',
                                 }}
-                                onClick={() => loginWithRedirect()}
+                                onClick={() => loginWithPopup()}
                                 >
                                 Login
                             </Button>

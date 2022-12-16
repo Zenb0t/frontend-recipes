@@ -3,7 +3,7 @@ import RecipeCardListPage from "../pages/recipecard-list";
 import { useAppSelector } from "./hooks";
 import { selectRecipes, selectFavoriteRecipes, } from "../features/recipeBook/recipe-slice";
 import { AddRecipePage } from "../pages/add-recipe-form";
-import { Box, Center, Spinner } from "@chakra-ui/react";
+import { Center, Spinner } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Text } from "@chakra-ui/react";
 import App from "../App";
@@ -11,7 +11,6 @@ import { RecipeDetailsPage } from "../pages/recipe-details";
 import { IngredientPage } from "../pages/ingredient-page";
 import { EditRecipePage } from "../pages/edit-recipe-form";
 import LoginForm from "../pages/login-form";
-import CallbackPage from "../pages/callback-page";
 import ProtectedRoute from "./protected-route";
 import Landing from "../pages/landing";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -21,7 +20,7 @@ export default function AppRouter() {
 
     const navigate = useNavigate();
     const recipes = useAppSelector(selectRecipes);
-    const { isAuthenticated } = useAuth0();
+    const { isAuthenticated, logout } = useAuth0();
 
     //TODO: Refactor this to their own pages in the page folder
     const Welcome = () => {
@@ -33,7 +32,10 @@ export default function AppRouter() {
             , []);
 
         return (
-            <Center>
+            <Center 
+            w={'full'}
+            h={'50vh'}
+            >
                 <Spinner size="xl" color={"green.500"} />
             </Center>
 
@@ -50,7 +52,6 @@ export default function AppRouter() {
         <Routes>
             <Route path="/" element={<Landing />} />
             <Route element={<App />}>
-                <Route path="callback" element={<CallbackPage />} />
                 <Route path="/dashboard" element={<ProtectedRoute />}>
                     <Route index element={<Welcome />} />
                     <Route path="add-recipe" element={<AddRecipePage />} />

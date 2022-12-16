@@ -6,11 +6,11 @@ import { DashboardLayout } from "../components/dashboard-layout";
 function ProtectedRoute() {
     const { isAuthenticated } = useAuth0();
 
-    if (!isAuthenticated) {
+    if (isAuthenticated) {
+        return <DashboardLayout />;
+    } else {
         return <Navigate to="/login" />;
     }
-    return <DashboardLayout />;
-};
-
+}
 
 export default ProtectedRoute; 

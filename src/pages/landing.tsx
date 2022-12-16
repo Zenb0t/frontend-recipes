@@ -17,13 +17,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Landing() {
 
     const navigate = useNavigate();
-    const {isAuthenticated} = useAuth0();
-
-    if (isAuthenticated) {
-        navigate('/dashboard');
-        console.log('is Authenticated');
-    }
-
+    
     return (
         <Container maxW={'3xl'}>
             <Stack
@@ -67,7 +61,9 @@ export default function Landing() {
                         _hover={{
                             bg: 'green.500',
                         }}
-                        onClick={() => navigate('/dashboard')}
+                        onClick={() => {
+                            console.log('landing button clicked');
+                            navigate('/dashboard')}}
                         >
                         Get Started
                     </Button>

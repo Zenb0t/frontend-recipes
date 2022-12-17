@@ -26,11 +26,7 @@ function ProtectedRoute() {
         }
     }, [recipeStatus, ingredientStatus, dispatch, isAuthenticated]);
 
-
     if (isAuthenticated) {
-
-
-
         return <DashboardLayout />;
     } else {
         return <Navigate to="/login" />;

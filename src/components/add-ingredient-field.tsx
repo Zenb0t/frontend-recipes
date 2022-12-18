@@ -10,13 +10,6 @@ import {
     InputLeftElement,
     Icon,
     Divider,
-    useDisclosure,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalCloseButton,
-    ModalBody,
     Text,
     Box,
     Stack,
@@ -29,8 +22,7 @@ import { useAppSelector } from "../app/hooks";
 import { IngredientListBuilder } from "../app/utils";
 import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
 import { IngredientItem, IngredientModel } from "../features/recipeBook/models";
-import { AddIngredientForm } from "../pages/add-ingredient-form";
-
+import AddIngredientModal from "./add-ingredient-modal";
 
 /***
  * Adds a list of ingredients id and quantities to the [Formik] form field.
@@ -48,7 +40,7 @@ export default function AddIngredientField({ field, form }: FieldProps) {
 
     const [ingredientList, setIngredientList] = useState<IngredientItem[]>(IngredientListBuilder(ingredients, form.values.ingredients));
     const [searchValue, setSeachValue] = useState("");
-    const [ingredientIdList, setIngredientIdList] = useState<IdList>(form.values.ingredients); //TODO: check if this is a breaking change
+    const [ingredientIdList, setIngredientIdList] = useState<IdList>(form.values.ingredients);
     const searchResults = searchValue === ""
         ? []
         : ingredients.filter(
@@ -187,18 +179,24 @@ export default function AddIngredientField({ field, form }: FieldProps) {
                     <Input
                         type="text"
                         placeholder="Search Ingredients"
+                        _placeholder={{ opacity: 1, color: useColorModeValue("gray.700", "gray.300") }}
                         value={searchValue}
                         onChange={handleSearch}
                         variant="filled"
                     />
                 </InputGroup>
-                {searchResults.map((ing, i , list) => (
+                {searchResults.length === 0 && searchValue.length !== 0 &&
+                    <>
+                        <Text p={2} align={'center'}> Can't find your ingredient? Create a new one</Text>
+                        <AddIngredientModal handleAddIngredient={handleAddIngredient} />
+                    </>}
+                {searchResults.map((ing, i, list) => (
                     <Box key={ing.id}>
-                    <IngredientListItem key={ing.id} ing={ing} />
-                    {i < list.length - 1 && <Divider />}
+                        <IngredientListItem key={ing.id} ing={ing} />
+                        {i < list.length - 1 && <Divider />}
                     </Box>
                 ))}
-                <AddIngredientModal handleAddIngredient={handleAddIngredient} />
+
                 <Divider py={2} />
                 <Center py={2}>
                     <Text fontSize="xl">Added Ingredients</Text>
@@ -210,30 +208,4 @@ export default function AddIngredientField({ field, form }: FieldProps) {
         </Flex>
     );
 
-}
-
-interface AddIngredientModalProps {
-    handleAddIngredient: (ingredient: IngredientModel, quantity: number) => void;
-}
-/***
- * Modal for adding a new ingredient to the database
- * 
-  */
-function AddIngredientModal({ handleAddIngredient }: AddIngredientModalProps) {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    return (
-        <Box pb={2}>
-            <Button onClick={onOpen} colorScheme="green" width="full">Add new ingredient</Button>
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Add new ingredient</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <AddIngredientForm handleAddIngredient={handleAddIngredient} onClose={onClose} />
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
-        </Box>
-    )
 }

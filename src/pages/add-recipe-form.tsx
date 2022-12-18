@@ -82,7 +82,7 @@ export function AddRecipePage() {
     }
 
     /***
- * Helper functions to build the ingredient list from the form values
+ * Helper functions to build the ingredientList object from a list of values
  */
     function IngredientListBuilder(ingredients: { ingredientId: string, quantity: number }[]) {
         let ingredientList = ingredients.map((item) => {
@@ -99,7 +99,7 @@ export function AddRecipePage() {
     }
 
     /***
-     * Helper function to build the recipe object from the form values
+     * Helper function to build the recipe object from a list of values
      */
 
     function buildRecipe(values: Values): RecipeModel {
@@ -117,10 +117,11 @@ export function AddRecipePage() {
                     initialValues={initialValues}
                     validationSchema={recipeValidation}
                     onSubmit={(values) => {
-                        console.log("Submitting");
                         const newRecipe = buildRecipe(values);
-                        dispatch(createRecipe(newRecipe)).then((status) => {
-                            if (status) {
+                        dispatch(createRecipe(newRecipe)).then((res) => {
+                            const id = res.meta.arg.id;
+                            const requestStatus = res.meta.requestStatus;
+                            if (requestStatus === "fulfilled") {
                                 toast({
                                     title: "Recipe created",
                                     description: "Your recipe has been created",
@@ -128,11 +129,12 @@ export function AddRecipePage() {
                                     duration: 5000,
                                     isClosable: true,
                                 });
-                                navigate('/allrecipes');
-                            } else {
+                                //Should navigate to the new recipe, not the list.
+                                navigate(`/dashboard/${id}`, { replace: true });
+                            } else if (requestStatus === "rejected") {
                                 toast({
                                     title: "Error",
-                                    description: "There was an error creating your recipe",
+                                    description: "There was an error creating your recipe, please try again",
                                     status: "error",
                                     duration: 5000,
                                     isClosable: true,

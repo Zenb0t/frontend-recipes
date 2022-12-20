@@ -17,11 +17,22 @@ const initialState: RecipeState = {
     error: null,
 };
 
+function getToken(thunkAPI: any) {
+    let state = thunkAPI.getState() as RootState;
+    let token = state.users.userToken;
+    if (token === null) {
+        token = ""
+    }
+    return token;
+}
+
+
 export const createRecipe = createAsyncThunk(
     'recipes/createRecipe',
     async (recipe: RecipeModel, thunkAPI) => {
+        let token = getToken(thunkAPI);
         try {
-            const response = await recipesAPI.createRecipe(recipe);
+            const response = await recipesAPI(token).createRecipe(recipe);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -29,10 +40,12 @@ export const createRecipe = createAsyncThunk(
     }
 );
 
+//TODO: implement fetch using userId
 export const fetchRecipes = createAsyncThunk(
     'recipes/fetchRecipes',
-    async () => {
-        const response = await recipesAPI.getRecipes();
+    async (userId, thunkAPI) => {
+        let token = getToken(thunkAPI);
+        const response = await recipesAPI(token).getRecipes();
         return response.data;
     }
 );
@@ -41,7 +54,8 @@ export const updateRecipe = createAsyncThunk(
     'recipes/updateRecipe',
     async (recipe: RecipeModel, thunkAPI) => {
         try {
-            const response = await recipesAPI.updateRecipe(recipe.id, recipe);
+            let token = getToken(thunkAPI);
+            const response = await recipesAPI(token).updateRecipe(recipe.id, recipe);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -53,7 +67,8 @@ export const deleteRecipe = createAsyncThunk(
     'recipes/deleteRecipe',
     async (recipeId: string, thunkAPI) => {
         try {
-            const response = await recipesAPI.deleteRecipe(recipeId);
+            let token = getToken(thunkAPI);
+            const response = await recipesAPI(token).deleteRecipe(recipeId);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -63,9 +78,10 @@ export const deleteRecipe = createAsyncThunk(
 
 export const deleteAllRecipes = createAsyncThunk(
     'recipes/deleteAllRecipes',
-    async () => {
+    async (thunkAPI) => {
         try {
-            const response = await recipesAPI.deleteAllRecipes();
+            let token = getToken(thunkAPI);
+            const response = await recipesAPI(token).deleteAllRecipes();
             return response.data;
         } catch (error) {
             console.error(error);
@@ -77,11 +93,12 @@ export const toggleFavorite = createAsyncThunk(
     'recipes/toggleFavorite',
     async (recipe: RecipeModel, thunkAPI) => {
         try {
+            let token = getToken(thunkAPI);
             if (recipe) {
                 const clonedRecipe = clone(recipe);
 
                 clonedRecipe.favorite = !clonedRecipe.favorite;
-                const response = await recipesAPI.updateRecipe(clonedRecipe.id, clonedRecipe);
+                const response = await recipesAPI(token).updateRecipe(clonedRecipe.id, clonedRecipe);
                 return response.data;
             }
         } catch (error) {

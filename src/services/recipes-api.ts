@@ -9,7 +9,6 @@ import { IngredientModel, RecipeModel } from "../features/recipeBook/models";
  */
 export default function recipesAPI(token: string) {
     
-    console.log("token", token);
             const http = axios.create({
                 baseURL: sanitizedConfig.API_URL,
                 timeout: 1000,
@@ -28,6 +27,11 @@ export default function recipesAPI(token: string) {
                 const res = await http.get(`api/recipes`);
                 return res;
             }
+
+            const getRecipesByUser = async (userId: string) => {
+                const res = await http.get(`${userId}/api/recipes`);
+                return res;
+            }       
 
             const getRecipe = (id: string) => {
                 return http.get(`api/recipes/${id}`);
@@ -78,6 +82,7 @@ export default function recipesAPI(token: string) {
                 fetchIngredients,
                 fetchIngredient,
                 updateIngredient,
-                deleteIngredient
+                deleteIngredient,
+                getRecipesByUser
             }
         }

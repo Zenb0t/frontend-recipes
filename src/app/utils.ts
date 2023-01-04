@@ -1,9 +1,5 @@
 import { object, string, number, date, array } from 'yup';
 import { IngredientItem, IngredientModel } from '../features/recipeBook/models';
-import { useIngredientList } from './hooks';
-
-
-
 
 // yup validation schema
 export const yup = { object, string, number, date, array };

@@ -26,6 +26,8 @@ root.render(
           clientId={sanitizedConfig.AUTH0_CLIENT_ID}
           redirectUri={sanitizedConfig.AUTH0_CALLBACK_URL}
           audience={'https://panela.app/api'}
+          useRefreshTokens={true}
+          cacheLocation={'localstorage'}
         >
           <ChakraProvider theme={chakraTheme}>
             <AppRouter />

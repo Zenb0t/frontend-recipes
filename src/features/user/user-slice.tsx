@@ -1,15 +1,45 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { User } from '@auth0/auth0-react';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import apiService from '../../services/api';
+import { UserModel } from './model';
 
 export interface UserState {
-    userInfo: Object
-    userToken: string | null
-
+    userInfo: UserModel | null,
+    userToken: string | null,
+    status: string;
+    error: any;
 }
 
 const initialState = {
     userInfo: {}, // for user object
     userToken: null, // for storing the JWT token
+    status: 'idle',
+    error: null,
 } as UserState
+
+export const sendUser = createAsyncThunk(
+    'user/sendUser',
+    async (user: User) => {
+        const response = await apiService().sendUser(user);
+        return response.data;
+    }
+);
+
+export const fetchUserById = createAsyncThunk(
+    'user/fetchUser',
+    async (id: string) => {
+        const response = await apiService().getUser(id);
+        return response.data;
+    }
+);
+
+export const fetchUserbyEmail = createAsyncThunk(
+    'user/fetchUserByEmail',
+    async (email: string) => {
+        const response = await apiService().getUserByEmail(email);
+        return response.data;
+    }
+);
 
 
 
@@ -24,7 +54,42 @@ const userSlice = createSlice({
             state.userToken = action.payload
         }
     },
-    extraReducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(sendUser.fulfilled, (state, action) => {
+                state.userInfo = action.payload;
+                state.status = 'success';
+            })
+            .addCase(fetchUserbyEmail.fulfilled, (state, action) => {
+                state.userInfo = action.payload;
+                state.status = 'success';
+            })
+            .addCase(fetchUserById.fulfilled, (state, action) => {
+                state.userInfo = action.payload;
+                state.status = 'success';
+            })
+            .addCase(sendUser.rejected, (state, action) => {
+                state.userInfo = null;
+                state.status = 'error';
+            })
+            .addCase(fetchUserById.rejected, (state, action) => {
+                state.userInfo = null;
+                state.status = 'error';
+            })
+            .addCase(fetchUserbyEmail.rejected, (state, action) => {
+                state.userInfo = null;
+                state.status = 'error';
+            })
+            .addCase(sendUser.pending, (state, action) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchUserById.pending, (state, action) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchUserbyEmail.pending, (state, action) => {
+                state.status = 'loading';
+            })
+    },
 })
 
 export const selectUserToken = (state: any) => state.user.userToken;

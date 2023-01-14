@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { IngredientModel } from './models';
-import recipesAPI from '../../services/recipes-api';
+import apiService from '../../services/api';
 
 export interface IngredientState {
     ingredientList: IngredientModel[];
@@ -19,7 +19,7 @@ export const createIngredient = createAsyncThunk(
     'recipes/createIngredient',
     async (ingredient: IngredientModel, thunkAPI) => {
         try {
-            const response = await recipesAPI.createIngredient(ingredient);
+            const response = await apiService().createIngredient(ingredient);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -29,8 +29,10 @@ export const createIngredient = createAsyncThunk(
 
 export const fetchIngredients = createAsyncThunk(
     'recipes/fetchIngredients',
-    async () => {
-        const response = await recipesAPI.fetchIngredients();
+    async (userId, thunkAPI) => {
+        let state = thunkAPI.getState() as RootState;
+        let email = state.users.userInfo?.email;
+        const response = await apiService().fetchIngredients();
         return response.data;
     }
 );
@@ -39,7 +41,7 @@ export const updateIngredient = createAsyncThunk(
     'recipes/updateIngredient',
     async (ingredient: IngredientModel, thunkAPI) => {
         try {
-            const response = await recipesAPI.updateIngredient(ingredient.id, ingredient);
+            const response = await apiService().updateIngredient(ingredient.id, ingredient);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -51,7 +53,7 @@ export const deleteIngredient = createAsyncThunk(
     'recipes/deleteIngredient',
     async (ingredientId: string, thunkAPI) => {
         try {
-            const response = await recipesAPI.deleteIngredient(ingredientId);
+            const response = await apiService().deleteIngredient(ingredientId);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -68,15 +70,18 @@ export const ingredientSlice = createSlice({
         builder
             .addCase(createIngredient.fulfilled, (state, action: PayloadAction<IngredientModel>) => {
                 state.ingredientList.push(action.payload);
+                state.status = 'idle';
             })
             .addCase(fetchIngredients.fulfilled, (state, action: PayloadAction<IngredientModel[]>) => {
                 state.ingredientList = action.payload;
+                state.status = 'success';
             })
             .addCase(updateIngredient.fulfilled, (state, action: PayloadAction<IngredientModel>) => {
                 const index = state.ingredientList.findIndex(ingredient => ingredient.id === action.payload.id);
                 state.ingredientList[index] = {
                     ...state.ingredientList[index],
                     ...action.payload};
+                state.status = 'idle';
             })
             .addCase(deleteIngredient.fulfilled, (state, action: PayloadAction<IngredientModel>) => {
                 const index = state.ingredientList.findIndex(ingredient => ingredient.id === action.payload.id);
@@ -86,16 +91,19 @@ export const ingredientSlice = createSlice({
                 if (action.payload) {
                     state.error = action.payload;
                 }
+                state.status = 'error';
             })
             .addCase(updateIngredient.rejected, (state, action) => {
                 if (action.payload) {
                     state.error = action.payload;
                 }
+                state.status = 'error';
             })
             .addCase(deleteIngredient.rejected, (state, action) => {
                 if (action.payload) {
                     state.error = action.payload;
                 }
+                state.status = 'error';
             })
     },
 });

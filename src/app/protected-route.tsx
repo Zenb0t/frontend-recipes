@@ -4,26 +4,22 @@ import { Navigate } from "react-router-dom";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { fetchIngredients } from "../features/recipeBook/ingredient-slice";
 import { fetchRecipes } from "../features/recipeBook/recipe-slice";
-import { setUserInfo, setUserToken } from "../features/user/user-slice";
+import { setUserInfo, setUserToken, sendUser } from "../features/user/user-slice";
 import { useAppDispatch, useAppSelector } from "./hooks";
 
 function ProtectedRoute() {
-    const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
+    const { isAuthenticated, user} = useAuth0();
 
     const dispatch = useAppDispatch();
 
     const recipeStatus = useAppSelector(state => state.recipeBook.status);
     const ingredientStatus = useAppSelector(state => state.ingredients.status);
 
-    //Fetch recipes on mount if the user is authenticated
-    useEffect(() => {
 
-        const fetchData = async () => {
-        try {
-            let token = await getAccessTokenSilently();
+    useEffect(() => {
+        const fetchData = () => {
             if (isAuthenticated) {
-                dispatch(setUserInfo(user));
-                dispatch(setUserToken(token));
+                dispatch(sendUser(user!))
                 if (recipeStatus === 'idle') {
                     dispatch(fetchRecipes());
                 }
@@ -31,12 +27,9 @@ function ProtectedRoute() {
                     dispatch(fetchIngredients());
                 }
             }
-        } catch (e) {
-            console.log(e);
-        }
         };
         fetchData();
-    }, [recipeStatus, ingredientStatus, dispatch, isAuthenticated, getAccessTokenSilently, user]);
+    }, [recipeStatus, ingredientStatus, user, dispatch, isAuthenticated]);
 
     if (isAuthenticated) {
         return <DashboardLayout />;

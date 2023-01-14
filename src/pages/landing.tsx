@@ -44,7 +44,7 @@ export default function Landing() {
                 </Heading>
                 <Text color={'gray.500'}>
                     Say goodbye to the tedious task of manually calculating costs and hello to more time to focus on creating delicious meals.
-                    Sign up now to start using Recipe Management and Cost Calculator and take the hassle out of recipe management and ingredient cost calculation.
+                    Sign up now to start using Panela and take the hassle out of recipe management and ingredient cost calculation.
                 </Text>
                 <Stack
                     direction={'column'}

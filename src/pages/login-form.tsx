@@ -11,16 +11,25 @@ import {
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { setUserInfo, setUserToken } from '../features/user/user-slice';
+import { useAppDispatch } from '../app/hooks';
 
-export default function LoginForm() {
+export default function LoginPage() {
 
-    const { isAuthenticated, isLoading, loginWithPopup } = useAuth0();
+    const { isAuthenticated, isLoading, loginWithPopup, user, getAccessTokenSilently } = useAuth0();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (!isLoading && isAuthenticated) navigate('/dashboard');
-    }, [isAuthenticated, isLoading, navigate]);
-    
+        if (!isLoading && isAuthenticated) {
+            dispatch(setUserInfo(user));
+            getAccessTokenSilently().then((token) => {
+                dispatch(setUserToken(token));
+                navigate('/dashboard');
+            });
+        }
+    }, [dispatch, getAccessTokenSilently, isAuthenticated, isLoading, navigate, user]);
+
     return (
         <Flex
             minH={'100vh'}
@@ -33,7 +42,7 @@ export default function LoginForm() {
                     <Text fontSize={'lg'} color={'gray.600'}>
                         Sign-in to your account
                     </Text>
-                    
+
                 </Stack>
                 <Box
                     rounded={'lg'}
@@ -49,7 +58,7 @@ export default function LoginForm() {
                                     bg: 'green.500',
                                 }}
                                 onClick={() => loginWithPopup()}
-                                >
+                            >
                                 Login
                             </Button>
                             <Stack pt={6}>

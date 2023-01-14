@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { RecipeModel } from './models';
-import recipesAPI from '../../services/recipes-api';
+import apiService from '../../services/api';
 import clone from 'just-clone';
 
 
@@ -17,22 +17,11 @@ const initialState: RecipeState = {
     error: null,
 };
 
-function getToken(thunkAPI: any) {
-    let state = thunkAPI.getState() as RootState;
-    let token = state.users.userToken;
-    if (token === null) {
-        token = ""
-    }
-    return token;
-}
-
-
 export const createRecipe = createAsyncThunk(
     'recipes/createRecipe',
     async (recipe: RecipeModel, thunkAPI) => {
-        let token = getToken(thunkAPI);
         try {
-            const response = await recipesAPI(token).createRecipe(recipe);
+            const response = await apiService().createRecipe(recipe);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -43,9 +32,10 @@ export const createRecipe = createAsyncThunk(
 //TODO: implement fetch using userId
 export const fetchRecipes = createAsyncThunk(
     'recipes/fetchRecipes',
-    async (userId, thunkAPI) => {
-        let token = getToken(thunkAPI);
-        const response = await recipesAPI(token).getRecipes();
+    async (_, thunkAPI) => {
+        let state = thunkAPI.getState() as RootState;
+        let email = state.users.userInfo?.email;
+        const response = await apiService().getRecipesByUserEmail(email || "");
         return response.data;
     }
 );
@@ -54,8 +44,7 @@ export const updateRecipe = createAsyncThunk(
     'recipes/updateRecipe',
     async (recipe: RecipeModel, thunkAPI) => {
         try {
-            let token = getToken(thunkAPI);
-            const response = await recipesAPI(token).updateRecipe(recipe.id, recipe);
+            const response = await apiService().updateRecipe(recipe.id, recipe);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -67,8 +56,7 @@ export const deleteRecipe = createAsyncThunk(
     'recipes/deleteRecipe',
     async (recipeId: string, thunkAPI) => {
         try {
-            let token = getToken(thunkAPI);
-            const response = await recipesAPI(token).deleteRecipe(recipeId);
+            const response = await apiService().deleteRecipe(recipeId);
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -80,8 +68,7 @@ export const deleteAllRecipes = createAsyncThunk(
     'recipes/deleteAllRecipes',
     async (thunkAPI) => {
         try {
-            let token = getToken(thunkAPI);
-            const response = await recipesAPI(token).deleteAllRecipes();
+            const response = await apiService().deleteAllRecipes();
             return response.data;
         } catch (error) {
             console.error(error);
@@ -93,12 +80,11 @@ export const toggleFavorite = createAsyncThunk(
     'recipes/toggleFavorite',
     async (recipe: RecipeModel, thunkAPI) => {
         try {
-            let token = getToken(thunkAPI);
             if (recipe) {
                 const clonedRecipe = clone(recipe);
 
                 clonedRecipe.favorite = !clonedRecipe.favorite;
-                const response = await recipesAPI(token).updateRecipe(clonedRecipe.id, clonedRecipe);
+                const response = await apiService().updateRecipe(clonedRecipe.id, clonedRecipe);
                 return response.data;
             }
         } catch (error) {

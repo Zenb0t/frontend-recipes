@@ -1,5 +1,6 @@
 import { User } from '@auth0/auth0-react';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { RootState } from '../../app/store';
 import apiService from '../../services/api';
 import { UserModel } from './model';
 
@@ -21,7 +22,7 @@ export const sendUser = createAsyncThunk(
     'user/sendUser',
     async (user: User) => {
         const response = await apiService().sendUser(user);
-        return response.data;
+        return response.data.user;
     }
 );
 
@@ -92,8 +93,8 @@ const userSlice = createSlice({
     },
 })
 
-export const selectUserToken = (state: any) => state.user.userToken;
-export const selectUserInfo = (state: any) => state.user.userInfo;
+export const selectUserToken = (state: RootState) => state.users.userToken;
+export const selectUserInfo = (state: RootState) => state.users.userInfo;
 
 export const { setUserInfo, setUserToken } = userSlice.actions
 

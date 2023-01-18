@@ -1,9 +1,10 @@
 import { Button, ButtonGroup, Stack, VStack } from "@chakra-ui/react";
-import { useAppDispatch } from "./hooks";
+import { useAppDispatch, useAppSelector } from "./hooks";
 import { demoList, genChickenSoupRecipe } from "../services/fake-data"
 import { createRecipe, deleteAllRecipes, fetchRecipes } from '../features/recipeBook/recipe-slice';
 import { createIngredient } from "../features/recipeBook/ingredient-slice";
 import apiService from "../services/api";
+import { selectUserInfo } from "../features/user/user-slice";
 
 export const MagicButton = () => {
 
@@ -51,6 +52,7 @@ export const MagicButton = () => {
 export const DevButton = () => {
 
     const dispatch = useAppDispatch();
+    const user = useAppSelector(selectUserInfo);
 
 
     async function create() {
@@ -60,8 +62,11 @@ export const DevButton = () => {
     }
 
     async function fetch() {
-        let result = await apiService().getRecipesByUserEmail("estudiopf@gmail.com");
-        console.log(result);
+        if (!user) {
+            console.log('No user');
+            return;
+        }
+        let result = await apiService().getRecipesByUser(user.id);
         return result;
     }
 

@@ -11,7 +11,7 @@ import {
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setUserInfo, setUserToken } from '../features/user/user-slice';
+import { sendUser, setUserInfo, setUserToken } from '../features/user/user-slice';
 import { useAppDispatch } from '../app/hooks';
 
 export default function LoginPage() {
@@ -25,6 +25,7 @@ export default function LoginPage() {
             dispatch(setUserInfo(user));
             getAccessTokenSilently().then((token) => {
                 dispatch(setUserToken(token));
+                dispatch(sendUser(user!))
                 navigate('/dashboard');
             });
         }

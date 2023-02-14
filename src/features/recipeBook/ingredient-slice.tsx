@@ -80,7 +80,8 @@ export const ingredientSlice = createSlice({
                 const index = state.ingredientList.findIndex(ingredient => ingredient.id === action.payload.id);
                 state.ingredientList[index] = {
                     ...state.ingredientList[index],
-                    ...action.payload};
+                    ...action.payload
+                };
                 state.status = 'idle';
             })
             .addCase(deleteIngredient.fulfilled, (state, action: PayloadAction<IngredientModel>) => {
@@ -105,13 +106,32 @@ export const ingredientSlice = createSlice({
                 }
                 state.status = 'error';
             })
+            .addCase(fetchIngredients.rejected, (state, action) => {
+                if (action.payload) {
+                    state.error = action.payload;
+                }
+                state.status = 'error';
+            })
+            .addCase(createIngredient.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(updateIngredient.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(deleteIngredient.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchIngredients.pending, (state) => {
+                state.status = 'loading';
+            });
+
     },
 });
 
 export const selectIngredientById = (state: RootState, ingredientId: string) => {
     return state.ingredients.ingredientList.find(ingredient => ingredient.id === ingredientId);
 };
- 
+
 export const selectIngredientList = (state: RootState) => state.ingredients.ingredientList as IngredientModel[];
 
 export default ingredientSlice.reducer;

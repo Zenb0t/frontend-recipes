@@ -3,15 +3,15 @@
 [![LinkedIn][linkedin-shield]][linkedin-url]
 # Panela's Frontend
 
-This is the frontend for the Panela project, where you can manage recipes and calculate your costs.
+This is the frontend for the Panela project, where you can manage recipes and calculate their costs based on the ingredients.
 
 ## About The Project
 
 [![Panela Screen Shot][product-screenshot]](https://panela.app)
 
-Build using React, React Router and Redux Toolkit, components made using Chakra UI and form using Formik. This project uses Auth0 to provide an authentication pipeline and connects to a MongoDB database using a custom-made API designed from scratch. It's deployed to a droplet on DigitalOcean, along with a CD/CI pipeline.
+Build using React, React Router and Redux Toolkit, components made using Chakra UI and forms using Formik. This project uses Auth0 to provide an authentication pipeline and connects to a MongoDB database using a RestFUL API designed from scratch. It's deployed to a droplet on DigitalOcean, along with a CD/CI pipeline.
 
-This project is a complete app, build from the ground up, from design to implementation. Some challenges in this project have been adapting the Auth0, as some of the documentation is out of date and overall lacking, and making it play nice with React Router V6. Another challenge was using Chakra UI and Formik for more complex forms, like the add recipe, where you can search an ingredient and if not present, add a new one. Had to extend the build-in components to use Formik, and a bit of trial and error figuring out how to properly display error messages on more complex components.
+This project is a complete app, build from the ground up, from conception to design and implementation. Some challenges faced during implementation have been adapting the Auth0 and making it play nice with React Router V6. Another interesting takeaway was using Chakra UI and Formik for more complex forms, like the add recipe, where you can search an ingredient and if not present, add a new one. Had to extend the build-in components to use Formik, and a bit of trial and error figuring out how to properly display error messages on more complex components.
 
 You can see a live demo at https://panela.app
 
@@ -22,15 +22,13 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-To set up this project you must have npm and install the dependencies.
+To set up this project you must have npm and install the project dependencies.
 * npm
   ```sh
   npm install npm@latest -g
   ```
 
 ### Installation
-
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
 1. Clone the repo
    ```sh
@@ -40,7 +38,7 @@ _Below is an example of how you can instruct your audience on installing and set
    ```sh
    npm install
    ```
-3. Create a .env file with your the below details
+3. Create a .env file with the below entries:
    ```env
    REACT_APP_API_URL=https://panela-server-0-gmmv3.ondigitalocean.app/
    REACT_APP_AUTH0_DOMAIN=zenbot.us.auth0.com

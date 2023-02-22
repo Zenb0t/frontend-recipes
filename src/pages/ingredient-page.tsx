@@ -1,11 +1,10 @@
-import { Box, Divider, Input, InputGroup, InputLeftElement, useBreakpointValue, useColorModeValue } from "@chakra-ui/react";
+import { Box, Divider, Input, InputGroup, InputLeftElement, useColorModeValue } from "@chakra-ui/react";
 import { ChangeEvent, useState } from "react";
 import { MdSearch } from "react-icons/md";
 import { useAppSelector } from "../app/hooks";
+import AddIngredientModal from "../components/add-ingredient-modal";
 import { IngredientListTable } from "../components/ingredient-table";
-
 import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
-import { AddIngredientForm } from "./add-ingredient-form";
 
 export function IngredientPage() {
 
@@ -35,7 +34,7 @@ export function IngredientPage() {
             bg={useColorModeValue("white", "gray.800")}
             borderRadius="lg">
             <Box p={4}>
-                <AddIngredientForm />
+                <AddIngredientModal/>
             </Box>
                 <Divider p={1} />
             <Box p={4} py={6}>

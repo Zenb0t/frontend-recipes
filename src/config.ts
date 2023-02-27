@@ -3,6 +3,7 @@
 // If additional configuration variables are needed, they should be added to the .env file and then added to the interface below.
 
 
+
 interface ENV {
     API_URL: string | undefined;
     AUTH0_DOMAIN: string | undefined;
@@ -19,10 +20,10 @@ interface Config {
 
 const getConfig = (): ENV => {
     return {
-        API_URL: process.env.REACT_APP_DEV_API_URL,
-        AUTH0_DOMAIN: process.env.REACT_APP_AUTH0_DOMAIN,
-        AUTH0_CLIENT_ID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-        AUTH0_CALLBACK_URL: process.env.REACT_APP_AUTH0_CALLBACK_URL,
+        API_URL: import.meta.env.VITE_DEV_API_URL,
+        AUTH0_DOMAIN: import.meta.env.VITE_AUTH0_DOMAIN,
+        AUTH0_CLIENT_ID: import.meta.env.VITE_AUTH0_CLIENT_ID,
+        AUTH0_CALLBACK_URL: import.meta.env.VITE_AUTH0_CALLBACK_URL,
     }
 }
 

@@ -83,6 +83,4 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
         </Wrap>
     </Box>
     );
-
-
 }

@@ -14,7 +14,7 @@ interface AddIngredientFormProps {
 
 /***
  * Form to add a new ingredient to the store list
- * If using with a closable component, pass in the onClose function to close the modal
+ * Accepts an onClose function to close the containing modal.
  * if need to capture the ingredient after submission, pass in a handleAddIngredient function.
  */
 export function AddIngredientForm({ onClose, handleAddIngredient }: AddIngredientFormProps) {
@@ -59,8 +59,10 @@ export function AddIngredientForm({ onClose, handleAddIngredient }: AddIngredien
                     values.unitCost = values.cost / values.amount;
                     const newIngredient: IngredientModel = { ...values }
                     dispatch(createIngredient(newIngredient));
-                    if (handleAddIngredient && onClose) {
+                    if (handleAddIngredient) {
                         handleAddIngredient(newIngredient, values.quantity);
+                    } 
+                    if (onClose) {
                         onClose();
                     }
                     actions.resetForm();

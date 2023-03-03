@@ -21,6 +21,7 @@ import AddIngredientField from "../components/add-ingredient-field";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
+import AddInstructionField from "../components/add-instruction-field";
 
 
 export function EditRecipePage() {
@@ -44,7 +45,7 @@ export function EditRecipePage() {
         hours: number;
         minutes: number;
         ingredients: { ingredientId: string, quantity: number }[];
-        instructions: string;
+        instructions: string[];
         imageUrl: string;
         favorite: boolean;
         id: string;
@@ -58,7 +59,7 @@ export function EditRecipePage() {
         minutes: recipe!.totalTime.minutes,
         ingredients: IngredientIdListBuilder(recipe!.ingredients),
         //Split instructions into an array of strings
-        instructions: recipe!.instructions.join(" "),
+        instructions: recipe!.instructions,
         imageUrl: recipe!.imageUrl,
         favorite: recipe!.favorite,
         id: recipe!.id,
@@ -74,7 +75,7 @@ export function EditRecipePage() {
             ingredientId: yup.string().required('Required'),
             quantity: yup.number().moreThan(0, 'Must be greater than 0').required('Required'),
         })),
-        instructions: yup.string().required('Must provide instructions'),
+        instructions: yup.array().of(yup.string().required('Required')),
         imageUrl: yup.string().required('Required'),
     });
 
@@ -90,9 +91,9 @@ export function EditRecipePage() {
         }
     }
 
-       /***
-     * Helper function to get a id Ingredient list from the recipe
-     */
+    /***
+  * Helper function to get a id Ingredient list from the recipe
+  */
 
     function IngredientIdListBuilder(ingredients: IngredientItem[]) {
         let idList = ingredients.map((item) => { return { ingredientId: item.ingredient.id, quantity: item.quantity }; });
@@ -107,12 +108,11 @@ export function EditRecipePage() {
         const ingredientList = IngredientListBuilder(ingredients, values.ingredients);
         values.cost = ingredientList.reduce((sum, ing) => sum + ing.cost, 0);
         const time = { hours: values.hours, minutes: values.minutes };
-        const instructions = values.instructions.split('\r\n');
-        return { ...values, ingredients: ingredientList, totalTime: time, instructions: instructions, };
+        return { ...values, ingredients: ingredientList, totalTime: time, };
     }
 
     //Log the form values to the console
-    useEffect (() => {
+    useEffect(() => {
         console.log(initialValues);
     }, []);
 
@@ -208,10 +208,10 @@ export function EditRecipePage() {
                                         <FormErrorMessage>{errors.minutes}</FormErrorMessage>
                                     </FormControl>
                                 </Flex>
-                                <FormControl isInvalid={!!errors.instructions && touched.instructions}>
+                                <FormControl isInvalid={!!errors.instructions && touched.instructions as boolean | undefined}>
                                     <FormLabel htmlFor="instructions">Instructions</FormLabel>
                                     <Field
-                                        as={Textarea}
+                                        component={AddInstructionField}
                                         id="instructions"
                                         name="instructions"
                                         type="instructions"

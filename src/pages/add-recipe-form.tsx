@@ -20,6 +20,7 @@ import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
 import { createRecipe } from "../features/recipeBook/recipe-slice";
 import AddIngredientField from "../components/add-ingredient-field";
 import { useNavigate } from "react-router-dom";
+import AddInstructionField from "../components/add-instruction-field";
 
 
 export function AddRecipePage() {
@@ -36,7 +37,7 @@ export function AddRecipePage() {
         hours: number;
         minutes: number;
         ingredients: { ingredientId: string, quantity: number }[];
-        instructions: string;
+        instructions: [];
         imageUrl: string;
         favorite: boolean;
         id: string;
@@ -49,7 +50,7 @@ export function AddRecipePage() {
         hours: 0,
         minutes: 0,
         ingredients: [],
-        instructions: '',
+        instructions: [],
         imageUrl: '',
         favorite: false,
         id: '',
@@ -65,7 +66,7 @@ export function AddRecipePage() {
             ingredientId: yup.string().required('Required'),
             quantity: yup.number().moreThan(0, 'Must be greater than 0').required('Required'),
         })),
-        instructions: yup.string().required('Must provide instructions'),
+        instructions: yup.array().of(yup.string().required('Required')),
         imageUrl: yup.string().required('Required'),
     });
 
@@ -106,8 +107,7 @@ export function AddRecipePage() {
         const ingredientList = IngredientListBuilder(values.ingredients);
         values.cost = ingredientList.reduce((sum, ing) => sum + ing.cost, 0);
         const time = { hours: values.hours, minutes: values.minutes };
-        const instructions = values.instructions.split('\r\n');
-        return { ...values, ingredients: ingredientList, totalTime: time, instructions: instructions, };
+        return { ...values, ingredients: ingredientList, totalTime: time, };
     }
 
     return (
@@ -202,10 +202,10 @@ export function AddRecipePage() {
                                         <FormErrorMessage>{errors.minutes}</FormErrorMessage>
                                     </FormControl>
                                 </Flex>
-                                <FormControl isInvalid={!!errors.instructions && touched.instructions}>
+                                <FormControl isInvalid={!!errors.instructions && touched.instructions as boolean | undefined}>
                                     <FormLabel htmlFor="instructions">Instructions</FormLabel>
                                     <Field
-                                        as={Textarea}
+                                        component={AddInstructionField}
                                         id="instructions"
                                         name="instructions"
                                         type="instructions"

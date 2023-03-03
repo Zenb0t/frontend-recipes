@@ -2,7 +2,6 @@ import axios from "axios";
 import sanitizedConfig from "../config";
 import { IngredientModel, RecipeModel } from "../features/recipeBook/models";
 import { store } from "../app/store";
-import { UserModel } from "../features/user/model";
 import { User } from "@auth0/auth0-react";
 
 /***

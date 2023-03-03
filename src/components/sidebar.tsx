@@ -147,7 +147,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             justifyContent={{ base: "space-between", md: "flex-end" }}
             {...rest}
         >
-            <DevButton />
+            {/* <DevButton /> */}
             <IconButton
                 display={{ base: "flex", md: "none" }}
                 onClick={onOpen}

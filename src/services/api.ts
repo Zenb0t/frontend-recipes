@@ -48,31 +48,31 @@ export default function apiService() {
     // Recipe API calls
 
     const createRecipe = async (recipe: RecipeModel) => {
-        const res = await http.post(`api/u/recipes`, recipe, {params: {userId: currentUser!.id}});
+        const res = await http.post(`api/recipes`, recipe, {params: {userId: currentUser!.id}});
         return res;
     }
 
     const getRecipes = async () => {
-        const res = await http.get(`api/u/recipes`, );
+        const res = await http.get(`api/recipes`, );
         return res;
     }
 
     const getRecipesByUser = async (userId: string) => {
-        const res = await http.get(`api/u/recipes/all`, { params: { userId: userId} });
+        const res = await http.get(`api/recipes/all`, { params: { userId: userId} });
         return res;
     }
 
     const getRecipesByUserEmail = async (email: string) => {
-        const res = await http.get(`api/u/recipes`, { params: { email: email } });
+        const res = await http.get(`api/recipes`, { params: { email: email } });
         return res;
     }
 
     const getRecipe = (id: string) => {
-        return http.get(`api/u/recipes/${id}`);
+        return http.get(`api/recipes/${id}`);
     }
 
     const updateRecipe = (id: string, recipe: RecipeModel) => {
-        return http.put(`api/u/recipes/${id}`, recipe);
+        return http.put(`api/recipes/${id}`, recipe);
     }
 
     const deleteRecipe = (id: string) => {
@@ -86,25 +86,25 @@ export default function apiService() {
     // Ingredient API calls
 
     const createIngredient = async (ingredient: IngredientModel) => {
-        const res = await http.post(`api/u/ingredients`, ingredient);
+        const res = await http.post(`api/ingredients`, ingredient);
         return res;
     }
 
     const fetchIngredients = async () => {
-        const res = await http.get(`api/u/ingredients`);
+        const res = await http.get(`api/ingredients`);
         return res;
     }
 
     const fetchIngredient = (id: string) => {
-        return http.get(`api/u/ingredients/${id}`);
+        return http.get(`api/ingredients/${id}`);
     }
 
     const updateIngredient = (id: string, ingredient: IngredientModel) => {
-        return http.put(`api/u/ingredients/${id}`, ingredient);
+        return http.put(`api/ingredients/${id}`, ingredient);
     }
 
     const deleteIngredient = (id: string) => {
-        return http.delete(`api/u/ingredients/${id}`);
+        return http.delete(`api/ingredients/${id}`);
     }
 
     return {

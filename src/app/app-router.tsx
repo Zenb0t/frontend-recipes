@@ -2,7 +2,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import RecipeCardListPage from "../pages/recipecard-list";
 import { useAppSelector } from "./hooks";
 import { selectRecipes, selectFavoriteRecipes, } from "../features/recipeBook/recipe-slice";
-import { AddRecipePage } from "../pages/add-recipe-form";
+import { AddRecipePage } from "../pages/addRecipeForm";
 import { Center, Spinner } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Text } from "@chakra-ui/react";

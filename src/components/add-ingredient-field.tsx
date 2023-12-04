@@ -22,7 +22,7 @@ import { useAppSelector } from "../app/hooks";
 import { IngredientListBuilder } from "../app/utils";
 import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
 import { IngredientItem, IngredientModel } from "../features/recipeBook/models";
-import AddIngredientModal from "./add-ingredient-modal";
+import AddIngredientModal from "./addIngredientModal";
 
 /***
  * Adds a list of ingredients id and quantities to the [Formik] form field.

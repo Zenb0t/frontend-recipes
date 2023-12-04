@@ -146,38 +146,42 @@ export function AddRecipePage() {
                     {({ handleSubmit, errors, touched }) => (
                         <Form onSubmit={handleSubmit}>
                             <VStack spacing={4} align="flex-start">
-                                <FormControl isInvalid={!!errors.title && touched.title}>
-                                    <FormLabel htmlFor="title">Recipe Title</FormLabel>
-                                    <Field
-                                        as={Input}
-                                        id="title"
-                                        name="title"
-                                        type="title"
-                                        variant="filled"
-                                    />
-                                    <FormErrorMessage>{errors.title}</FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.imageUrl && touched.imageUrl}>
-                                    <FormLabel htmlFor="imageUrl">Image URL</FormLabel>
-                                    <Field
-                                        component={ImageURLFormField}
-                                        id="imageUrl"
-                                        name="imageUrl"
-                                        variant="filled"
-                                    />
-                                    <FormErrorMessage>{errors.imageUrl}</FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.description && touched.description}>
-                                    <FormLabel htmlFor="Description">Description</FormLabel>
-                                    <Field
-                                        as={Textarea}
-                                        id="description"
-                                        name="description"
-                                        type="description"
-                                        variant="filled"
-                                    />
-                                    <FormErrorMessage>{errors.description}</FormErrorMessage>
-                                </FormControl>
+                                <Flex direction={{ base: "column", md: "row" }} justify="space-between" gap={4}>
+                                    <VStack spacing={4} align="flex-start">
+                                        <FormControl isInvalid={!!errors.title && touched.title}>
+                                            <FormLabel htmlFor="title">Recipe Title</FormLabel>
+                                            <Field
+                                                as={Input}
+                                                id="title"
+                                                name="title"
+                                                type="title"
+                                                variant="filled"
+                                            />
+                                            <FormErrorMessage>{errors.title}</FormErrorMessage>
+                                        </FormControl>
+                                        <FormControl isInvalid={!!errors.description && touched.description}>
+                                            <FormLabel htmlFor="Description">Description</FormLabel>
+                                            <Field
+                                                as={Textarea}
+                                                id="description"
+                                                name="description"
+                                                type="description"
+                                                variant="filled"
+                                            />
+                                            <FormErrorMessage>{errors.description}</FormErrorMessage>
+                                        </FormControl>
+                                    </VStack>
+                                    <FormControl isInvalid={!!errors.imageUrl && touched.imageUrl}>
+                                        <FormLabel htmlFor="imageUrl">Image URL</FormLabel>
+                                        <Field
+                                            component={ImageURLFormField}
+                                            id="imageUrl"
+                                            name="imageUrl"
+                                            variant="filled"
+                                        />
+                                        <FormErrorMessage>{errors.imageUrl}</FormErrorMessage>
+                                    </FormControl>
+                                </Flex>
                                 <Flex gap={4}>
                                     <FormControl isInvalid={!!errors.hours && touched.hours}>
                                         <FormLabel htmlFor="Hours">Hours</FormLabel>

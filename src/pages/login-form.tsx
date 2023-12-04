@@ -24,7 +24,6 @@ export default function LoginPage() {
         if (!isLoading && isAuthenticated && user) {
             dispatch(setUserInfo(user));
             getAccessTokenSilently().then((token) => {
-                console.log(token);
                 dispatch(setUserToken(token));
                 dispatch(sendUser({ user, token })); // Send user and token together
                 navigate('/dashboard');

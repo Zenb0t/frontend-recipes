@@ -11,7 +11,7 @@ import {
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setUserInfo, setUserToken } from '../features/user/user-slice';
+import { sendUser, setUserInfo, setUserToken } from '../features/user/user-slice';
 import { useAppDispatch } from '../app/hooks';
 
 export default function LoginPage() {
@@ -21,14 +21,17 @@ export default function LoginPage() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (!isLoading && isAuthenticated) {
+        if (!isLoading && isAuthenticated && user) {
             dispatch(setUserInfo(user));
             getAccessTokenSilently().then((token) => {
+                console.log(token);
                 dispatch(setUserToken(token));
+                dispatch(sendUser({ user, token })); // Send user and token together
                 navigate('/dashboard');
             });
         }
     }, [dispatch, getAccessTokenSilently, isAuthenticated, isLoading, navigate, user]);
+    
 
     return (
         <Flex

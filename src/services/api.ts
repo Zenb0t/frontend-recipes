@@ -3,6 +3,7 @@ import sanitizedConfig from "../config";
 import { IngredientModel, RecipeModel } from "../features/recipeBook/models";
 import { store } from "../app/store";
 import { User } from "@auth0/auth0-react";
+import { Recipe } from "../types/recipe";
 
 /***
  * This service handles all the API calls to the backend
@@ -48,8 +49,8 @@ export default function apiService() {
 
     // Recipe API calls
 
-    const createRecipe = async (recipe: RecipeModel) => {
-        const res = await http.post(`api/recipes`, recipe, {params: {userId: currentUser!.id}});
+    const createRecipe = async (recipe: Recipe) => {
+        const res = await http.post(`api/recipes`, recipe, {params: {userId: currentUser!._id}});
         return res;
     }
 

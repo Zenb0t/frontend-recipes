@@ -3,6 +3,7 @@ import { RootState } from '../../app/store';
 import { RecipeModel } from './models';
 import apiService from '../../services/api';
 import clone from 'just-clone';
+import { Recipe } from '../../types/recipe';
 
 
 export interface RecipeState {
@@ -19,7 +20,7 @@ const initialState: RecipeState = {
 
 export const createRecipe = createAsyncThunk(
     'recipes/createRecipe',
-    async (recipe: RecipeModel, thunkAPI) => {
+    async (recipe: Recipe, thunkAPI) => {
         try {
             const response = await apiService().createRecipe(recipe);
             return response.data;

@@ -22,8 +22,7 @@ export const sendUser = createAsyncThunk(
   "user/sendUser",
   async (user: User) => {
     const response = await apiService().sendUser(user);
-    console.log(response.data.user);
-    return response.data.user;
+    return response.data;
   }
 );
 

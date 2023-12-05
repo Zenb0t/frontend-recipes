@@ -9,6 +9,7 @@ interface ENV {
     AUTH0_DOMAIN: string | undefined;
     AUTH0_CLIENT_ID: string | undefined;
     AUTH0_CALLBACK_URL: string | undefined;
+    AUTH0_AUDIENCE: string;
 }
 
 interface Config {
@@ -16,6 +17,7 @@ interface Config {
     AUTH0_DOMAIN: string;
     AUTH0_CLIENT_ID: string;
     AUTH0_CALLBACK_URL: string;
+    AUTH0_AUDIENCE: string;
 }
 
 const getConfig = (): ENV => {
@@ -24,6 +26,7 @@ const getConfig = (): ENV => {
         AUTH0_DOMAIN: import.meta.env.VITE_AUTH0_DOMAIN,
         AUTH0_CLIENT_ID: import.meta.env.VITE_AUTH0_CLIENT_ID,
         AUTH0_CALLBACK_URL: import.meta.env.VITE_AUTH0_CALLBACK_URL,
+        AUTH0_AUDIENCE: import.meta.env.VITE_AUTH0_AUDIENCE,
     }
 }
 

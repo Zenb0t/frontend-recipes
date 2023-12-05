@@ -31,6 +31,7 @@ export default function apiService() {
      */
     const sendUser = async (user: User) => {
         const res = await http.post(`api/u/`, user);
+        console.log(res);
         return res;
     }
 

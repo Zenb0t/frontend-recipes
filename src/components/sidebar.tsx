@@ -45,11 +45,11 @@ interface LinkItemProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-    { name: "Home", icon: MdHome, href: "/dashboard/" },
-    { name: "Add Recipe", icon: MdNoteAdd, href: "/dashboard/add-recipe" },
+    // { name: "Home", icon: MdHome, href: "/dashboard/" },
     { name: "Recipes", icon: MdMenuBook, href: "/dashboard/allrecipes" },
+    { name: "Add Recipe", icon: MdNoteAdd, href: "/dashboard/add-recipe" },
     { name: "Ingredients", icon: CgSmartHomeRefrigerator, href: "/dashboard/ingredients" },
-    { name: "Favorites", icon: MdFavorite, href: "/dashboard/favorites" },
+    // { name: "Favorites", icon: MdFavorite, href: "/dashboard/favorites" },
     // { name: "Settings", icon: MdSettings , href: "/settings" }, //TODO: Finish this component
 ];
 

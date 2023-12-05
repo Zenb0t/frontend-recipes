@@ -34,8 +34,8 @@ export const fetchRecipes = createAsyncThunk(
     'recipes/fetchRecipes',
     async (_, thunkAPI) => {
         let state = thunkAPI.getState() as RootState;
-        let email = state.users.userInfo?.email;
-        const response = await apiService().getRecipesByUserEmail(email || "");
+        let id = state.users.userInfo?._id;
+        const response = await apiService().getRecipesByUser(id || "");
         return response.data;
     }
 );

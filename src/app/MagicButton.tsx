@@ -66,7 +66,7 @@ export const DevButton = () => {
             console.log('No user');
             return;
         }
-        let result = await apiService().getRecipesByUser(user.id);
+        let result = await apiService().getRecipesByUser(user._id);
         return result;
     }
 

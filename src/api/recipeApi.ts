@@ -1,43 +1,71 @@
-import { store } from "../app/store";
 import { Recipe } from "../types/recipe";
 import http from "./api";
 
-const currentUser = store.getState().users.userInfo;
 
-const createRecipe = async (recipe: Recipe) => {
-  const res = await http.post(`/recipes`, recipe, {
-    params: { userId: currentUser!._id },
-  });
-  return res;
+export const createRecipe = async (recipe: Recipe) => {
+  try {
+    const res = await http.post(`/recipes`, recipe);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const getRecipes = async () => {
-  const res = await http.get(`/recipes`);
-  return res;
+export const getRecipes = async () => {
+  try {
+    const res = await http.get(`/recipes`);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const getRecipesByUser = async (userId: string) => {
-  const res = await http.get(`/recipes/all`, { params: { userId: userId } });
-  return res;
+export const getRecipesByUser = async (userId: string) => {
+  try {
+    const res = await http.get(`/recipes/all`, { params: { userId: userId } });
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const getRecipesByUserEmail = async (email: string) => {
-  const res = await http.get(`/recipes`, { params: { email: email } });
-  return res;
+export const getRecipesByUserEmail = async (email: string) => {
+  try {
+    const res = await http.get(`/recipes`, { params: { email: email } });
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const getRecipe = (id: string) => {
-  return http.get(`/recipes/${id}`);
+export const getRecipe = async (id: string) => {
+  try {
+    return await http.get(`/recipes/${id}`);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const updateRecipe = (id: string, recipe: Recipe) => {
-  return http.put(`/recipes/${id}`, recipe);
+export const updateRecipe = async (id: string, recipe: Recipe) => {
+  try {
+    return await http.put(`/recipes/${id}`, recipe);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const deleteRecipe = (id: string) => {
-  return http.delete(`/recipes/${id}`);
+export const deleteRecipe = async (id: string) => {
+  try {
+    return await http.delete(`/recipes/${id}`);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-const deleteAllRecipes = () => {
-  return http.delete(`/recipes`);
+export const deleteAllRecipes = async () => {
+  try {
+    return await http.delete(`/recipes`);
+  } catch (error) {
+    console.error(error);
+  }
 };

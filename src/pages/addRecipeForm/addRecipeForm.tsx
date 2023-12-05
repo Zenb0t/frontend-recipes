@@ -12,15 +12,15 @@ import {
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
-import { yup } from "../app/utils";
-import { IngredientItem, RecipeModel } from "../features/recipeBook/models";
-import { ImageURLFormField } from "../components/fileUpload";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
-import { createRecipe } from "../features/recipeBook/recipe-slice";
-import AddIngredientField from "../components/add-ingredient-field";
+import { yup } from "../../app/utils";
+import { IngredientItem, RecipeModel } from "../../features/recipeBook/models";
+import { ImageURLFormField } from "../../components/fileUpload";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectIngredientList } from "../../features/recipeBook/ingredient-slice";
+import { createRecipe } from "../../features/recipeBook/recipe-slice";
+import AddIngredientField from "../../components/add-ingredient-field";
 import { useNavigate } from "react-router-dom";
-import AddInstructionField from "../components/add-instruction-field";
+import AddInstructionField from "../../components/add-instruction-field";
 
 interface Values {
   title: string;

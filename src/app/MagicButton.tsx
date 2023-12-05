@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "./hooks";
 import { demoList, genChickenSoupRecipe } from "../services/fake-data"
 import { createRecipe, deleteAllRecipes, fetchRecipes } from '../features/recipeBook/recipe-slice';
 import { createIngredient } from "../features/recipeBook/ingredient-slice";
-import apiService from "../services/api";
+import apiService from "../api/api";
 import { selectUserInfo } from "../features/user/user-slice";
 
 export const MagicButton = () => {

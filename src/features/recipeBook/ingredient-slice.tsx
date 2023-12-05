@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { IngredientModel } from './models';
-import apiService from '../../services/api';
+import apiService from '../../api/api';
 
 export interface IngredientState {
     ingredientList: IngredientModel[];

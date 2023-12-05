@@ -1,7 +1,7 @@
 import { User } from "@auth0/auth0-react";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import apiService from "../../services/api";
+import apiService from "../../api/api";
 import { UserModel } from "./model";
 
 export interface UserState {

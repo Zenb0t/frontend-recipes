@@ -5,8 +5,7 @@ import {
   selectRecipes,
   selectFavoriteRecipes,
 } from "../features/recipeBook/recipe-slice";
-import { AddRecipePage } from "../pages/addRecipeForm/addRecipeForm";
-import  RecipeForm  from "../pages/addRecipeForm/RecipeForm";
+import  RecipeForm  from "../pages/RecipeForm/RecipeForm";
 import { Center, Spinner } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Text } from "@chakra-ui/react";

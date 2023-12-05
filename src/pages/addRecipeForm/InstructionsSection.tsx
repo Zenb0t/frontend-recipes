@@ -1,48 +1,77 @@
-import React from 'react';
-import { Field, FieldArray, FormikHelpers, useFormikContext } from 'formik';
-import { Button, FormControl, FormLabel, Textarea, Box, Flex, IconButton } from '@chakra-ui/react';
-import { CloseIcon } from '@chakra-ui/icons';
-import { Recipe } from '../../types/recipe';
+import React from "react";
+import { Field, FieldArray, useFormikContext } from "formik";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Textarea,
+  Box,
+  Flex,
+  IconButton,
+  FormErrorMessage,
+} from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
+import { Recipe } from "../../types/recipe";
 
-export interface InstructionsSectionProps {
-	instructions: string[];
-	setFieldValue: FormikHelpers<any>['setFieldValue'];
-  }
+const InstructionsSection = () => {
+  const { values, errors, touched } = useFormikContext<Recipe>();
 
-  const InstructionsSection = () => {
-    const { values, setFieldValue } = useFormikContext<Recipe>();
+  const getInstructionError = (index: number) => {
+    const touchedInstructions = touched.instructions as boolean[] | undefined;
+    const errorsInstructions = errors.instructions as string[] | undefined;
 
-    return (
-        <Box p={4}>
-            <FormLabel>Instructions</FormLabel>
-            <FieldArray name="instructions">
-                {({ push, remove }) => (
-                    <>
-                        {values.instructions.map((instruction, index) => (
-                            <Flex key={index} align="center" mb={4}>
-                                {/* Instruction Text */}
-                                <FormControl flex="1" mr={2}>
-                                    <Field as={Textarea} name={`instructions[${index}]`} placeholder={`Step ${index + 1}`} />
-                                </FormControl>
+    const touchedInstruction = touchedInstructions
+      ? touchedInstructions[index]
+      : false;
+    const errorsInstruction = errorsInstructions
+      ? errorsInstructions[index]
+      : null;
 
-                                {/* Remove Button */}
-                                <IconButton
-                                    aria-label="Remove instruction"
-                                    icon={<CloseIcon />}
-                                    onClick={() => remove(index)}
-                                />
-                            </Flex>
-                        ))}
+    return touchedInstruction && errorsInstruction ? errorsInstruction : null;
+  };
 
-                        {/* Add Instruction Button */}
-                        <Button mt={2} onClick={() => push('')}>
-                            Add Step
-                        </Button>
-                    </>
-                )}
-            </FieldArray>
-        </Box>
-    );
+  return (
+    <Box p={4}>
+      <FormLabel>Instructions</FormLabel>
+      <FieldArray name="instructions">
+        {({ push, remove }) => (
+          <>
+            {values.instructions.map((instruction, index) => (
+              <Flex key={index} align="center" mb={4}>
+                {/* Instruction Text */}
+                <FormControl
+                  isInvalid={!!getInstructionError(index)}
+                  flex="1"
+                  mr={2}
+                >
+                  <Field
+                    as={Textarea}
+                    name={`instructions[${index}]`}
+                    placeholder={`Step ${index + 1}`}
+                  />
+                  <FormErrorMessage>
+                    {getInstructionError(index)}
+                  </FormErrorMessage>
+                </FormControl>
+
+                {/* Remove Button */}
+                <IconButton
+                  aria-label="Remove instruction"
+                  icon={<CloseIcon />}
+                  onClick={() => remove(index)}
+                />
+              </Flex>
+            ))}
+
+            {/* Add Instruction Button */}
+            <Button mt={2} onClick={() => push("")}>
+              Add Step
+            </Button>
+          </>
+        )}
+      </FieldArray>
+    </Box>
+  );
 };
 
 export default InstructionsSection;

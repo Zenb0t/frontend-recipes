@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import { Recipe, IngredientItem } from "../../types/recipe";
+import { Recipe } from "../../types/recipe";
 import RecipeInfoSection from "./RecipeInfoSection";
 import IngredientsSection from "./IngredientsSection";
 import InstructionsSection from "./InstructionsSection";
@@ -11,9 +11,14 @@ import {
   Divider,
   Flex,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { MeasuringUnit } from "../../types/ingredient";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { createRecipe } from "../../features/recipeBook/recipe-slice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router-dom";
 
 const initialValues: Recipe = {
   title: "",
@@ -24,9 +29,9 @@ const initialValues: Recipe = {
       ingredient: {
         name: "",
         measuringUnit: MeasuringUnit.TEASPOON,
-        amount: 0,
+        amount: 1,
       },
-      quantity: 1,
+      quantity: 0,
       measuringUnit: MeasuringUnit.TEASPOON,
     },
   ],
@@ -49,18 +54,54 @@ const validationSchema = Yup.object({
         measuringUnit: Yup.string().required("Required"),
         amount: Yup.number().required("Required").positive("Must be positive"),
       }),
+      quantity: Yup.number().required("Required").positive("Must be positive"),
+      measuringUnit: Yup.string().required("Required"),
     })
   ),
   instructions: Yup.array().of(Yup.string().required("Required")),
   imageUrl: Yup.string().required("Required"),
-  ownerId: Yup.string().required("Required"),
   sourceUrl: Yup.string().url("Must be a valid URL"),
 });
 
 const RecipeForm = () => {
-  const handleSubmit = (values: Recipe) => {
-    // API call or state update
-    console.log(values);
+  const dispatch = useAppDispatch();
+  const toast = useToast();
+  const navigate = useNavigate();
+  const user = useAppSelector((state) => state.users.userInfo);
+
+  const handleSubmit = async (values: Recipe) => {
+    console.log("Submitting recipe: ", values);
+	console.log("User: ", user);
+    try {
+      if (!user?._id) {
+        throw new Error("No user found");
+      }
+      values.ownerId = user._id;
+      // Dispatch the action and wait for the result
+      const resultAction = await dispatch(createRecipe(values));
+      const newRecipe: Recipe = unwrapResult(resultAction);
+
+      // Show success toast
+      toast({
+        title: "Recipe created",
+        description: "Your recipe has been created",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+
+      // Navigate to the new recipe page, assuming newRecipe contains the ID
+      navigate(`/recipes/${newRecipe._id}`);
+    } catch (err: any) {
+      // Handle errors
+      toast({
+        title: "Failed to create recipe",
+        description: err.message || "There was an error creating the recipe.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -76,7 +117,7 @@ const RecipeForm = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ values, setFieldValue }) => (
+        {() => (
           <Form>
             <RecipeInfoSection />
             <Box px={8}>

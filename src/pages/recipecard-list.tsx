@@ -1,24 +1,37 @@
 import { RecipeCard } from "../components/recipe-card";
 import { RecipeModel } from "../features/recipeBook/models";
-import { Text, SimpleGrid, Box } from "@chakra-ui/react";
+import { Text, SimpleGrid, Box, Center, Spinner } from "@chakra-ui/react";
 import { Recipe } from "../types/recipe";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { useEffect } from "react";
 import { fetchRecipes } from "../features/recipeBook/recipe-slice";
 
 export default function RecipeCardListPage() {
-  const recipes = useAppSelector((state) => state.recipeBook.recipeList);
+  const {recipeList, status } = useAppSelector((state) => state.recipeBook);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  function fetchData() {
     dispatch(fetchRecipes());
+  }
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
-  if (!recipes) {
+  useEffect(() => {
+    if (recipeList.length === 0 && status !== "idle") {
+      fetchData();
+    }
+  }, [recipeList, status]);
+
+  if (recipeList.length === 0) {
     return (
-      <Text p={6} mb={4} variant="h5" align="center">
-        Loading...
-      </Text>
+      <Center w={"full"} h={"50vh"}>
+        <Text fontSize={"lg"} color={"gray.600"}>
+          Loading...
+        </Text>
+        <Spinner size="xl" color={"green.500"} />
+      </Center>
     );
   }
 
@@ -29,12 +42,12 @@ export default function RecipeCardListPage() {
       spacing="24px"
       justifyItems="center"
     >
-      {recipes.length === 0 ? (
+      {recipeList.length === 0 ? (
         <Text p={6} mb={4} variant="h5" align="center">
-          No recipes found. Create a new Recipe or Generate one!
+          No recipes found. Create a new Recipe or Generate one from a url!
         </Text>
       ) : (
-        recipes.map((recipe: Recipe) => (
+        recipeList.map((recipe: Recipe) => (
           <Box key={recipe._id}>
             <RecipeCard recipe={recipe} />
           </Box>

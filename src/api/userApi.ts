@@ -1,7 +1,6 @@
 import { UserModel } from "../types/user";
 import http from "./api";
 
-
 /**
  * Sends a user object to the server.
  * @param user - The user object to send.
@@ -10,8 +9,7 @@ import http from "./api";
  */
 export const sendUser = async (user: UserModel) => {
   try {
-    const res = await http.post(`/`, user);
-    console.log(res);
+    const res = await http.post(`/u/`, user);
     return res;
   } catch (error) {
     console.error(error);
@@ -21,7 +19,7 @@ export const sendUser = async (user: UserModel) => {
 
 export const getUser = async (id: string) => {
   try {
-    return await http.get(`/id/${id}`);
+    return await http.get(`/u/id/${id}`);
   } catch (error) {
     console.error(error);
     throw error;
@@ -30,7 +28,7 @@ export const getUser = async (id: string) => {
 
 export const getUserByEmail = async (email: string) => {
   try {
-    return await http.get(`/email/${email}`);
+    return await http.get(`/u/email/${email}`);
   } catch (error) {
     console.error(error);
     throw error;
@@ -39,7 +37,7 @@ export const getUserByEmail = async (email: string) => {
 
 export const updateUser = async (id: string, user: UserModel) => {
   try {
-    return await http.put(`/id/${id}`, user);
+    return await http.put(`/u/id/${id}`, user);
   } catch (error) {
     console.error(error);
     throw error;
@@ -48,9 +46,17 @@ export const updateUser = async (id: string, user: UserModel) => {
 
 export const deleteUser = async (id: string) => {
   try {
-    return await http.delete(`/id/${id}`);
+    return await http.delete(`/u/id/${id}`);
   } catch (error) {
     console.error(error);
     throw error;
   }
+};
+
+export const UserApi = {
+  sendUser,
+  getUser,
+  getUserByEmail,
+  updateUser,
+  deleteUser,
 };

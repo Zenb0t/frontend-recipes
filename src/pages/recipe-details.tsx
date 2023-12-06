@@ -26,7 +26,7 @@ export function RecipeDetailsPage() {
         w={'full'}
         h={'40vh'}
         backgroundImage={
-          recipe!.imageUrl
+          recipe?.imageUrl
         }
         backgroundSize={'cover'}
         backgroundPosition={'center center'}
@@ -53,11 +53,11 @@ export function RecipeDetailsPage() {
       <Box p={8}>
         <Heading>{recipe!.title}</Heading>
         <Text>
-          Total time: {recipe!.totalTime.hours}h {recipe!.totalTime.minutes}min
+          Total time: {recipe?.totalTimeInMinutes}
         </Text>
-        <Text>Cost: {recipe!.cost.toFixed(2)}</Text>
-        <FavoriteButton recipe={recipe!} />
-        <IngredientItemTable ingredients={recipe!.ingredients} />
+        <Text>Cost: {recipe?.cost?.toFixed(2)}</Text>
+        {/* <FavoriteButton recipe={recipe!} /> */}
+        {/* <IngredientItemTable ingredients={recipe!.ingredients} /> */}
         <Box p={4}>
           <Heading pb={4} size='lg'>Instructions</Heading>
           {recipe!.instructions.map((instruction, index) => {

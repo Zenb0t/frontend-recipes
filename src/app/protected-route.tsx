@@ -9,16 +9,16 @@ function ProtectedRoute() {
     const { isAuthenticated } = useAuth0();
 
     const dispatch = useAppDispatch();
-    const recipeStatus = useAppSelector(state => state.recipeBook.status);
-    const ingredientStatus = useAppSelector(state => state.ingredients.status);
+    // const recipeStatus = useAppSelector(state => state.recipeBook.status);
+    // const ingredientStatus = useAppSelector(state => state.ingredients.status);
 
     if (isAuthenticated) {
-        if (recipeStatus === 'idle') {
-            dispatch(fetchRecipes());
-        }
-        if (ingredientStatus === 'idle') {
-            dispatch(fetchIngredients());
-        }
+        // if (recipeStatus === 'idle') {
+        //     dispatch(fetchRecipes());
+        // }
+        // if (ingredientStatus === 'idle') {
+        //     dispatch(fetchIngredients());
+        // }
         return <DashboardLayout />;
     } else {
         return <Navigate to="/login" />;

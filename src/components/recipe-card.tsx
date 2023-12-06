@@ -6,20 +6,20 @@ import { MdFavorite, MdOutlineFavoriteBorder, MdOutlineWatchLater } from 'react-
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../app/hooks';
 import { RecipeModel } from '../features/recipeBook/models';
-import { toggleFavorite } from '../features/recipeBook/recipe-slice';
 import { timeToStringShort } from '../app/utils';
+import { Recipe } from '../types/recipe';
 
-export function RecipeCard(props: { recipe: RecipeModel }) {
+export function RecipeCard(props: { recipe: Recipe }) {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const handleAction = () => {
-        navigate(`/dashboard/${recipe.id}`, { replace: true });
+        navigate(`/dashboard/${recipe._id}`, { replace: true });
     };
 
     let recipe = props.recipe;
-    const favIcon = (recipe.favorite) ? <MdFavorite color='red' /> : < MdOutlineFavoriteBorder color='black' />;
+    const favIcon = (true) ? <MdFavorite color='red' /> : < MdOutlineFavoriteBorder color='black' />;
 
     return (<Box
         maxH="400px"
@@ -53,13 +53,13 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
         <Wrap p="4" alignItems='center' justifyItems="center" gap='2'>
             <WrapItem>
                 <Tag size='md' >
-                    <TagLabel >{`$ ${recipe.cost.toFixed(2)}`}</TagLabel>
+                    <TagLabel >{`$ ${recipe.cost?.toFixed(2)}`}</TagLabel>
                 </Tag>
             </WrapItem>
             <WrapItem>
                 <Tag size='md' >
                     <TagLeftIcon boxSize='12px' as={MdOutlineWatchLater} />
-                    <TagLabel>{`${timeToStringShort(recipe.totalTime)}`}</TagLabel>
+                    <TagLabel>{`${recipe.totalTimeInMinutes}`}</TagLabel>
                 </Tag>
             </WrapItem>
             <WrapItem>
@@ -69,7 +69,7 @@ export function RecipeCard(props: { recipe: RecipeModel }) {
             </WrapItem>
             <WrapItem>
                 <IconButton
-                    onClick={() => dispatch(toggleFavorite(recipe))}
+                    // onClick={() => dispatch(toggleFavorite(recipe))}
                     size="md"
                     colorScheme=""
                     color="red.500"

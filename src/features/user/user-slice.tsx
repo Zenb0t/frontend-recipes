@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import apiService from "../../api/api";
 import { UserModel } from "./model";
+import { UserApi } from "../../api/userApi";
 
 export interface UserState {
   userInfo: UserModel | null;
@@ -20,8 +21,9 @@ const initialState = {
 
 export const sendUser = createAsyncThunk(
   "user/sendUser",
-  async (user: User) => {
-    const response = await apiService().sendUser(user);
+  async (user: UserModel) => {
+    const response = await UserApi.sendUser(user);
+    console.log("response: ", response.data);
     return response.data;
   }
 );
@@ -29,7 +31,7 @@ export const sendUser = createAsyncThunk(
 export const fetchUserById = createAsyncThunk(
   "user/fetchUser",
   async (id: string) => {
-    const response = await apiService().getUser(id);
+    const response = await UserApi.getUser(id);
     return response.data;
   }
 );
@@ -37,7 +39,7 @@ export const fetchUserById = createAsyncThunk(
 export const fetchUserbyEmail = createAsyncThunk(
   "user/fetchUserByEmail",
   async (email: string) => {
-    const response = await apiService().getUserByEmail(email);
+    const response = await UserApi.getUserByEmail(email);
     return response.data;
   }
 );
@@ -65,6 +67,7 @@ const userSlice = createSlice({
       .addCase(sendUser.rejected, (state, action) => {
         state.userInfo = null;
         state.status = "error";
+        state.error = action.payload;
       })
       .addCase(fetchUserById.fulfilled, (state, action) => {
         state.userInfo = action.payload;

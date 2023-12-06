@@ -1,7 +1,7 @@
 import { Box, Divider, Input, InputGroup, InputLeftElement, useColorModeValue } from "@chakra-ui/react";
 import { ChangeEvent, useState } from "react";
 import { MdSearch } from "react-icons/md";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../hooks/reduxHooks";
 import AddIngredientModal from "../components/addIngredientModal";
 import { IngredientListTable } from "../components/ingredient-table";
 import { selectIngredientList } from "../features/recipeBook/ingredient-slice";

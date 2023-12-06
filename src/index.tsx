@@ -22,6 +22,7 @@ root.render(
           clientId={sanitizedConfig.AUTH0_CLIENT_ID}
           authorizationParams={{
             redirect_uri: window.location.origin,
+            audience: sanitizedConfig.AUTH0_AUDIENCE,
           }}
         >
           <ChakraProvider theme={chakraTheme}>

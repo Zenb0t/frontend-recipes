@@ -62,7 +62,7 @@ export default function Landing() {
                         }}
                         onClick={() => {
                             console.log('landing button clicked');
-                            navigate('/dashboard')}}
+                            navigate('/dashboard/allrecipes')}}
                         >
                         Get Started
                     </Button>

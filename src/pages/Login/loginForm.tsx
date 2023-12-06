@@ -10,55 +10,26 @@ import {
   Center,
   Spinner,
 } from "@chakra-ui/react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect } from "react";
+import useAuthHandler from "../../hooks/useAuthHandler";
 import { useNavigate } from "react-router-dom";
-import {
-  sendUser,
-  setUserInfo,
-  setUserToken,
-} from "../../features/user/user-slice";
-import { useAppDispatch } from "../../app/hooks";
-import sanitizedConfig from "../../config";
-import { UserModel } from "../../types/user";
+import { useEffect } from "react";
 
 export default function LoginPage() {
-  const {
-    isAuthenticated,
-    isLoading,
-    loginWithPopup,
-    user,
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { isAuthenticated, isLoading, loginWithPopup } = useAuthHandler();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated && user) {
-      //   dispatch(setUserInfo(user));
-      getAccessTokenSilently({
-        authorizationParams: {
-          audience: sanitizedConfig.AUTH0_AUDIENCE,
-          scope: "openid profile email",
-        },
-      }).then((token) => {
-        dispatch(setUserToken(token));
-        dispatch(sendUser({ user })); // Send user and token together
-        navigate("/dashboard/allrecipes");
-      });
+    if (isAuthenticated && !isLoading) {
+      navigate("/dashboard/allrecipes");
     }
-  }, [
-    dispatch,
-    getAccessTokenSilently,
-    isAuthenticated,
-    isLoading,
-    navigate,
-    user,
-  ]);
+  }, [isAuthenticated, isLoading, navigate]);
 
   if (isAuthenticated)
     return (
       <Center w={"full"} h={"50vh"}>
+        <Text fontSize={"lg"} color={"gray.600"}>
+          Redirecting...
+        </Text>
         <Spinner size="xl" color={"green.500"} />
       </Center>
     );

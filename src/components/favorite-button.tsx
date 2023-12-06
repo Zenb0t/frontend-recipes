@@ -1,6 +1,6 @@
 import { IconButton } from '@chakra-ui/react';
 import { MdFavorite, MdOutlineFavoriteBorder, } from 'react-icons/md';
-import { useAppDispatch } from '../app/hooks';
+import { useAppDispatch } from '../hooks/reduxHooks';
 import { RecipeModel } from '../features/recipeBook/models';
 
 export const FavoriteButton = (props: { recipe: RecipeModel }) => {

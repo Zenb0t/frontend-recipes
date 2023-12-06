@@ -2,7 +2,7 @@ import { RecipeCard } from "../components/recipe-card";
 import { RecipeModel } from "../features/recipeBook/models";
 import { Text, SimpleGrid, Box } from "@chakra-ui/react";
 import { Recipe } from "../types/recipe";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { useEffect } from "react";
 import { fetchRecipes } from "../features/recipeBook/recipe-slice";
 

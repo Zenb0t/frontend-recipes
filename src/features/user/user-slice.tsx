@@ -90,6 +90,7 @@ const userSlice = createSlice({
       .addCase(fetchUserbyEmail.rejected, (state, action) => {
         state.userInfo = null;
         state.status = "error";
+        state.error = action.payload;
       });
   },
 });

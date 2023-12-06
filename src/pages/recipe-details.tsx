@@ -1,7 +1,7 @@
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Flex, Heading, IconButton, Text, Tooltip, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { IngredientItemTable } from "../components/ingredient-table";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../hooks/reduxHooks";
 import { selectRecipeById } from "../features/recipeBook/recipe-slice";
 import { FavoriteButton } from "../components/favorite-button";
 import { MdOutlineEdit, MdDeleteForever } from 'react-icons/md';

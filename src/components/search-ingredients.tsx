@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { IngredientModel } from "../features/recipeBook/models";
 import { MdSearch } from "react-icons/md";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../hooks/reduxHooks";
 import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
 
 

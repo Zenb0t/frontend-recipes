@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, Stack, VStack } from "@chakra-ui/react";
-import { useAppDispatch, useAppSelector } from "./hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { demoList, genChickenSoupRecipe } from "../services/fake-data"
 import { createRecipe, deleteAllRecipes, fetchRecipes } from '../features/recipeBook/recipe-slice';
 import { createIngredient } from "../features/recipeBook/ingredient-slice";

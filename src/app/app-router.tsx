@@ -1,6 +1,6 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import RecipeCardListPage from "../pages/recipecard-list";
-import { useAppDispatch, useAppSelector } from "./hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import {
   fetchRecipes,
   selectRecipes,

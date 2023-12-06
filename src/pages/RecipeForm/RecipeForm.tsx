@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { MeasuringUnit } from "../../types/ingredient";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { createRecipe } from "../../features/recipeBook/recipe-slice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";

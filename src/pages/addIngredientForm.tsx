@@ -1,7 +1,7 @@
 import { useColorModeValue, VStack, FormControl, FormLabel, Input, FormErrorMessage, Tooltip, Icon, ButtonGroup, Button, Box, } from "@chakra-ui/react";
 import { Formik, Form, Field } from "formik";
 import { FaRegQuestionCircle } from "react-icons/fa";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch } from "../hooks/reduxHooks";
 import { yup } from "../app/utils";
 import { createIngredient } from "../features/recipeBook/ingredient-slice";
 import { IngredientModel } from "../features/recipeBook/models";

@@ -4,7 +4,7 @@ import { MdFavorite, MdOutlineFavoriteBorder, MdOutlineWatchLater } from 'react-
 
 //RecipeCard component
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../app/hooks';
+import { useAppDispatch } from '../hooks/reduxHooks';
 import { RecipeModel } from '../features/recipeBook/models';
 import { timeToStringShort } from '../app/utils';
 import { Recipe } from '../types/recipe';

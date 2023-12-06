@@ -37,10 +37,10 @@ export default function RecipeCardListPage() {
 
   return (
     <SimpleGrid
-      p="4"
+      p={4}
       minChildWidth="200px"
       spacing="24px"
-      justifyItems="center"
+      justifyItems="flex-start"
     >
       {recipeList.length === 0 ? (
         <Text p={6} mb={4} variant="h5" align="center">

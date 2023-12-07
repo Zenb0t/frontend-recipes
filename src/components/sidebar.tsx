@@ -132,7 +132,7 @@ interface MobileProps extends FlexProps {
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
-    const {user, logout} = useAuth0();
+    const { user, logout } = useAuth0();
 
     return (
         <Flex
@@ -170,7 +170,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             <HStack>
                                 <Avatar
                                     size={"sm"}
-                                    src={user?.picture}                                      
+                                    src={user?.picture}
                                 />
                                 <VStack
                                     display={{ base: "none", md: "flex" }}
@@ -200,9 +200,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             <MenuItem>Billing</MenuItem>
                             <MenuDivider />
                             <MenuItem
-                                onClick={() => logout({
-                                    returnTo: window.location.origin})
-                                }
+                                onClick={() => logout({ returnTo: window.location.origin })}
                             >Sign out</MenuItem>
                         </MenuList>
                     </Menu>

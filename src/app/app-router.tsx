@@ -1,19 +1,12 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
-import RecipeCardListPage from "../pages/recipecard-list";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import {
-  fetchRecipes,
-  selectRecipes,
-} from "../features/recipeBook/recipe-slice";
+import RecipeCardListPage from "../pages/RecipeCardList";
 import RecipeForm from "../pages/RecipeForm/RecipeForm";
-import { Center, Spinner } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { Text } from "@chakra-ui/react";
 import App from "../App";
 import { RecipeDetailsPage } from "../pages/recipe-details";
 import { IngredientPage } from "../pages/ingredient-page";
 import { EditRecipePage } from "../pages/edit-recipe-form";
-import LoginForm from "../pages/Login/loginForm";
+import LoginForm from "../pages/Login/LoginForm";
 import ProtectedRoute from "./protected-route";
 import Landing from "../pages/landing";
 

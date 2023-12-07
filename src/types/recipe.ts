@@ -10,6 +10,7 @@ export interface Recipe {
 	instructions: string[];
 	imageUrl: string;
 	ownerId: string;
+	servings?: number;
 	sourceUrl?: string;
 }
 

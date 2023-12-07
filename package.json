@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "18.x"
+  },
   "name": "panela-front",
   "version": "0.2.0",
   "private": true,

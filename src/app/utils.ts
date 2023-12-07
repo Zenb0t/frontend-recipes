@@ -1,5 +1,6 @@
 import { object, string, number, date, array } from 'yup';
-import { IngredientItem, IngredientModel } from '../features/recipeBook/models';
+import { Ingredient } from '../types/ingredient';
+import { IngredientItem } from '../types/recipe';
 
 // yup validation schema
 export const yup = { object, string, number, date, array };
@@ -25,11 +26,11 @@ export function timeToStringShort(time: Time): string {
 /***
 * Helper functions to build the ingredient list from the form values
 */
-export function IngredientListBuilder(store: IngredientModel[] , ingredients: { ingredientId: string, quantity: number }[]) {
+export function IngredientListBuilder(store: Ingredient[], ingredients: { ingredientId: string, quantity: number }[]) {
   let ingredientList = ingredients.map((item) => {
-    let ingredient = store.find(ingredient => ingredient.id === item.ingredientId);
+    let ingredient = store.find(ingredient => ingredient._id === item.ingredientId);
     if (ingredient) {
-      let ingredientItem = new IngredientItem(ingredient, item.quantity);
+      const ingredientItem: IngredientItem = { ingredient: ingredient, quantity: item.quantity, measuringUnit: ingredient.measuringUnit };
       return ingredientItem;
     } else {
       throw new Error("Ingredient not found");
@@ -44,6 +45,6 @@ export function IngredientListBuilder(store: IngredientModel[] , ingredients: { 
  */
 
 export function IngredientIdListBuilder(ingredients: IngredientItem[]) {
-  let idList = ingredients.map((item) => { return { ingredientId: item.ingredient.id, quantity: item.quantity }; });
+  let idList = ingredients.map((item) => { return { ingredientId: item.ingredient._id, quantity: item.quantity }; });
   return idList;
 }

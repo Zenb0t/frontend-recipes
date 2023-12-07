@@ -4,12 +4,13 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import { useAppDispatch } from "../hooks/reduxHooks";
 import { yup } from "../app/utils";
 import { createIngredient } from "../features/recipeBook/ingredient-slice";
-import { IngredientModel } from "../features/recipeBook/models";
+
 import { v4 as uuid } from 'uuid';
+import { Ingredient, MeasuringUnit } from "../types/ingredient";
 
 interface AddIngredientFormProps {
     onClose?: () => void;
-    handleAddIngredient?: (ingredient: IngredientModel, quantity: number) => void;
+    handleAddIngredient?: (ingredient: Ingredient, quantity: number) => void;
 }
 
 /***
@@ -22,32 +23,17 @@ export function AddIngredientForm({ onClose, handleAddIngredient }: AddIngredien
     //Redux
     const dispatch = useAppDispatch();
 
-    //Formik
-    interface Values {
-        name: string;
-        amount: number;
-        measuringUnit: string;
-        cost: number;
-        unitCost: number;
-        id: string;
-        quantity: number;
-    }
-
-    const initialValues: Values = {
+   //Formik
+    const initialValues: Ingredient = {
         name: "",
         amount: 0,
-        measuringUnit: "",
-        cost: 0,
-        unitCost: 0,
-        id: uuid(),
-        quantity: 0,
+        measuringUnit: MeasuringUnit.CUP,
     };
 
     const ingredientValidation = yup.object().shape({
-        name: yup.string().required("Name is required"),
-        amount: yup.number().required("Amount is required").moreThan(0, "Amount must be greater than 0"),
-        measuringUnit: yup.string().required("Measuring unit is required"),
-        cost: yup.number().required("Cost is required").moreThan(0, "Amount must be greater than 0"),
+        name: yup.string().required("Required"),
+        amount: yup.number().required("Required").positive("Must be positive"),
+        measuringUnit: yup.string().required("Required"),
     });
 
     return (
@@ -56,12 +42,11 @@ export function AddIngredientForm({ onClose, handleAddIngredient }: AddIngredien
                 initialValues={initialValues}
                 validationSchema={ingredientValidation}
                 onSubmit={(values, actions) => {
-                    values.unitCost = values.cost / values.amount;
-                    const newIngredient: IngredientModel = { ...values }
-                    dispatch(createIngredient(newIngredient));
-                    if (handleAddIngredient) {
-                        handleAddIngredient(newIngredient, values.quantity);
-                    } 
+                    // const newIngredient: Ingredient = { ...values }
+                    // dispatch(createIngredient(newIngredient));
+                    // if (handleAddIngredient) {
+                    //     handleAddIngredient(newIngredient, values.quantity);
+                    // } 
                     if (onClose) {
                         onClose();
                     }
@@ -110,8 +95,8 @@ export function AddIngredientForm({ onClose, handleAddIngredient }: AddIngredien
                                 />
                                 <FormErrorMessage>{errors.measuringUnit}</FormErrorMessage>
                             </FormControl>
-                            <FormControl isInvalid={!!errors.cost && touched.cost}>
-                                <FormLabel htmlFor="cost">Cost</FormLabel>
+                            <FormControl isInvalid={!!errors.costPerUnit && touched.costPerUnit}>
+                                <FormLabel htmlFor="costPerUnit">Cost Per Unit</FormLabel>
                                 <Field
                                     as={Input}
                                     id="cost"
@@ -120,22 +105,8 @@ export function AddIngredientForm({ onClose, handleAddIngredient }: AddIngredien
                                     variant="filled"
                                     textAlign={"right"}
                                 />
-                                <FormErrorMessage>{errors.cost}</FormErrorMessage>
+                                <FormErrorMessage>{errors.costPerUnit}</FormErrorMessage>
                             </FormControl>
-                            {handleAddIngredient && (
-                                <FormControl isInvalid={!!errors.quantity && touched.quantity}>
-                                    <FormLabel htmlFor="quantity">Quantity</FormLabel>
-                                    <Field
-                                        as={Input}
-                                        id="quantity"
-                                        name="quantity"
-                                        type="quantity"
-                                        variant="filled"
-                                        textAlign={"right"}
-                                    />
-                                    <FormErrorMessage>{errors.quantity}</FormErrorMessage>
-                                </FormControl>
-                            )}
                             <ButtonGroup spacing={4} >
                                 <Button py={2} type="submit" colorScheme="green">
                                     Submit

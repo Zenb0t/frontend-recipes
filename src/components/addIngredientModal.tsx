@@ -1,9 +1,9 @@
 import { useDisclosure, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useColorModeValue, Center } from "@chakra-ui/react";
-import { IngredientModel } from "../features/recipeBook/models";
 import { AddIngredientForm } from "../pages/addIngredientForm";
+import { Ingredient } from "../types/ingredient";
 
 interface AddIngredientModalProps {
-    handleAddIngredient?: (ingredient: IngredientModel, quantity: number) => void;
+    handleAddIngredient?: (ingredient: Ingredient, quantity: number) => void;
 }
 /***
  * Modal for adding a new ingredient

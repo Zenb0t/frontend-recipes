@@ -34,7 +34,6 @@ import { IconType } from "react-icons";
 import { ReactNode } from "react";
 import { PanelaLogo } from "./logo";
 import { NavLink as RouterLink } from "react-router-dom";
-import { DevButton, MagicButton } from "../app/MagicButton";
 import { ColorModeSwitcher } from "./colour-switcher";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -133,7 +132,7 @@ interface MobileProps extends FlexProps {
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
-    const {user, logout} = useAuth0();
+    const { user, logout } = useAuth0();
 
     return (
         <Flex
@@ -171,7 +170,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             <HStack>
                                 <Avatar
                                     size={"sm"}
-                                    src={user?.picture}                                      
+                                    src={user?.picture}
                                 />
                                 <VStack
                                     display={{ base: "none", md: "flex" }}
@@ -201,9 +200,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             <MenuItem>Billing</MenuItem>
                             <MenuDivider />
                             <MenuItem
-                                onClick={() => logout({
-                                    returnTo: window.location.origin})
-                                }
+                                onClick={() => logout()}
                             >Sign out</MenuItem>
                         </MenuList>
                     </Menu>

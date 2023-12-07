@@ -24,3 +24,11 @@ export const updateIngredient = (id: string, ingredient: Ingredient) => {
 export const deleteIngredient = (id: string) => {
 	return http.delete(`/ingredients/${id}`);
 }
+
+export const IngredientApi = {
+	createIngredient,
+	fetchIngredients,
+	fetchIngredient,
+	updateIngredient,
+	deleteIngredient,
+};

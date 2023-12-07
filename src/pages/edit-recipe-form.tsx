@@ -1,33 +1,27 @@
-import { Formik, Field, Form, } from "formik";
+import { Formik, Form, } from "formik";
 import {
     Box,
     Button,
     Flex,
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
-    Input,
-    VStack,
-    Textarea,
     useColorModeValue,
     useToast,
+    Divider,
 } from "@chakra-ui/react";
-import { IngredientListBuilder, yup } from '../app/utils';
-import { IngredientItem, RecipeModel } from "../features/recipeBook/models";
-import { ImageURLFormField } from "../components/fileUpload";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { updateRecipe, selectRecipeById } from "../features/recipeBook/recipe-slice";
-import AddIngredientField from "../components/add-ingredient-field";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
 import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
-import AddInstructionField from "../components/add-instruction-field";
+import { Recipe, recipeValidationSchema } from "../types/recipe";
+import RecipeInfoSection from "./RecipeForm/RecipeInfoSection";
+import { unwrapResult } from "@reduxjs/toolkit";
+import IngredientsSection from "./RecipeForm/IngredientsSection";
+import InstructionsSection from "./RecipeForm/InstructionsSection";
+import TimingSection from "./RecipeForm/TimingSection";
 
 
 export function EditRecipePage() {
 
     let { recipeId } = useParams();
-
     //Hooks
     const dispatch = useAppDispatch();
     const recipe = useAppSelector((state) => selectRecipeById(state, recipeId!));
@@ -36,210 +30,92 @@ export function EditRecipePage() {
 
     //Selectors
 
-    const ingredients = useAppSelector(selectIngredientList);
-
-
-    interface Values {
-        title: string;
-        description: string;
-        hours: number;
-        minutes: number;
-        ingredients: { ingredientId: string, quantity: number }[];
-        instructions: string[];
-        imageUrl: string;
-        favorite: boolean;
-        id: string;
-        cost: number;
-    }
-
-    const initialValues: Values = {
-        title: recipe!.title,
-        description: recipe!.description,
-        hours: recipe!.totalTime.hours,
-        minutes: recipe!.totalTime.minutes,
-        ingredients: IngredientIdListBuilder(recipe!.ingredients),
-        //Split instructions into an array of strings
-        instructions: recipe!.instructions,
-        imageUrl: recipe!.imageUrl,
-        favorite: recipe!.favorite,
-        id: recipe!.id,
-        cost: recipe!.cost,
+    const initialValues: Recipe = {
+        title: recipe?.title || "",
+        description: recipe?.description || "",
+        totalTimeInMinutes: recipe?.totalTimeInMinutes || 0,
+        ingredients: recipe?.ingredients || [],
+        instructions: recipe?.instructions || [],
+        imageUrl: recipe?.imageUrl || "",
+        ownerId: recipe?.ownerId || "", // This should be set based on the user's session or similar
+        sourceUrl: recipe?.sourceUrl || "",
     };
 
-    const recipeValidation = yup.object({
-        title: yup.string().required('Required'),
-        description: yup.string().required('Required'),
-        hours: yup.number().required('Required').max(24, 'Must be less than 24').min(-1, 'Must be positive'),
-        minutes: yup.number().required('Required'),
-        ingredients: yup.array().of(yup.object().shape({
-            ingredientId: yup.string().required('Required'),
-            quantity: yup.number().moreThan(0, 'Must be greater than 0').required('Required'),
-        })),
-        instructions: yup.array().of(yup.string().required('Required')),
-        imageUrl: yup.string().required('Required'),
-    });
+    const user = useAppSelector((state) => state.users.userInfo);
 
-    function validateIngredients(ingredients: { ingredientId: string, quantity: number }[]) {
-        if (ingredients.length === 0) {
-            return 'Must provide at least one ingredient';
-        } else if (ingredients.some(ingredient => ingredient.ingredientId === '')) {
-            return 'Must provide an ingredient';
-        } else if (ingredients.some(ingredient => ingredient.quantity <= 0)) {
-            return 'Must provide a quantity greater than 0';
-        } else {
-            return undefined;
+    const handleSubmit = async (values: Recipe) => {
+        console.log("Submitting recipe: ", values);
+        console.log("User: ", user);
+        try {
+            if (!user?._id) {
+                throw new Error("No user found");
+            }
+            values.ownerId = user._id;
+            // Dispatch the action and wait for the result
+            const resultAction = await dispatch(updateRecipe(values));
+            const newRecipe: Recipe = unwrapResult(resultAction);
+
+            // Show success toast
+            toast({
+                title: "Recipe updated",
+                description: "Your recipe has been updated",
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+            });
+
+            // Navigate to the new recipe page, assuming newRecipe contains the ID
+            navigate(`/recipes/${newRecipe._id}`);
+        } catch (err: any) {
+            // Handle errors
+            toast({
+                title: "Failed to update recipe",
+                description: err.message || "There was an error updating the recipe.",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+            });
         }
-    }
-
-    /***
-  * Helper function to get a id Ingredient list from the recipe
-  */
-
-    function IngredientIdListBuilder(ingredients: IngredientItem[]) {
-        let idList = ingredients.map((item) => { return { ingredientId: item.ingredient.id, quantity: item.quantity }; });
-        return idList;
-    }
-
-    /***
-     * Helper function to build the recipe object from the form values
-     */
-
-    function buildRecipe(values: Values): RecipeModel {
-        const ingredientList = IngredientListBuilder(ingredients, values.ingredients);
-        values.cost = ingredientList.reduce((sum, ing) => sum + ing.cost, 0);
-        const time = { hours: values.hours, minutes: values.minutes };
-        return { ...values, ingredients: ingredientList, totalTime: time, };
-    }
-
-    //Log the form values to the console
-    useEffect(() => {
-        console.log(initialValues);
-    }, []);
+    };
 
 
     return (
-        <Flex align="center" justify="center">
-            <Box bg={useColorModeValue("white", "gray.800")} p={6} rounded="md" minW={{ base: 200, sm: 300, md: 440, lg: 700 }} mx={"auto"}>
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={recipeValidation}
-                    onSubmit={(values) => {
-                        console.log("Submitting");
-                        console.log(values);
-                        const updatedRecipe = buildRecipe(values);
-                        dispatch(updateRecipe(updatedRecipe)).then((status) => {
-                            if (status) {
-                                toast({
-                                    title: "Recipe Updated",
-                                    description: "Your recipe has been updated",
-                                    status: "success",
-                                    duration: 5000,
-                                    isClosable: true,
-                                });
-                                navigate(`/dashboard/${updatedRecipe.id}`, { replace: true });
-                            } else {
-                                toast({
-                                    title: "Error",
-                                    description: "There was an error updating your recipe",
-                                    status: "error",
-                                    duration: 5000,
-                                    isClosable: true,
-                                });
-                            }
-                        });
-                    }}
-                >
-                    {({ handleSubmit, errors, touched }) => (
-                        <Form onSubmit={handleSubmit}>
-                            <VStack spacing={4} align="flex-start">
-                                <FormControl isInvalid={!!errors.title && touched.title}>
-                                    <FormLabel htmlFor="title">Recipe Title</FormLabel>
-                                    <Field
-                                        as={Input}
-                                        id="title"
-                                        name="title"
-                                        type="title"
-                                        variant="filled"
-                                    />
-                                    <FormErrorMessage>{errors.title}</FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.imageUrl && touched.imageUrl}>
-                                    <FormLabel htmlFor="imageUrl">Image URL</FormLabel>
-                                    <Field
-                                        component={ImageURLFormField}
-                                        id="imageUrl"
-                                        name="imageUrl"
-                                        variant="filled"
-                                    />
-                                    <FormErrorMessage>{errors.imageUrl}</FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.description && touched.description}>
-                                    <FormLabel htmlFor="Description">Description</FormLabel>
-                                    <Field
-                                        as={Textarea}
-                                        id="description"
-                                        name="description"
-                                        type="description"
-                                        variant="filled"
-                                    />
-                                    <FormErrorMessage>{errors.description}</FormErrorMessage>
-                                </FormControl>
-                                <Flex gap={4}>
-                                    <FormControl isInvalid={!!errors.hours && touched.hours}>
-                                        <FormLabel htmlFor="Hours">Hours</FormLabel>
-                                        <Field
-                                            as={Input}
-                                            id="hours"
-                                            name="hours"
-                                            type="hours"
-                                            variant="filled"
-                                        />
-                                        <FormErrorMessage>{errors.hours}</FormErrorMessage>
-                                    </FormControl>
-                                    <FormControl isInvalid={!!errors.minutes && touched.minutes}>
-                                        <FormLabel htmlFor="Minutes">Minutes</FormLabel>
-                                        <Field
-                                            as={Input}
-                                            id="minutes"
-                                            name="minutes"
-                                            type="minutes"
-                                            variant="filled"
-                                        />
-                                        <FormErrorMessage>{errors.minutes}</FormErrorMessage>
-                                    </FormControl>
-                                </Flex>
-                                <FormControl isInvalid={!!errors.instructions && touched.instructions as boolean | undefined}>
-                                    <FormLabel htmlFor="instructions">Instructions</FormLabel>
-                                    <Field
-                                        component={AddInstructionField}
-                                        id="instructions"
-                                        name="instructions"
-                                        type="instructions"
-                                        variant="filled"
-                                    />
-                                    <FormErrorMessage>{errors.instructions}</FormErrorMessage>
-                                </FormControl>
-                                <FormControl isInvalid={!!errors.ingredients && touched.ingredients as boolean | undefined}>
-                                    <FormLabel htmlFor="ingredients">Ingredients</FormLabel>
-                                    <Field
-                                        component={AddIngredientField}
-                                        id="ingredients"
-                                        name="ingredients"
-                                        type="ingredients"
-                                        variant="filled"
-                                        validate={validateIngredients}
-                                    />
-                                    <FormErrorMessage>{errors.ingredients as string | undefined}</FormErrorMessage>
-                                </FormControl>
-                                <Button type="submit" colorScheme="green" width="full">
-                                    Submit
-                                </Button>
-                            </VStack>
-                        </Form>
-                    )}
-                </Formik>
-            </Box>
-        </Flex>
+        <Box
+            bg={useColorModeValue("white", "gray.800")}
+            py={{ base: 4, lg: 8 }}
+            rounded="md"
+            minW={{ base: 280, lg: 700 }}
+            mx={{ base: 1, lg: 4 }}
+        >
+            <Formik
+                initialValues={initialValues}
+                validationSchema={recipeValidationSchema}
+                onSubmit={handleSubmit}
+            >
+                {() => (
+                    <Form>
+                        <RecipeInfoSection />
+                        <Box px={8}>
+                            <Divider />
+                        </Box>
+                        <IngredientsSection />
+                        <Box px={8}>
+                            <Divider />
+                        </Box>
+                        <InstructionsSection />
+                        <Box px={8}>
+                            <Divider />
+                        </Box>
+                        <TimingSection />
+                        <Flex justify="space-around" mt={2}>
+                            <Button type="submit" colorScheme="green">
+                                Submit
+                            </Button>
+                        </Flex>
+                    </Form>
+                )}
+            </Formik>
+        </Box>
     );
-}
+};
 

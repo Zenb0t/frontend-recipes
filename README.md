@@ -11,7 +11,7 @@ This is the frontend for the Panela project, where you can manage recipes and ca
 
 Build using React, React Router and Redux Toolkit, components made using Chakra UI and forms using Formik. This project uses Auth0 to provide an authentication pipeline and connects to a MongoDB database using a RestFUL API designed from scratch. It's deployed to a droplet on DigitalOcean, along with a CD/CI pipeline.
 
-This project is a complete app, build from the ground up, from conception to design and implementation. Some challenges faced during implementation have been adapting the Auth0 and making it play nice with React Router V6. Another interesting takeaway was using Chakra UI and Formik for more complex forms, like the add recipe, where you can search an ingredient and if not present, add a new one. Had to extend the build-in components to use Formik, and a bit of trial and error figuring out how to properly display error messages on more complex components.
+This project is a complete app, build from the ground up, from conception to design and implementation. Some challenges faced during implementation have been adapting the Auth0 and making it play nice with React Router V6. Another interesting takeaway was using Chakra UI and Formik for more complex forms, like the add recipe, where you can search for an ingredient and if not present, add a new one. Had to extend the build-in components to use Formik, and a bit of trial and error figuring out how to properly display error messages on more complex components.
 
 You can see a live demo at https://panela.app
 

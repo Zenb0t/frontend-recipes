@@ -6,7 +6,7 @@ import App from "../App";
 import { RecipeDetailsPage } from "../pages/recipe-details";
 import { IngredientPage } from "../pages/ingredient-page";
 import { EditRecipePage } from "../pages/edit-recipe-form";
-import LoginForm from "../pages/Login/LoginForm";
+import LoginForm from "../pages/Login/LoginForm"; 
 import ProtectedRoute from "./protected-route";
 import Landing from "../pages/landing";
 

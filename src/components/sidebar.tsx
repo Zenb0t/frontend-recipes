@@ -200,7 +200,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             <MenuItem>Billing</MenuItem>
                             <MenuDivider />
                             <MenuItem
-                                onClick={() => logout({ returnTo: window.location.origin })}
+                                onClick={() => logout()}
                             >Sign out</MenuItem>
                         </MenuList>
                     </Menu>

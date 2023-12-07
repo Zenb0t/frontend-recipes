@@ -22,7 +22,7 @@ const TimingSection = () => {
           id="totalTimeInMinutes"
           {...totalTimeInMinutesField}
           min={1}
-          onChange={(val) => totalTimeInMinutesHelpers.setValue(val)}
+          onChange={(val) => totalTimeInMinutesHelpers.setValue(parseInt(val))}
         >
           <NumberInputField />
         </NumberInput>

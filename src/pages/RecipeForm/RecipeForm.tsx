@@ -71,7 +71,7 @@ const RecipeForm = () => {
 
   const handleSubmit = async (values: Recipe) => {
     console.log("Submitting recipe: ", values);
-	console.log("User: ", user);
+    console.log("User: ", user);
     try {
       if (!user?._id) {
         throw new Error("No user found");

@@ -102,7 +102,7 @@ const IngredientsSection = () => {
                   ingredient: {
                     name: "",
                     measuringUnit: MeasuringUnit.GRAM,
-                    amount: 0,
+                    amount: 1,
                   },
                   quantity: 1,
                   measuringUnit: "gram",

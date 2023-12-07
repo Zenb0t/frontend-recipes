@@ -1,17 +1,18 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store"
+import { RootState } from "../../app/store";
 import { Recipe } from "../../types/recipe";
 import { RecipeApi } from "../../api/recipeApi";
+import { ReduxStatus } from "../../consts";
 
 export interface RecipeState {
   recipeList: Recipe[];
-  status: string;
+  status: ReduxStatus;
   error: any;
 }
 
 const initialState: RecipeState = {
   recipeList: [] as Recipe[],
-  status: "idle",
+  status: ReduxStatus.IDLE,
   error: null,
 };
 
@@ -32,19 +33,19 @@ export const createRecipe = createAsyncThunk(
 );
 
 export const fetchRecipeById = createAsyncThunk(
-    "recipes/fetchRecipeById",
-    async (id: string, thunkAPI) => {
-        try {
-        const response = await RecipeApi.getRecipe(id);
-        if (!response) {
-            throw new Error("Failed to fetch recipe");
-        }
-        return response.data;
-        } catch (error) {
-        return thunkAPI.rejectWithValue(error);
-        }
+  "recipes/fetchRecipeById",
+  async (id: string, thunkAPI) => {
+    try {
+      const response = await RecipeApi.getRecipe(id);
+      if (!response) {
+        throw new Error("Failed to fetch recipe");
+      }
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
     }
-    );
+  }
+);
 
 export const fetchRecipes = createAsyncThunk(
   "recipes/fetchRecipes",
@@ -104,28 +105,28 @@ export const recipeSlice = createSlice({
         fetchRecipes.fulfilled,
         (state, action: PayloadAction<Recipe[]>) => {
           state.recipeList = action.payload;
-          state.status = "success";
+          state.status = ReduxStatus.SUCCESS;
         }
       )
       .addCase(fetchRecipes.pending, (state, action) => {
-        state.status = "loading";
+        state.status = ReduxStatus.LOADING;
       })
       .addCase(fetchRecipes.rejected, (state, action: PayloadAction<any>) => {
-        state.status = "error";
+        state.status = ReduxStatus.FAILED;
         state.error = action.payload;
       })
       .addCase(
         createRecipe.fulfilled,
         (state, action: PayloadAction<Recipe>) => {
           state.recipeList.push(action.payload);
-          state.status = "idle";
+          state.status = ReduxStatus.SUCCESS;
         }
       )
       .addCase(createRecipe.pending, (state, action) => {
-        state.status = "loading";
+        state.status = ReduxStatus.LOADING;
       })
       .addCase(createRecipe.rejected, (state, action: PayloadAction<any>) => {
-        state.status = "error";
+        state.status = ReduxStatus.FAILED;
         state.error = action.payload;
       })
       .addCase(
@@ -138,14 +139,14 @@ export const recipeSlice = createSlice({
             ...state.recipeList[index],
             ...action.payload,
           };
-          state.status = "idle";
+          state.status = ReduxStatus.SUCCESS;
         }
       )
       .addCase(updateRecipe.pending, (state, action) => {
-        state.status = "loading";
+        state.status = ReduxStatus.LOADING;
       })
       .addCase(updateRecipe.rejected, (state, action: PayloadAction<any>) => {
-        state.status = "error";
+        state.status = ReduxStatus.FAILED;
         state.error = action.payload;
       })
       .addCase(
@@ -155,14 +156,14 @@ export const recipeSlice = createSlice({
             (recipe) => recipe._id === action.payload._id
           );
           state.recipeList.splice(index, 1);
-          state.status = "idle";
+          state.status = ReduxStatus.SUCCESS;
         }
       )
       .addCase(deleteRecipe.pending, (state, action) => {
-        state.status = "loading";
+        state.status = ReduxStatus.LOADING;
       })
       .addCase(deleteRecipe.rejected, (state, action: PayloadAction<any>) => {
-        state.status = "error";
+        state.status = ReduxStatus.FAILED;
         state.error = action.payload;
       });
   },

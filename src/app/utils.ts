@@ -2,6 +2,8 @@ import { object, string, number, date, array } from 'yup';
 import { Ingredient } from '../types/ingredient';
 import { IngredientItem } from '../types/recipe';
 
+// TODO: Remove this file
+
 // yup validation schema
 export const yup = { object, string, number, date, array };
 

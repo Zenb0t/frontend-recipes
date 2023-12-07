@@ -16,7 +16,7 @@ import {
 import * as Yup from "yup";
 import { MeasuringUnit } from "../../types/ingredient";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { createRecipe } from "../../features/recipeBook/recipe-slice";
+import { createRecipe, fetchRecipeById } from "../../features/recipeBook/recipe-slice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";
 
@@ -30,6 +30,7 @@ const initialValues: Recipe = {
         name: "",
         measuringUnit: MeasuringUnit.TEASPOON,
         amount: 1,
+        costPerUnit: 0,
       },
       quantity: 0,
       measuringUnit: MeasuringUnit.TEASPOON,
@@ -80,6 +81,7 @@ const RecipeForm = () => {
       // Dispatch the action and wait for the result
       const resultAction = await dispatch(createRecipe(values));
       const newRecipe: Recipe = unwrapResult(resultAction);
+      console.log("New recipe: ", newRecipe);
 
       // Show success toast
       toast({
@@ -90,7 +92,12 @@ const RecipeForm = () => {
         isClosable: true,
       });
 
-      // Navigate to the new recipe page, assuming newRecipe contains the ID
+      // Fetch the new recipe
+      if (!newRecipe._id) {
+        throw new Error("No recipe ID found");
+      }
+      await dispatch(fetchRecipeById(newRecipe._id));
+      // Navigate to the new recipe page
       navigate(`/recipes/${newRecipe._id}`);
     } catch (err: any) {
       // Handle errors

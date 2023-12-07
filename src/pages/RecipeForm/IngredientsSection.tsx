@@ -101,11 +101,12 @@ const IngredientsSection = () => {
                 push({
                   ingredient: {
                     name: "",
-                    measuringUnit: MeasuringUnit.GRAM,
+                    measuringUnit: MeasuringUnit.TEASPOON,
                     amount: 1,
+                    costPerUnit: 0,
                   },
-                  quantity: 1,
-                  measuringUnit: "gram",
+                  quantity: 0,
+                  measuringUnit: MeasuringUnit.TEASPOON,
                 })
               }
             >

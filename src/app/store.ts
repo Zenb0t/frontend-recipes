@@ -4,9 +4,6 @@ import ingredientsReducer from '../features/recipeBook/ingredient-slice';
 
 import userReducer from '../features/user/user-slice';
 
-
-
-
 export const store = configureStore({
   reducer: {
     recipeBook: recipesReducer,

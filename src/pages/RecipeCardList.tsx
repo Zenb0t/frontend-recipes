@@ -5,6 +5,7 @@ import { Recipe } from "../types/recipe";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { useEffect } from "react";
 import { fetchRecipes } from "../features/recipeBook/recipe-slice";
+import { ReduxStatus } from "../consts";
 
 export default function RecipeCardListPage() {
   const { recipeList, status } = useAppSelector((state) => state.recipeBook);
@@ -19,12 +20,12 @@ export default function RecipeCardListPage() {
   }, []);
 
   useEffect(() => {
-    if (recipeList.length === 0 && status !== "success") {
+    if (recipeList.length === 0 && status !== ReduxStatus.SUCCESS) {
       fetchData();
     }
   }, [recipeList, status]);
 
-  if (recipeList.length === 0 && status === "loading") {
+  if (recipeList.length === 0 && status === ReduxStatus.LOADING) {
     return (
       <Center w={"full"} h={"50vh"}>
         <Text fontSize={"lg"} color={"gray.600"}>

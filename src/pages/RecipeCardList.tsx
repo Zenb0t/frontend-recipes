@@ -19,12 +19,12 @@ export default function RecipeCardListPage() {
   }, []);
 
   useEffect(() => {
-    if (recipeList.length === 0 && status !== "idle") {
+    if (recipeList.length === 0 && status !== "success") {
       fetchData();
     }
   }, [recipeList, status]);
 
-  if (recipeList.length === 0) {
+  if (recipeList.length === 0 && status === "loading") {
     return (
       <Center w={"full"} h={"50vh"}>
         <Text fontSize={"lg"} color={"gray.600"}>

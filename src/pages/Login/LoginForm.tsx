@@ -10,7 +10,7 @@ import {
   Center,
   Spinner,
 } from "@chakra-ui/react";
-import useAuthHandler from "../hooks/useAuthHandler";
+import useAuthHandler from "../../hooks/useAuthHandler";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 

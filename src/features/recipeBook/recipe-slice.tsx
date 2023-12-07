@@ -26,8 +26,8 @@ export const createRecipe = createAsyncThunk(
       } else {
         throw new Error("Failed to create recipe");
       }
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ message: error.message });
     }
   }
 );
@@ -41,8 +41,8 @@ export const fetchRecipeById = createAsyncThunk(
         throw new Error("Failed to fetch recipe");
       }
       return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ message: error.message });
     }
   }
 );
@@ -52,12 +52,13 @@ export const fetchRecipes = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await RecipeApi.getRecipes();
+      console.log("Response: ", response);
       if (!response) {
         throw new Error("Failed to fetch recipes");
       }
       return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ message: error.message });
     }
   }
 );
@@ -74,8 +75,8 @@ export const updateRecipe = createAsyncThunk(
         throw new Error("Failed to update recipe");
       }
       return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ message: error.message });
     }
   }
 );
@@ -89,8 +90,8 @@ export const deleteRecipe = createAsyncThunk(
         throw new Error("Failed to delete recipe");
       }
       return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ message: error.message });
     }
   }
 );
@@ -113,6 +114,7 @@ export const recipeSlice = createSlice({
       })
       .addCase(fetchRecipes.rejected, (state, action: PayloadAction<any>) => {
         state.status = ReduxStatus.FAILED;
+        console.debug("Error fetching recipes: ", action.payload);
         state.error = action.payload;
       })
       .addCase(

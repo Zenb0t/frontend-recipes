@@ -15,7 +15,8 @@ export default function AppRouter() {
   const navigate = useNavigate();
 
 
-  //TODO: Refactor this to their own pages in the page folder
+  // TODO: Refactor this to be more clear and concise
+
   // const Welcome = () => {
   //   useEffect(() => {
   //     if (recipes.length > 0) navigate("/dashboard/allrecipes");

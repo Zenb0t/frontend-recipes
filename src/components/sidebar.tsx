@@ -34,7 +34,6 @@ import { IconType } from "react-icons";
 import { ReactNode } from "react";
 import { PanelaLogo } from "./logo";
 import { NavLink as RouterLink } from "react-router-dom";
-import { DevButton, MagicButton } from "../app/MagicButton";
 import { ColorModeSwitcher } from "./colour-switcher";
 import { useAuth0 } from "@auth0/auth0-react";
 

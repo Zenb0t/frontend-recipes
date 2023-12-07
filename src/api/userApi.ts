@@ -1,3 +1,4 @@
+import { User } from "@auth0/auth0-react";
 import { UserModel } from "../types/user";
 import http from "./api";
 
@@ -7,7 +8,7 @@ import http from "./api";
  * @returns A Promise that resolves to the server response.
  * @throws If an error occurs during the request.
  */
-export const sendUser = async (user: UserModel) => {
+export const sendUser = async (user: UserModel | User) => {
   try {
     const res = await http.post(`/u/`, user);
     return res;

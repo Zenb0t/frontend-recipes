@@ -1,6 +1,14 @@
 import { RecipeCard } from "../components/RecipeCard";
 import { RecipeModel } from "../features/recipeBook/models";
-import { Text, SimpleGrid, Box, Center, Spinner, Wrap, WrapItem } from "@chakra-ui/react";
+import {
+  Text,
+  SimpleGrid,
+  Box,
+  Center,
+  Spinner,
+  Wrap,
+  WrapItem,
+} from "@chakra-ui/react";
 import { Recipe } from "../types/recipe";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { useEffect } from "react";
@@ -9,10 +17,11 @@ import { ReduxStatus } from "../consts";
 
 export default function RecipeCardListPage() {
   const { recipeList, status } = useAppSelector((state) => state.recipeBook);
+  const { userToken } = useAppSelector((state) => state.users);
   const dispatch = useAppDispatch();
 
   function fetchData() {
-    dispatch(fetchRecipes());
+    if (userToken) dispatch(fetchRecipes());
   }
 
   useEffect(() => {
@@ -20,10 +29,14 @@ export default function RecipeCardListPage() {
   }, []);
 
   useEffect(() => {
-    if (recipeList.length === 0 && status !== ReduxStatus.SUCCESS && status !== ReduxStatus.FAILED ) {
+    if (
+      recipeList.length === 0 &&
+      status !== ReduxStatus.SUCCESS &&
+      status !== ReduxStatus.FAILED
+    ) {
       fetchData();
     }
-  }, [recipeList, status]);
+  }, [recipeList, status, userToken]);
 
   if (recipeList.length === 0 && status === ReduxStatus.LOADING) {
     return (
@@ -54,10 +67,10 @@ export default function RecipeCardListPage() {
       ) : (
         recipeList.map((recipe: Recipe) => (
           // add a red border to the box
-          <WrapItem>
-          <Box minW="200px" key={recipe._id} >
-            <RecipeCard recipe={recipe} />
-          </Box>
+          <WrapItem key={recipe._id}>
+            <Box minW="200px">
+              <RecipeCard recipe={recipe} />
+            </Box>
           </WrapItem>
         ))
       )}

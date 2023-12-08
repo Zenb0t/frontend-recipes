@@ -15,7 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 export default function LoginPage() {
-  const { isAuthenticated, isLoading, loginWithPopup } = useAuthHandler();
+  const { isAuthenticated, isLoading, loginWithPopup, loginWithRedirect } =
+    useAuthHandler();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,15 +25,13 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, isLoading, navigate]);
 
-  if (isAuthenticated)
-    return (
-      <Center w={"full"} h={"50vh"}>
-        <Text fontSize={"lg"} color={"gray.600"}>
-          Redirecting...
-        </Text>
-        <Spinner size="xl" color={"green.500"} />
-      </Center>
-    );
+  const handleLogin = async () => {
+    await loginWithRedirect({
+      appState: { returnTo: "/dashboard/allrecipes" },
+    });
+  };
+
+  const buttonTitle = isLoading ? "Loading..." : isAuthenticated ? "Redirecting..." : "Login";
 
   return (
     <Flex
@@ -55,18 +54,18 @@ export default function LoginPage() {
           p={8}
         >
           <Stack spacing={4}>
-            <Stack spacing={10}>
+            <Stack spacing={2}>
               <Button
                 bg={"green.400"}
                 color={"white"}
                 _hover={{
                   bg: "green.500",
                 }}
-                onClick={() => loginWithPopup()}
+                onClick={handleLogin}
               >
-                Login
+                {buttonTitle}
               </Button>
-              <Stack pt={6}>
+              <Stack pt={2}>
                 <Text align={"center"}>
                   New user? <Link color={"green.400"}>Sign Up</Link>
                 </Text>

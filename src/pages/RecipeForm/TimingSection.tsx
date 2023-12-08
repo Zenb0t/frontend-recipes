@@ -10,14 +10,26 @@ import {
 } from "@chakra-ui/react";
 
 const TimingSection = () => {
-  const [totalTimeInMinutesField, totalTimeInMinutesMeta, totalTimeInMinutesHelpers] = useField("totalTimeInMinutes");
-  const [costField, costMeta, costHelpers] = useField("cost");
+  const [
+    totalTimeInMinutesField,
+    totalTimeInMinutesMeta,
+    totalTimeInMinutesHelpers,
+  ] = useField("totalTimeInMinutes");
+  const [servingsField, servingsMeta, servingsHelpers] = useField("servings");
 
   return (
     <Box p={4}>
       {/* Total Time in Minutes */}
-      <FormControl isRequired mb={4} isInvalid={totalTimeInMinutesMeta.touched && !!totalTimeInMinutesMeta.error}>
-        <FormLabel htmlFor="totalTimeInMinutes">Total Time (in minutes)</FormLabel>
+      <FormControl
+        isRequired
+        mb={4}
+        isInvalid={
+          totalTimeInMinutesMeta.touched && !!totalTimeInMinutesMeta.error
+        }
+      >
+        <FormLabel htmlFor="totalTimeInMinutes">
+          Total Time (in minutes)
+        </FormLabel>
         <NumberInput
           id="totalTimeInMinutes"
           {...totalTimeInMinutesField}
@@ -29,19 +41,23 @@ const TimingSection = () => {
         <FormErrorMessage>{totalTimeInMinutesMeta.error}</FormErrorMessage>
       </FormControl>
 
-      {/* Cost (Optional) */}
-      {/* <FormControl mb={4} isInvalid={costMeta.touched && !!costMeta.error}>
-        <FormLabel htmlFor="cost">Cost (Optional)</FormLabel>
+      {/* Servings */}
+      <FormControl
+        isRequired
+        mb={4}
+        isInvalid={servingsMeta.touched && !!servingsMeta.error}
+      >
+        <FormLabel htmlFor="servings">Servings</FormLabel>
         <NumberInput
-          id="cost"
-          {...costField}
-          min={0}
-          onChange={(val) => costHelpers.setValue(val)}
+          id="servings"
+          {...servingsField}
+          min={1}
+          onChange={(val) => servingsHelpers.setValue(parseInt(val))}
         >
           <NumberInputField />
         </NumberInput>
-        <FormErrorMessage>{costMeta.error}</FormErrorMessage>
-      </FormControl> */}
+        <FormErrorMessage>{servingsMeta.error}</FormErrorMessage>
+      </FormControl>
     </Box>
   );
 };

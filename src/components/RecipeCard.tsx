@@ -26,6 +26,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/reduxHooks";
 import { Recipe } from "../types/recipe";
+import { RecipeInfoPanel } from "./RecipeInfoPanel";
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -121,25 +122,3 @@ export function RecipeCard(props: RecipeCardProps) {
     </Box>
   );
 }
-
-interface InfoPanelProps {
-  label: string;
-  value: string | number | undefined;
-  icon: React.ReactNode;
-}
-
-const RecipeInfoPanel = ({ label, value, icon }: InfoPanelProps) => {
-  return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      borderRadius="lg"
-      p="1"
-    >
-      <Box display="flex" alignItems="flex-start" gap="2">
-        <Text as="b" fontSize="lg">{value}</Text>
-      </Box>
-        <Text>{label}</Text>
-    </Box>
-  );
-};

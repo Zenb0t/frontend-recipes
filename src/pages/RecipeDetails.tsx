@@ -7,6 +7,8 @@ import {
   AlertDialogOverlay,
   Box,
   Button,
+  Center,
+  Divider,
   Flex,
   Heading,
   IconButton,
@@ -24,6 +26,7 @@ import { FavoriteButton } from "../components/favorite-button";
 import { MdOutlineEdit, MdDeleteForever } from "react-icons/md";
 import { useRef } from "react";
 import { Recipe } from "../types/recipe";
+import { RecipeInfoPanel } from "../components/RecipeInfoPanel";
 
 export function RecipeDetailsPage() {
   let { recipeId } = useParams();
@@ -94,6 +97,7 @@ const RecipeDetailsPageTest = ({
 }) => {
   return (
     <Box
+      m={4}
       maxW={"9xl"}
       minH={"70vh"}
       shadow="md"
@@ -136,50 +140,95 @@ const RecipeDetailsPageTest = ({
           </Heading>
         </Box>
       </Flex>
-      <Flex
-        px={4}
-        py={8}
-        direction={useBreakpointValue({ base: "column", lg: "row" })}
-        overflowY={useBreakpointValue({ base: "initial", lg: "auto" })}
-        maxHeight={useBreakpointValue({ base: "initial", lg: "85vh" })}
-      >
-        <Box flex={1} p={4}>
-          <Heading as="h2">Ingredients</Heading>
-          <Box p={4}>
-            {recipe?.ingredients.map((item, index) => {
-              return (
-                <Box py={0.5} key={index}>
-                  <Text fontSize="md">
-                    • {item.quantity} {item.measuringUnit} of{" "}
-                    {item.ingredient.name}
-                  </Text>
-                </Box>
-              );
-            })}
+      <Box>
+        <Flex
+          p={4}
+          justifyContent={"space-around"}
+          alignItems={"center"}
+          gap={2}
+        >
+          <RecipeInfoPanel label="minutes" value={recipe.totalTimeInMinutes} />
+          <Center h="48px">
+            <Divider orientation="vertical" />
+          </Center>
+          <RecipeInfoPanel label="servings" value={recipe.servings} />
+          <Center h="48px">
+            <Divider orientation="vertical" />
+          </Center>
+          <RecipeInfoPanel
+            label="ingredients"
+            value={recipe.ingredients.length}
+          />
+          <Center h="48px">
+            <Divider orientation="vertical" />
+          </Center>
+          <Box>
+            <Tooltip label="Edit Recipe" aria-label="Edit Recipe">
+              <IconButton
+                justifySelf={"flex-end"}
+                colorScheme={"white"}
+                m={2}
+                aria-label={"Edit Recipe"}
+                variant="solid"
+                icon={<MdOutlineEdit />}
+                isRound
+                bg={useColorModeValue("gray.50", "gray.800")}
+                color={useColorModeValue("gray.800", "white")}
+                onClick={handleEdit}
+                _hover={{
+                  bg: useColorModeValue("gray.100", "gray.700"),
+                }}
+              />
+            </Tooltip>
+            <DeleteRecipeDialog />
           </Box>
-        </Box>
-        <Box flex={1} p={4}>
-          <Heading as="h2">Instructions</Heading>
-          <Box py={4} pl={4}>
-            {recipe!.instructions.map((instruction, index) => {
-              return (
-                <Flex
-                  py={0.5}
-                  key={index}
-                  direction="row"
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                >
-                  <Text pr={2} as="b" fontSize="2xl">
-                    {index + 1}
-                  </Text>
-                  <Text pt={1}>{instruction}</Text>
-                </Flex>
-              );
-            })}
+        </Flex>
+
+        <Flex
+          px={4}
+          py={8}
+          direction={useBreakpointValue({ base: "column", lg: "row" })}
+          overflowY={useBreakpointValue({ base: "initial", lg: "auto" })}
+          maxHeight={useBreakpointValue({ base: "initial", lg: "85vh" })}
+        >
+          <Box flex={1} p={4}>
+            <Heading as="h2">Ingredients</Heading>
+            <Box p={4}>
+              {recipe?.ingredients.map((item, index) => {
+                return (
+                  <Box py={0.5} key={index}>
+                    <Text fontSize="md">
+                      • {item.quantity} {item.measuringUnit} of{" "}
+                      {item.ingredient.name}
+                    </Text>
+                  </Box>
+                );
+              })}
+            </Box>
           </Box>
-        </Box>
-      </Flex>
+          <Box flex={1} p={4}>
+            <Heading as="h2">Instructions</Heading>
+            <Box py={4} pl={4}>
+              {recipe!.instructions.map((instruction, index) => {
+                return (
+                  <Flex
+                    py={0.5}
+                    key={index}
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="flex-start"
+                  >
+                    <Text pr={2} as="b" fontSize="2xl">
+                      {index + 1}
+                    </Text>
+                    <Text pt={1}>{instruction}</Text>
+                  </Flex>
+                );
+              })}
+            </Box>
+          </Box>
+        </Flex>
+      </Box>
       {/* <Flex justifyContent={"flex-end"} p={4}>
         <DeleteRecipeDialog />
       </Flex> */}
@@ -205,16 +254,17 @@ const RecipeHeader = ({ recipe, handleEdit }: RecipeHeaderProps) => {
     >
       <Tooltip label="Edit Recipe" aria-label="Edit Recipe">
         <IconButton
+          icon={<MdOutlineEdit />}
+          onClick={handleEdit}
           alignSelf={"flex-start"}
           colorScheme={"white"}
           m={2}
           aria-label={"Edit Recipe"}
           variant="solid"
-          icon={<MdOutlineEdit />}
           isRound
+          fontSize={"2xl"}
           bg={useColorModeValue("white", "gray.800")}
           color={useColorModeValue("gray.800", "white")}
-          onClick={handleEdit}
           _hover={{
             bg: useColorModeValue("gray.100", "gray.700"),
           }}
@@ -240,16 +290,24 @@ function DeleteRecipeDialog() {
 
   return (
     <>
-      <IconButton
-        colorScheme={"red"}
-        m={2}
-        aria-label={"Delete Recipe"}
-        variant="ghost"
-        icon={<MdDeleteForever />}
-        isRound
-        fontSize={"2xl"}
-        onClick={onOpen}
-      />
+      <Tooltip label="Delete Recipe" aria-label="Delete Recipe">
+        <IconButton
+          onClick={onOpen}
+          icon={<MdDeleteForever />}
+          aria-label={"Delete Recipe"}
+          alignSelf={"flex-start"}
+          colorScheme={"white"}
+          m={2}
+          variant="solid"
+          isRound
+          bg={useColorModeValue("white", "gray.800")}
+          color={useColorModeValue("gray.800", "white")}
+          _hover={{
+            bg: useColorModeValue("gray.100", "gray.700"),
+          }}
+          fontSize={"2xl"}
+        />
+      </Tooltip>
 
       <AlertDialog
         isOpen={isOpen}

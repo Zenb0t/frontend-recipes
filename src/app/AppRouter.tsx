@@ -3,7 +3,7 @@ import RecipeCardListPage from "../pages/RecipeCardList";
 import RecipeForm from "../pages/RecipeForm/RecipeForm";
 import { Text } from "@chakra-ui/react";
 import App from "../App";
-import { RecipeDetailsPage } from "../pages/recipe-details";
+import { RecipeDetailsPage } from "../pages/RecipeDetails";
 import { IngredientPage } from "../pages/ingredient-page";
 import { EditRecipePage } from "../pages/RecipeForm/EditRecipeForm";
 import LoginForm from "../pages/Login/LoginForm"; 

@@ -4,7 +4,7 @@ import "./index.css";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import AppRouter from "./app/AppRouter";
+import AppRouter from "./api/AppRouter";
 import { chakraTheme } from "./app/theme";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Auth0Provider } from "@auth0/auth0-react";

@@ -94,6 +94,8 @@ const RecipeDetailsPageTest = ({
 }) => {
   return (
     <Box
+      maxW={"9xl"}
+      minH={"70vh"}
       shadow="md"
       bg={useColorModeValue("white", "gray.800")}
       borderRadius="lg"
@@ -103,16 +105,26 @@ const RecipeDetailsPageTest = ({
         lg: "row",
       })}
     >
-      {/* <RecipeHeader recipe={recipe!} handleEdit={handleEdit} /> */}
       <Flex
         backgroundImage={recipe?.imageUrl}
         backgroundSize={"cover"}
         backgroundPosition={"center center"}
+        borderTopLeftRadius={"lg"}
+        borderBottomLeftRadius={useBreakpointValue({
+          base: "none",
+          lg: "lg",
+        })}
+        borderTopRightRadius={useBreakpointValue({
+          base: "lg",
+          lg: "none",
+        })}
         w={useBreakpointValue({ base: "full", lg: "50%" })}
+        minW={"30%"}
         minH={"40vh"}
         alignItems={"flex-start"}
       >
         <Box
+          borderRadius="inherit"
           w="full"
           h="20vh"
           px={4}
@@ -124,66 +136,53 @@ const RecipeDetailsPageTest = ({
           </Heading>
         </Box>
       </Flex>
-      <Box p={8}>
-        <Heading pb={4} as="h2">
-          Ingredients
-        </Heading>
-        <Box p={4}>
-          {/* {recipe?.ingredients.map((item, index) => {
-          return (
-            <Box key={index}>
-              <Text fontSize="md">• {item.quantity} {item.measuringUnit} of {item.ingredient.name}</Text>
-              <br />
-            </Box>
-          );
-        })} */}
-          <Box>
-            <Text fontSize="md">
-              • {recipe.ingredients[0].quantity}{" "}
-              {recipe.ingredients[0].measuringUnit} of{" "}
-              {recipe.ingredients[0].ingredient.name}
-            </Text>
-          </Box>
-          <Box>
-            <Text fontSize="md">
-              • {recipe.ingredients[0].quantity}{" "}
-              {recipe.ingredients[0].measuringUnit} of{" "}
-              {recipe.ingredients[0].ingredient.name}
-            </Text>
-          </Box>
-          <Box>
-            <Text fontSize="md">
-              • {recipe.ingredients[0].quantity}{" "}
-              {recipe.ingredients[0].measuringUnit} of{" "}
-              {recipe.ingredients[0].ingredient.name}
-            </Text>
-          </Box>
-          <Box>
-            <Text fontSize="md">
-              • {recipe.ingredients[0].quantity}{" "}
-              {recipe.ingredients[0].measuringUnit} of{" "}
-              {recipe.ingredients[0].ingredient.name}
-            </Text>
-            <br />
+      <Flex
+        px={4}
+        py={8}
+        direction={useBreakpointValue({ base: "column", lg: "row" })}
+        overflowY={useBreakpointValue({ base: "initial", lg: "auto" })}
+        maxHeight={useBreakpointValue({ base: "initial", lg: "85vh" })}
+      >
+        <Box flex={1} p={4}>
+          <Heading as="h2">Ingredients</Heading>
+          <Box p={4}>
+            {recipe?.ingredients.map((item, index) => {
+              return (
+                <Box py={0.5} key={index}>
+                  <Text fontSize="md">
+                    • {item.quantity} {item.measuringUnit} of{" "}
+                    {item.ingredient.name}
+                  </Text>
+                </Box>
+              );
+            })}
           </Box>
         </Box>
-        <Box p={4}>
-          <Heading pb={4} size="lg">
-            Instructions
-          </Heading>
-          {recipe!.instructions.map((instruction, index) => {
-            return (
-              <Box key={index}>
-                <Text>{instruction}</Text>
-                <br />
-              </Box>
-            );
-          })}
+        <Box flex={1} p={4}>
+          <Heading as="h2">Instructions</Heading>
+          <Box py={4} pl={4}>
+            {recipe!.instructions.map((instruction, index) => {
+              return (
+                <Flex
+                  py={0.5}
+                  key={index}
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                >
+                  <Text pr={2} as="b" fontSize="2xl">
+                    {index + 1}
+                  </Text>
+                  <Text pt={1}>{instruction}</Text>
+                </Flex>
+              );
+            })}
+          </Box>
         </Box>
-        <Flex justifyContent={"flex-end"} p={4}>
-          <DeleteRecipeDialog />
-        </Flex>
-      </Box>
+      </Flex>
+      {/* <Flex justifyContent={"flex-end"} p={4}>
+        <DeleteRecipeDialog />
+      </Flex> */}
     </Box>
   );
 };

@@ -47,54 +47,13 @@ export function RecipeDetailsPage() {
     );
   }
 
-  const test = true;
-
-  if (test) {
-    return <RecipeDetailsPageTest recipe={recipe} handleEdit={handleEdit} />;
-  }
-
-  return (
-    <Box
-      shadow="md"
-      bg={useColorModeValue("white", "gray.800")}
-      borderRadius="lg"
-      maxW={"4xl"}
-    >
-      <RecipeHeader recipe={recipe!} handleEdit={handleEdit} />
-      <Box p={8}>
-        <Heading>{recipe!.title}</Heading>
-        <Text>Total time: {recipe?.totalTimeInMinutes}</Text>
-        <Text>Cost: {recipe?.cost?.toFixed(2)}</Text>
-        {/* <FavoriteButton recipe={recipe!} /> */}
-        {/* <IngredientItemTable ingredients={recipe!.ingredients} /> */}
-        <Box p={4}>
-          <Heading pb={4} size="lg">
-            Instructions
-          </Heading>
-          {recipe!.instructions.map((instruction, index) => {
-            return (
-              <Box key={index}>
-                <Text>{instruction}</Text>
-                <br />
-              </Box>
-            );
-          })}
-        </Box>
-        <Flex justifyContent={"flex-end"} p={4}>
-          <DeleteRecipeDialog />
-        </Flex>
-      </Box>
-    </Box>
+  const VertDivider = (
+    <Center h="48px">
+      {" "}
+      <Divider orientation="vertical" />{" "}
+    </Center>
   );
-}
 
-const RecipeDetailsPageTest = ({
-  recipe,
-  handleEdit,
-}: {
-  recipe: Recipe;
-  handleEdit: () => void;
-}) => {
   return (
     <Box
       m={4}
@@ -146,22 +105,17 @@ const RecipeDetailsPageTest = ({
           justifyContent={"space-around"}
           alignItems={"center"}
           gap={2}
+          wrap={"wrap"}
         >
           <RecipeInfoPanel label="minutes" value={recipe.totalTimeInMinutes} />
-          <Center h="48px">
-            <Divider orientation="vertical" />
-          </Center>
+          {useBreakpointValue({ base: <></>, sm: VertDivider })}
           <RecipeInfoPanel label="servings" value={recipe.servings} />
-          <Center h="48px">
-            <Divider orientation="vertical" />
-          </Center>
+          {useBreakpointValue({ base: <></>, sm: VertDivider })}
           <RecipeInfoPanel
             label="ingredients"
             value={recipe.ingredients.length}
           />
-          <Center h="48px">
-            <Divider orientation="vertical" />
-          </Center>
+          {useBreakpointValue({ base: <></>, sm: VertDivider })}
           <Box>
             <Tooltip label="Edit Recipe" aria-label="Edit Recipe">
               <IconButton
@@ -183,7 +137,9 @@ const RecipeDetailsPageTest = ({
             <DeleteRecipeDialog />
           </Box>
         </Flex>
-
+        <Box mx={4}>
+          <Divider />
+        </Box>
         <Flex
           px={4}
           py={8}
@@ -230,49 +186,11 @@ const RecipeDetailsPageTest = ({
         </Flex>
       </Box>
       {/* <Flex justifyContent={"flex-end"} p={4}>
-        <DeleteRecipeDialog />
-      </Flex> */}
+          <DeleteRecipeDialog />
+        </Flex> */}
     </Box>
   );
-};
-
-interface RecipeHeaderProps {
-  recipe: Recipe;
-  handleEdit: () => void;
 }
-
-const RecipeHeader = ({ recipe, handleEdit }: RecipeHeaderProps) => {
-  return (
-    <Flex
-      justifyContent={"flex-end"}
-      borderRadius={["lg", "lg", "none", "none"]}
-      w={"full"}
-      h={useBreakpointValue({ base: "20vh", lg: "40vh" })}
-      backgroundImage={recipe?.imageUrl}
-      backgroundSize={"cover"}
-      backgroundPosition={"center center"}
-    >
-      <Tooltip label="Edit Recipe" aria-label="Edit Recipe">
-        <IconButton
-          icon={<MdOutlineEdit />}
-          onClick={handleEdit}
-          alignSelf={"flex-start"}
-          colorScheme={"white"}
-          m={2}
-          aria-label={"Edit Recipe"}
-          variant="solid"
-          isRound
-          fontSize={"2xl"}
-          bg={useColorModeValue("white", "gray.800")}
-          color={useColorModeValue("gray.800", "white")}
-          _hover={{
-            bg: useColorModeValue("gray.100", "gray.700"),
-          }}
-        />
-      </Tooltip>
-    </Flex>
-  );
-};
 
 //Dialog are you sure want to delete?
 function DeleteRecipeDialog() {

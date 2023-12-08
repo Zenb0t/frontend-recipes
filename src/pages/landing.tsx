@@ -43,8 +43,8 @@ export default function Landing() {
                     </Text>
                 </Heading>
                 <Text color={'gray.500'}>
-                    Say goodbye to the tedious task of manually calculating costs and hello to more time to focus on creating delicious meals.
-                    Sign up now to start using Panela and take the hassle out of recipe management and ingredient cost calculation.
+                    Say goodbye to the tedious task of manually copying recipes from one place to another.
+                    Sign up now to start using Panela and take the hassle out of recipe management and meal planning.
                 </Text>
                 <Stack
                     direction={'column'}
@@ -61,12 +61,11 @@ export default function Landing() {
                             bg: 'green.500',
                         }}
                         onClick={() => {
-                            console.log('landing button clicked');
                             navigate('/dashboard/allrecipes')}}
                         >
                         Get Started
                     </Button>
-                    <Button variant={'link'} colorScheme={'blue'} size={'sm'}>
+                    <Button variant={'link'} colorScheme={'green'} size={'sm'}>
                         Learn more
                     </Button>
                     <Box>

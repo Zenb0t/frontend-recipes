@@ -15,7 +15,6 @@ const initialState: RecipeState = {
   status: ReduxStatus.IDLE,
   error: null,
 };
-
 export const createRecipe = createAsyncThunk(
   "recipes/createRecipe",
   async (recipe: Recipe, thunkAPI) => {

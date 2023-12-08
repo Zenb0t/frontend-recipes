@@ -8,6 +8,10 @@ import sanitizedConfig from "../config"; // Adjust the path as necessary
 
 const useAuthHandler = () => {
   const {
+    getAccessTokenWithPopup,
+    getIdTokenClaims,
+    handleRedirectCallback,
+    error,
     isAuthenticated,
     isLoading,
     user,
@@ -30,15 +34,21 @@ const useAuthHandler = () => {
         dispatch(sendUser({ user }));
       });
     }
-  }, [
-    dispatch,
-    getAccessTokenSilently,
+  }, [dispatch, getAccessTokenSilently, isAuthenticated, isLoading, user]);
+
+  return {
+    getAccessTokenWithPopup,
+    getIdTokenClaims,
+    handleRedirectCallback,
+    error,
     isAuthenticated,
     isLoading,
     user,
-  ]);
-
-  return { isAuthenticated, isLoading, getAccessTokenSilently, loginWithPopup, user };
+    getAccessTokenSilently,
+    loginWithPopup,
+    loginWithRedirect,
+    logout,
+  };
 };
 
 export default useAuthHandler;

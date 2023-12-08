@@ -1,21 +1,21 @@
 import { User } from "@auth0/auth0-react";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import apiService from "../../api/api";
 import { UserModel } from "./model";
 import { UserApi } from "../../api/userApi";
+import { ReduxStatus } from "../../consts";
 
 export interface UserState {
   userInfo: UserModel | null;
   userToken: string | null;
-  status: string;
+  status: ReduxStatus;
   error: any;
 }
 
 const initialState = {
   userInfo: {}, // for user object
   userToken: null, // for storing the JWT token
-  status: "idle",
+  status: ReduxStatus.IDLE,
   error: null,
 } as UserState;
 
@@ -59,37 +59,37 @@ const userSlice = createSlice({
     builder
       .addCase(sendUser.fulfilled, (state, action) => {
         state.userInfo = action.payload;
-        state.status = "success";
+        state.status = ReduxStatus.SUCCESS;
       })
       .addCase(sendUser.pending, (state, action) => {
-        state.status = "loading";
+        state.status = ReduxStatus.LOADING;
       })
       .addCase(sendUser.rejected, (state, action) => {
         state.userInfo = null;
-        state.status = "error";
+        state.status = ReduxStatus.FAILED;
         state.error = action.payload;
       })
       .addCase(fetchUserById.fulfilled, (state, action) => {
         state.userInfo = action.payload;
-        state.status = "success";
+        state.status = ReduxStatus.SUCCESS;
       })
       .addCase(fetchUserById.pending, (state, action) => {
-        state.status = "loading";
+        state.status = ReduxStatus.LOADING;
       })
       .addCase(fetchUserById.rejected, (state, action) => {
         state.userInfo = null;
-        state.status = "error";
+        state.status = ReduxStatus.FAILED;
       })
       .addCase(fetchUserbyEmail.fulfilled, (state, action) => {
         state.userInfo = action.payload;
-        state.status = "success";
+        state.status = ReduxStatus.SUCCESS;
       })
       .addCase(fetchUserbyEmail.pending, (state, action) => {
-        state.status = "loading";
+        state.status = ReduxStatus.LOADING;
       })
       .addCase(fetchUserbyEmail.rejected, (state, action) => {
         state.userInfo = null;
-        state.status = "error";
+        state.status = ReduxStatus.FAILED;
         state.error = action.payload;
       });
   },

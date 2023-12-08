@@ -4,11 +4,12 @@ import "./index.css";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import AppRouter from "./app/app-router";
+import AppRouter from "./app/AppRouter";
 import { chakraTheme } from "./app/theme";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Auth0Provider } from "@auth0/auth0-react";
 import sanitizedConfig from "./config";
+import { Auth0ProviderWithNavigate } from "./app/Auth0CustomProvider";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement!);
@@ -17,18 +18,11 @@ root.render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <Auth0Provider
-          domain={sanitizedConfig.AUTH0_DOMAIN}
-          clientId={sanitizedConfig.AUTH0_CLIENT_ID}
-          authorizationParams={{
-            redirect_uri: window.location.origin,
-            audience: sanitizedConfig.AUTH0_AUDIENCE,
-          }}
-        >
+       <Auth0ProviderWithNavigate>
           <ChakraProvider theme={chakraTheme}>
             <AppRouter />
           </ChakraProvider>
-        </Auth0Provider>
+        </Auth0ProviderWithNavigate>
       </BrowserRouter>
     </Provider>
   </StrictMode>

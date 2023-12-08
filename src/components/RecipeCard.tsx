@@ -10,6 +10,7 @@ import {
   Center,
   Flex,
   Text,
+  Divider,
 } from "@chakra-ui/react";
 import {
   MdEgg,
@@ -17,6 +18,8 @@ import {
   MdOutlineFavoriteBorder,
   MdOutlineRestaurant,
   MdOutlineWatchLater,
+  MdPeople,
+  MdPerson,
   MdRestaurant,
   MdWatchLater,
 } from "react-icons/md";
@@ -74,78 +77,35 @@ export function RecipeCard(props: RecipeCardProps) {
           {recipe.title}
         </Heading>
       </Link>
-      <Flex p="4" justify="space-around" align="center" gap={4}>
-        {/* Extract to own component */}
-        <Box
-          alignItems={"center"}
-          display="flex"
-          flexDirection="column"
-          backgroundColor={useColorModeValue("gray.100", "gray.700")}
-          borderRadius="lg"
-          p="2"
-        >
-          <Box display="flex" alignItems="center" gap="2">
-            <MdWatchLater size="24px" />
-            <Text fontSize="lg">{recipe.totalTimeInMinutes}</Text>
-          </Box>
-          <Text>min</Text>
-        </Box>
-        <Box
-          alignItems={"center"}
-          display="flex"
-          flexDirection="column"
-          backgroundColor={useColorModeValue("gray.100", "gray.700")}
-          borderRadius="lg"
-          p="2"
-        >
-          <Box display="flex" alignItems="center" gap="2">
-            <MdOutlineRestaurant size="24px" />
-            <Text fontSize="lg">{recipe.servings}</Text>
-          </Box>
-          <Text>servings</Text>
-        </Box>
-        <Box
-          alignItems={"center"}
-          display="flex"
-          flexDirection="column"
-          backgroundColor={useColorModeValue("gray.100", "gray.700")}
-          borderRadius="lg"
-          p="2"
-        >
-          <Box display="flex" alignItems="center" gap="2">
-            <MdEgg size="24px" />
-            <Text fontSize="lg">{recipe.ingredients.length}</Text>
-          </Box>
-          <Text>ingredients</Text>
-        </Box>
-        {/* <Box
-          minW="80px"
-          display="flex"
-          alignItems="center"
-          gap="2"
-          border="1px solid red"
-        >
-          <MdRestaurant size="24px" />
-          <Text fontSize="sm">{recipe.ingredients.length} ingredients</Text>
-        </Box>
-        <Box
-          minW="80px"
-          display="flex"
-          alignItems="center"
-          gap="2"
-          border="1px solid red"
-        >
-          <MdOutlineRestaurant size="20px" />
-          <Text fontSize="sm">serves {recipe.servings}</Text>
-        </Box> */}
-        {/* <Tag size="md">
-            <TagLeftIcon boxSize="16px" as={MdOutlineWatchLater} />
-            <TagLabel>{`${recipe.totalTimeInMinutes} min`}</TagLabel>
-          </Tag>
- 
-          <Tag size="md">
-            <TagLabel>{`${recipe.ingredients.length} Ingredients`}</TagLabel>
-          </Tag> */}
+      <Flex
+        px={4}
+        pb={4}
+        justify="space-around"
+        align="center"
+        gap={2}
+        flexDirection={"row"}
+      >
+        <RecipeInfoPanel
+          label="minutes"
+          value={recipe.totalTimeInMinutes}
+          icon={<MdOutlineWatchLater size="24px" />}
+        />
+        <Center h="48px">
+          <Divider orientation="vertical" />
+        </Center>
+        <RecipeInfoPanel
+          label="servings"
+          value={recipe.servings}
+          icon={<MdPeople size="24px" />}
+        />
+        <Center h="48px">
+          <Divider orientation="vertical" />
+        </Center>
+        <RecipeInfoPanel
+          label="ingredients"
+          value={recipe.ingredients.length}
+          icon={<MdEgg size="24px" />}
+        />
         {/* <IconButton
             // onClick={() => dispatch(toggleFavorite(recipe))}
             size="md"
@@ -161,3 +121,25 @@ export function RecipeCard(props: RecipeCardProps) {
     </Box>
   );
 }
+
+interface InfoPanelProps {
+  label: string;
+  value: string | number | undefined;
+  icon: React.ReactNode;
+}
+
+const RecipeInfoPanel = ({ label, value, icon }: InfoPanelProps) => {
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      borderRadius="lg"
+      p="1"
+    >
+      <Box display="flex" alignItems="flex-start" gap="2">
+        <Text as="b" fontSize="lg">{value}</Text>
+      </Box>
+        <Text>{label}</Text>
+    </Box>
+  );
+};

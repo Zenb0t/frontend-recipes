@@ -98,7 +98,7 @@ const RecipeForm = () => {
       }
       await dispatch(fetchRecipeById(newRecipe._id));
       // Navigate to the new recipe page
-      navigate(`/dashboard/${newRecipe._id}`);
+      navigate(`/dashboard/recipe/${newRecipe._id}`);
     } catch (err: any) {
       // Handle errors
       toast({

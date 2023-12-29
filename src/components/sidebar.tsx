@@ -28,6 +28,7 @@ import {
   MdArrowDropDown,
   MdFavorite,
   MdNoteAdd,
+  MdDownload,
 } from "react-icons/md";
 import { CgSmartHomeRefrigerator } from "react-icons/cg";
 import { IconType } from "react-icons";
@@ -48,6 +49,7 @@ const LinkItems: Array<LinkItemProps> = [
   // { name: "Home", icon: MdHome, href: "/dashboard/" },
   { name: "Recipes", icon: MdMenuBook, href: "/dashboard/allrecipes" },
   { name: "Add Recipe", icon: MdNoteAdd, href: "/dashboard/add-recipe" },
+  { name: "Import Recipe", icon: MdDownload, href: "/dashboard/import-recipe" },
   {
     name: "Ingredients",
     icon: CgSmartHomeRefrigerator,

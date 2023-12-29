@@ -67,7 +67,7 @@ export function EditRecipePage() {
             });
 
             // Navigate to the new recipe page, assuming newRecipe contains the ID
-            navigate(`/dashboard/${newRecipe._id}`);
+            navigate(`/dashboard/recipe/${newRecipe._id}`);
         } catch (err: any) {
             // Handle errors
             toast({

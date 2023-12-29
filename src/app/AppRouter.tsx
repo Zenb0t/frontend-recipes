@@ -9,6 +9,7 @@ import { EditRecipePage } from "../pages/RecipeForm/EditRecipeForm";
 import LoginForm from "../pages/Login/LoginForm"; 
 import ProtectedRoute from "./protected-route";
 import Landing from "../pages/Landing";
+import ImportRecipe from "../pages/RecipeForm/ImportRecipe";
 
 /**Contains the routes for the application */
 export default function AppRouter() {
@@ -27,8 +28,9 @@ export default function AppRouter() {
         <Route path="/dashboard" element={<ProtectedRoute />}>
           <Route index path="allrecipes" element={<RecipeCardListPage />} />
           <Route path="add-recipe" element={<RecipeForm />} />
+          <Route path="import-recipe" element={<ImportRecipe />} />
           <Route path="edit-recipe/:recipeId" element={<EditRecipePage />} />
-          <Route path=":recipeId" element={<RecipeDetailsPage />} />
+          <Route path="recipe/:recipeId" element={<RecipeDetailsPage />} />
           <Route path="ingredients" element={<IngredientPage />} />
         </Route>
       </Route>

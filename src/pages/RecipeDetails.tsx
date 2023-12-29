@@ -233,7 +233,7 @@ function DeleteRecipeDialog() {
         onClose={onClose}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent>
+          <AlertDialogContent my={8} mx={1}>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Delete Recipe
             </AlertDialogHeader>

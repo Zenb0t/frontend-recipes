@@ -1,5 +1,5 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { selectIngredientList } from '../features/recipeBook/ingredient-slice';
+import { selectIngredientList } from '../features/recipeBook/ingredientSlice';
 import type { RootState, AppDispatch } from '../app/store';
 
 // React-Redux hooks

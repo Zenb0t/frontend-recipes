@@ -4,7 +4,7 @@ import { MdSearch } from "react-icons/md";
 import { useAppSelector } from "../hooks/reduxHooks";
 import AddIngredientModal from "../components/addIngredientModal";
 import { IngredientListTable } from "../components/ingredient-table";
-import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
+import { selectIngredientList } from "../features/recipeBook/ingredientSlice";
 
 export function IngredientPage() {
 

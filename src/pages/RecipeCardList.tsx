@@ -1,5 +1,4 @@
 import { RecipeCard } from "../components/RecipeCard";
-import { RecipeModel } from "../features/recipeBook/models";
 import {
   Text,
   SimpleGrid,
@@ -12,7 +11,7 @@ import {
 import { Recipe } from "../types/recipe";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { useEffect } from "react";
-import { fetchRecipes } from "../features/recipeBook/recipe-slice";
+import { fetchRecipes } from "../features/recipeBook/recipeSlice";
 import { ReduxStatus } from "../consts";
 
 export default function RecipeCardListPage() {

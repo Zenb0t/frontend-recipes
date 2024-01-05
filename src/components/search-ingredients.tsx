@@ -13,7 +13,7 @@ import {
 import { IngredientModel } from "../features/recipeBook/models";
 import { MdSearch } from "react-icons/md";
 import { useAppSelector } from "../hooks/reduxHooks";
-import { selectIngredientList } from "../features/recipeBook/ingredient-slice";
+import { selectIngredientList } from "../features/recipeBook/ingredientSlice";
 
 
 export function SearchIngredientsFromStore() {

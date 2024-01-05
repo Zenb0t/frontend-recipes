@@ -1,12 +1,20 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import recipesReducer from '../features/recipeBook/recipe-slice';
-import ingredientsReducer from '../features/recipeBook/ingredient-slice';
+import {
+  configureStore,
+  ThunkAction,
+  Action,
+  combineReducers,
+} from "@reduxjs/toolkit";
+import recipesReducer from "../features/recipeBook/recipeSlice";
+import ingredientsReducer from "../features/recipeBook/ingredientSlice";
+import scrapperReducer from "../features/recipeBook/scrapperSlice";
 
-import userReducer from '../features/user/user-slice';
+import userReducer from "../features/user/user-slice";
+
 
 export const store = configureStore({
   reducer: {
     recipeBook: recipesReducer,
+    scrapper: scrapperReducer,
     ingredients: ingredientsReducer,
     users: userReducer,
   },

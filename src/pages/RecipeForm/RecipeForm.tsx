@@ -16,7 +16,7 @@ import {
 import * as Yup from "yup";
 import { MeasuringUnit } from "../../types/ingredient";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { createRecipe, fetchRecipeById } from "../../features/recipeBook/recipe-slice";
+import { createRecipe, fetchRecipeById } from "../../features/recipeBook/recipeSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";
 

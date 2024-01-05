@@ -1,5 +1,7 @@
 import { Time } from "../../app/utils";
 
+// TODO: Remove this file
+
 export interface RecipeModel {
 
     title: string;
@@ -8,7 +10,6 @@ export interface RecipeModel {
     ingredients: IngredientItem[];
     instructions: string[];
     imageUrl: string;
-    // imageFile?: BinaryData; TODO: Add image upload functionality
     favorite: boolean;
     id: string;
     cost: number;

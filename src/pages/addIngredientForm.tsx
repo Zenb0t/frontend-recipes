@@ -3,7 +3,7 @@ import { Formik, Form, Field } from "formik";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { useAppDispatch } from "../hooks/reduxHooks";
 import { yup } from "../app/utils";
-import { createIngredient } from "../features/recipeBook/ingredient-slice";
+import { createIngredient } from "../features/recipeBook/ingredientSlice";
 
 import { v4 as uuid } from 'uuid';
 import { Ingredient, MeasuringUnit } from "../types/ingredient";

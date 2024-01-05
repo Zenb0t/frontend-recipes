@@ -21,7 +21,7 @@ import {
 import { IngredientItemTable } from "../components/ingredient-table";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../hooks/reduxHooks";
-import { selectRecipeById } from "../features/recipeBook/recipe-slice";
+import { selectRecipeById } from "../features/recipeBook/recipeSlice";
 import { FavoriteButton } from "../components/favorite-button";
 import { MdOutlineEdit, MdDeleteForever } from "react-icons/md";
 import { useRef } from "react";

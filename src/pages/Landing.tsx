@@ -37,9 +37,9 @@ export default function Landing() {
                     fontWeight={600}
                     fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
                     lineHeight={'110%'}>
-                    Get the real cost from <br />
+                    Straight to the Recipe <br />
                     <Text as={'span'} color={'green.400'}>
-                        your menu items
+                    just cooking made simple!
                     </Text>
                 </Heading>
                 <Text color={'gray.500'}>

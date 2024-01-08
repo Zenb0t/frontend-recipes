@@ -18,7 +18,6 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { IngredientItemTable } from "../components/ingredient-table";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { selectRecipeById } from "../features/recipeBook/recipeSlice";
@@ -29,15 +28,30 @@ import { Recipe } from "../types/recipe";
 import { RecipeInfoPanel } from "../components/RecipeInfoPanel";
 
 export function RecipeDetailsPage() {
-  let { recipeId } = useParams();
-
-  const navigate = useNavigate();
-
+  const { recipeId } = useParams();
   const recipe = useAppSelector((state) => selectRecipeById(state, recipeId!));
+  const navigate = useNavigate();
 
   const handleEdit = () => {
     navigate(`/dashboard/edit-recipe/${recipeId}`, { replace: true });
   };
+
+  const VertDivider = (
+    <Center h="48px">
+      {" "}
+      <Divider orientation="vertical" />{" "}
+    </Center>
+  );
+
+  // Colors to be extracted to theme
+  const bgColor = useColorModeValue("white", "gray.800");
+  const btnBgColor = useColorModeValue("gray.50", "gray.800");
+  const btnColor = useColorModeValue("gray.800", "white");
+  const btnHoverBgColor = useColorModeValue("gray.100", "gray.700");
+
+  // Breakpoints to be extracted to theme
+  const isMobile = useBreakpointValue({ base: true, lg: false });
+  const isDividerVertical = useBreakpointValue({ base: false, sm: true });
 
   if (!recipe) {
     return (
@@ -47,41 +61,25 @@ export function RecipeDetailsPage() {
     );
   }
 
-  const VertDivider = (
-    <Center h="48px">
-      {" "}
-      <Divider orientation="vertical" />{" "}
-    </Center>
-  );
-
   return (
     <Box
       m={4}
       maxW={"9xl"}
       minH={"70vh"}
       shadow="md"
-      bg={useColorModeValue("white", "gray.800")}
+      bg={bgColor}
       borderRadius="lg"
       display={"flex"}
-      flexDirection={useBreakpointValue({
-        base: "column",
-        lg: "row",
-      })}
+      flexDirection={isMobile ? "column" : "row"}
     >
       <Flex
         backgroundImage={recipe?.imageUrl}
         backgroundSize={"cover"}
         backgroundPosition={"center center"}
         borderTopLeftRadius={"lg"}
-        borderBottomLeftRadius={useBreakpointValue({
-          base: "none",
-          lg: "lg",
-        })}
-        borderTopRightRadius={useBreakpointValue({
-          base: "lg",
-          lg: "none",
-        })}
-        w={useBreakpointValue({ base: "full", lg: "50%" })}
+        borderBottomLeftRadius={isMobile ? "none" : "lg"}
+        borderTopRightRadius={isMobile ? "lg" : "none"}
+        w={isMobile ? "full" : "50%"}
         minW={"30%"}
         minH={"40vh"}
         alignItems={"flex-start"}
@@ -108,31 +106,32 @@ export function RecipeDetailsPage() {
           wrap={"wrap"}
         >
           <RecipeInfoPanel label="minutes" value={recipe.totalTimeInMinutes} />
-          {useBreakpointValue({ base: <></>, sm: VertDivider })}
+          {isDividerVertical && VertDivider}
           <RecipeInfoPanel label="servings" value={recipe.servings} />
-          {useBreakpointValue({ base: <></>, sm: VertDivider })}
+          {isDividerVertical && VertDivider}
           <RecipeInfoPanel
             label="ingredients"
             value={recipe.ingredients.length}
           />
-          {useBreakpointValue({ base: <></>, sm: VertDivider })}
+          {isDividerVertical && VertDivider}
           <Box>
             <Tooltip label="Edit Recipe" aria-label="Edit Recipe">
-              <IconButton
+              <Button
                 justifySelf={"flex-end"}
                 colorScheme={"white"}
                 m={2}
                 aria-label={"Edit Recipe"}
                 variant="solid"
-                icon={<MdOutlineEdit />}
-                isRound
-                bg={useColorModeValue("gray.50", "gray.800")}
-                color={useColorModeValue("gray.800", "white")}
+                leftIcon={<MdOutlineEdit />}
+                bg={btnBgColor}
+                color={btnColor}
                 onClick={handleEdit}
                 _hover={{
-                  bg: useColorModeValue("gray.100", "gray.700"),
+                  bg: btnHoverBgColor,
                 }}
-              />
+              >
+                Edit
+              </Button>
             </Tooltip>
             <DeleteRecipeDialog />
           </Box>
@@ -143,9 +142,9 @@ export function RecipeDetailsPage() {
         <Flex
           px={4}
           py={8}
-          direction={useBreakpointValue({ base: "column", lg: "row" })}
-          overflowY={useBreakpointValue({ base: "initial", lg: "auto" })}
-          maxHeight={useBreakpointValue({ base: "initial", lg: "85vh" })}
+          direction={isMobile ? "column" : "row"}
+          overflowY={isMobile ? "initial" : "auto"}
+          maxHeight={isMobile ? "initial" : "85vh"}
         >
           <Box flex={1} p={4}>
             <Heading as="h2">Ingredients</Heading>
@@ -154,8 +153,7 @@ export function RecipeDetailsPage() {
                 return (
                   <Box py={0.5} key={index}>
                     <Text fontSize="md">
-                      • {item.quantity} {item.measuringUnit} of{" "}
-                      {item.ingredient.name}
+                      • {item.amount} {item.measuringUnit} of {item.name}
                     </Text>
                   </Box>
                 );

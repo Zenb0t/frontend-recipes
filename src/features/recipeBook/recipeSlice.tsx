@@ -19,6 +19,7 @@ export const createRecipe = createAsyncThunk(
   "recipes/createRecipe",
   async (recipe: Recipe, thunkAPI) => {
     try {
+      console.log("Creating recipe: ", recipe);
       const response = await RecipeApi.createRecipe(recipe);
       if (response) {
         return response.data;
@@ -51,7 +52,6 @@ export const fetchRecipes = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await RecipeApi.getRecipes();
-      console.log("Response: ", response);
       if (!response) {
         throw new Error("Failed to fetch recipes");
       }
@@ -164,6 +164,20 @@ export const recipeSlice = createSlice({
         state.status = ReduxStatus.LOADING;
       })
       .addCase(deleteRecipe.rejected, (state, action: PayloadAction<any>) => {
+        state.status = ReduxStatus.FAILED;
+        state.error = action.payload;
+      })
+      .addCase(
+        fetchRecipeById.fulfilled,
+        (state, action: PayloadAction<Recipe>) => {
+          state.recipeList.push(action.payload);
+          state.status = ReduxStatus.SUCCESS;
+        }
+      )
+      .addCase(fetchRecipeById.pending, (state, action) => {
+        state.status = ReduxStatus.LOADING;
+      })
+      .addCase(fetchRecipeById.rejected, (state, action: PayloadAction<any>) => {
         state.status = ReduxStatus.FAILED;
         state.error = action.payload;
       });

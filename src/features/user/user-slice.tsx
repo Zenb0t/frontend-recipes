@@ -23,7 +23,6 @@ export const sendUser = createAsyncThunk(
   "user/sendUser",
   async (user: UserModel | User) => {
     const response = await UserApi.sendUser(user);
-    console.log("response: ", response.data);
     return response.data;
   }
 );

@@ -1,4 +1,4 @@
-import { Formik, Form, Field, useField } from "formik";
+import { Formik, Form, Field } from "formik";
 import {
   FormControl,
   FormErrorMessage,
@@ -12,31 +12,42 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { scrapeRecipe } from "../../features/recipeBook/scrapperSlice";
 import { useEffect } from "react";
 import RecipeInfoSection from "./RecipeInfoSection";
-import { useToast, Divider } from "@chakra-ui/react";
+import { useToast, Divider, Spinner } from "@chakra-ui/react";
 import { unwrapResult } from "@reduxjs/toolkit";
-import { useParams, useNavigate } from "react-router-dom";
-import { updateRecipe } from "../../api/recipeApi";
+import { useNavigate } from "react-router-dom";
 import {
   createRecipe,
-  selectRecipeById,
 } from "../../features/recipeBook/recipeSlice";
-import { Recipe, recipeValidationSchema } from "../../types/recipe";
+import {
+  ParsedRecipe,
+  Recipe,
+  recipeValidationSchema,
+} from "../../types/recipe";
 import IngredientsSection from "./IngredientsSection";
 import InstructionsSection from "./InstructionsSection";
 import TimingSection from "./TimingSection";
+import { ReduxStatus } from "../../consts";
+import {
+  Ingredient,
+  MEASURING_UNITS_MAPPING,
+  ParsedIngredient,
+} from "../../types/ingredient";
 
 const ImportRecipe = () => {
   const dispatch = useAppDispatch();
   const scrapedRecipe = useAppSelector((state) => state.scrapper.recipe);
+  const status = useAppSelector((state) => state.scrapper.status);
+
+  const isReady = scrapedRecipe && status === ReduxStatus.SUCCESS;
+  const isLoading = status === ReduxStatus.LOADING;
 
   const handleSubmit = (values: any) => {
-    console.log(values);
     dispatch(scrapeRecipe(values.recipeUrl));
     // Handle form submission here
   };
 
   useEffect(() => {
-    console.log(scrapedRecipe);
+    console.log("Rerendering");
   }, [scrapedRecipe]);
 
   return (
@@ -44,7 +55,8 @@ const ImportRecipe = () => {
       <Box
         bg={useColorModeValue("white", "gray.800")}
         py={{ base: 4, lg: 8 }}
-        rounded="md"
+        rounded={isReady ? "none" : "md"}
+        borderTopRadius="md"
         minW={{ base: 280, lg: 700 }}
         mx={{ base: 1, lg: 4 }}
         px={{ base: 4, lg: 8 }}
@@ -66,21 +78,25 @@ const ImportRecipe = () => {
                 </FormControl>
               )}
             </Field>
-            <Flex justify="space-around" mt={2}>
-              <Button type="submit" colorScheme="green">
-                Submit
-              </Button>
+            <Flex justify="space-around" mt={2} py={4}>
+              {isLoading ? (
+                <Spinner size="xl" color="green" />
+              ) : (
+                <Button type="submit" colorScheme="green">
+                  Submit
+                </Button>
+              )}
             </Flex>
           </Form>
         </Formik>
       </Box>
-      {scrapedRecipe && <EditImportedRecipeForm recipe={scrapedRecipe} />}
+      {isReady && <EditImportedRecipeForm recipe={scrapedRecipe} />}
     </>
   );
 };
 
 interface EditRecipeFormProps {
-  recipe: Partial<Recipe>;
+  recipe: Partial<ParsedRecipe>;
 }
 
 const EditImportedRecipeForm = ({ recipe }: EditRecipeFormProps) => {
@@ -93,20 +109,24 @@ const EditImportedRecipeForm = ({ recipe }: EditRecipeFormProps) => {
   //Selectors
   const user = useAppSelector((state) => state.users.userInfo);
 
-  const initialValues: Recipe = {
+  console.log("Ingredients: ", recipe.ingredients);
+
+  const imageUrl = recipe.imageUrl?.[0] ?? "";
+
+  const initialValues: ParsedRecipe = {
     _id: recipe?._id || "",
     title: recipe?.title || "",
     description: recipe?.description || "",
     totalTimeInMinutes: recipe?.totalTimeInMinutes || 0,
     ingredients: recipe?.ingredients || [],
     instructions: recipe?.instructions || [],
-    imageUrl: recipe?.imageUrl[0] || "",
+    imageUrl: imageUrl,
     ownerId: recipe?.ownerId || "",
     sourceUrl: recipe?.sourceUrl || "",
     servings: recipe?.servings || 0,
   };
 
-  const handleSubmit = async (values: Recipe) => {
+  const handleSubmit = async (values: ParsedRecipe) => {
     console.log("Submitting recipe: ", values);
     console.log("User: ", user);
     try {
@@ -114,9 +134,22 @@ const EditImportedRecipeForm = ({ recipe }: EditRecipeFormProps) => {
         throw new Error("No user found");
       }
       values.ownerId = user._id;
+
+      const newRecipe: Recipe = {
+        title: values.title,
+        description: values.description,
+        totalTimeInMinutes: values.totalTimeInMinutes,
+        ingredients: convertParsedIngredientsToIngredients(values.ingredients),
+        instructions: values.instructions,
+        imageUrl: values.imageUrl as string, // Coerce to string to satisfy type checker
+        ownerId: values.ownerId,
+        sourceUrl: values.sourceUrl,
+        servings: values.servings,
+      };
+
       // Dispatch the action and wait for the result
-      const resultAction = await dispatch(createRecipe(values));
-      const newRecipe: Recipe = unwrapResult(resultAction);
+      const resultAction = await dispatch(createRecipe(newRecipe));
+      const resultRecipe: Recipe = unwrapResult(resultAction);
 
       // Show success toast
       toast({
@@ -128,7 +161,7 @@ const EditImportedRecipeForm = ({ recipe }: EditRecipeFormProps) => {
       });
 
       // Navigate to the new recipe page, assuming newRecipe contains the ID
-      navigate(`/dashboard/recipe/${newRecipe._id}`);
+      navigate(`/dashboard/recipe/${resultRecipe._id}`);
     } catch (err: any) {
       // Handle errors
       toast({
@@ -145,7 +178,7 @@ const EditImportedRecipeForm = ({ recipe }: EditRecipeFormProps) => {
     <Box
       bg={useColorModeValue("white", "gray.800")}
       py={{ base: 4, lg: 8 }}
-      rounded="md"
+      borderBottomRadius="md"
       minW={{ base: 280, lg: 700 }}
       mx={{ base: 1, lg: 4 }}
     >
@@ -180,5 +213,21 @@ const EditImportedRecipeForm = ({ recipe }: EditRecipeFormProps) => {
     </Box>
   );
 };
+
+function convertParsedIngredientsToIngredients(
+  parsedIngredients: ParsedIngredient[]
+) {
+  return parsedIngredients.map((parsedIngredient) => {
+    const ingredient: Ingredient = {
+      name: parsedIngredient.name,
+      amount: parsedIngredient.amount || 0,
+      measuringUnit:
+        MEASURING_UNITS_MAPPING[
+          parsedIngredient.unit as keyof typeof MEASURING_UNITS_MAPPING
+        ], // Type Gymnastics
+    };
+    return ingredient;
+  });
+}
 
 export default ImportRecipe;

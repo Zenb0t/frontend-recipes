@@ -6,13 +6,35 @@ import App from "../App";
 import { RecipeDetailsPage } from "../pages/RecipeDetails";
 import { IngredientPage } from "../pages/ingredient-page";
 import { EditRecipePage } from "../pages/RecipeForm/EditRecipeForm";
-import LoginForm from "../pages/Login/LoginForm"; 
+import LoginForm from "../pages/Login/LoginForm";
 import ProtectedRoute from "./protected-route";
 import Landing from "../pages/Landing";
 import ImportRecipe from "../pages/RecipeForm/ImportRecipe";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { fetchRecipes } from "../features/recipeBook/recipeSlice";
+import { ReduxStatus } from "../consts";
 
 /**Contains the routes for the application */
 export default function AppRouter() {
+  const { recipeList, status } = useAppSelector((state) => state.recipeBook);
+  const { userToken } = useAppSelector((state) => state.users);
+  const dispatch = useAppDispatch();
+
+  function fetchData() {
+    if (userToken) dispatch(fetchRecipes());
+  }
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  useEffect(() => {
+    if (recipeList.length === 0 && status === ReduxStatus.IDLE) {
+      fetchData();
+    }
+  }, [recipeList, status, userToken]);
+
   const NoMatch = () => (
     <Text p={6} mb={4} align="center" variant="h3">
       No match, try a different URL

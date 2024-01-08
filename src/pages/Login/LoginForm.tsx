@@ -26,12 +26,14 @@ export default function LoginPage() {
   }, [isAuthenticated, isLoading, navigate]);
 
   const handleLogin = async () => {
-    await loginWithRedirect({
-      appState: { returnTo: "/dashboard/allrecipes" },
-    });
+    await loginWithRedirect();
   };
 
-  const buttonTitle = isLoading ? "Loading..." : isAuthenticated ? "Redirecting..." : "Login";
+  const buttonTitle = isLoading
+    ? "Loading..."
+    : isAuthenticated
+    ? "Redirecting..."
+    : "Login";
 
   return (
     <Flex

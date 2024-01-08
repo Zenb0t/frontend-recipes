@@ -30,8 +30,7 @@ export default function RecipeCardListPage() {
   useEffect(() => {
     if (
       recipeList.length === 0 &&
-      status !== ReduxStatus.SUCCESS &&
-      status !== ReduxStatus.FAILED
+      status === ReduxStatus.IDLE
     ) {
       fetchData();
     }

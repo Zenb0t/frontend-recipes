@@ -5,7 +5,7 @@ import { AxiosRequestHeaders } from "axios";
 
 const axiosConfig = {
     baseURL: `${sanitizedConfig.API_URL}/api`,
-    timeout: 1000,
+    timeout: 3000,
     headers: {
         "Content-Type": "application/json",
     },

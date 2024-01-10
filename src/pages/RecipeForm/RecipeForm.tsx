@@ -1,6 +1,10 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import { Recipe } from "../../types/recipe";
+import {
+  ParsedRecipe,
+  Recipe,
+  recipeValidationSchema,
+} from "../../types/recipe";
 import RecipeInfoSection from "./RecipeInfoSection";
 import IngredientsSection from "./IngredientsSection";
 import InstructionsSection from "./InstructionsSection";
@@ -14,55 +18,30 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import { MeasuringUnit } from "../../types/ingredient";
+import {
+  Ingredient,
+  MEASURING_UNITS_MAPPING,
+  MeasuringUnit,
+  ParsedIngredient,
+} from "../../types/ingredient";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { createRecipe, fetchRecipeById } from "../../features/recipeBook/recipeSlice";
+import {
+  createRecipe,
+  fetchRecipeById,
+} from "../../features/recipeBook/recipeSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";
 
-const initialValues: Recipe = {
+const initialValues: ParsedRecipe = {
   title: "",
   description: "",
   totalTimeInMinutes: 0,
-  ingredients: [
-    {
-      ingredient: {
-        name: "",
-        measuringUnit: MeasuringUnit.TEASPOON,
-        amount: 1,
-        costPerUnit: 0,
-      },
-      quantity: 0,
-      measuringUnit: MeasuringUnit.TEASPOON,
-    },
-  ],
+  ingredients: [],
   instructions: [""],
   imageUrl: "",
   ownerId: "", // This should be set based on the user's session or similar
   sourceUrl: "",
 };
-
-const validationSchema = Yup.object({
-  title: Yup.string().required("Required"),
-  description: Yup.string().required("Required"),
-  totalTimeInMinutes: Yup.number()
-    .required("Required")
-    .positive("Must be positive"),
-  ingredients: Yup.array().of(
-    Yup.object({
-      ingredient: Yup.object({
-        name: Yup.string().required("Required"),
-        measuringUnit: Yup.string().required("Required"),
-        amount: Yup.number().required("Required").positive("Must be positive"),
-      }),
-      quantity: Yup.number().required("Required").positive("Must be positive"),
-      measuringUnit: Yup.string().required("Required"),
-    })
-  ),
-  instructions: Yup.array().of(Yup.string().required("Required")),
-  imageUrl: Yup.string().required("Required"),
-  sourceUrl: Yup.string().url("Must be a valid URL"),
-});
 
 const RecipeForm = () => {
   const dispatch = useAppDispatch();
@@ -70,7 +49,7 @@ const RecipeForm = () => {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.users.userInfo);
 
-  const handleSubmit = async (values: Recipe) => {
+  const handleSubmit = async (values: ParsedRecipe) => {
     console.log("Submitting recipe: ", values);
     console.log("User: ", user);
     try {
@@ -78,10 +57,22 @@ const RecipeForm = () => {
         throw new Error("No user found");
       }
       values.ownerId = user._id;
+
+      const newRecipe: Recipe = {
+        title: values.title,
+        description: values.description,
+        totalTimeInMinutes: values.totalTimeInMinutes,
+        ingredients: convertParsedIngredientsToIngredients(values.ingredients),
+        instructions: values.instructions,
+        imageUrl: values.imageUrl as string, // Coerce to string to satisfy type checker
+        ownerId: values.ownerId,
+        sourceUrl: values.sourceUrl,
+        servings: values.servings,
+      };
+
       // Dispatch the action and wait for the result
-      const resultAction = await dispatch(createRecipe(values));
-      const newRecipe: Recipe = unwrapResult(resultAction);
-      console.log("New recipe: ", newRecipe);
+      const resultAction = await dispatch(createRecipe(newRecipe));
+      const resultRecipe: Recipe = unwrapResult(resultAction);
 
       // Show success toast
       toast({
@@ -93,10 +84,10 @@ const RecipeForm = () => {
       });
 
       // Fetch the new recipe
-      if (!newRecipe._id) {
+      if (!resultRecipe._id) {
         throw new Error("No recipe ID found");
       }
-      await dispatch(fetchRecipeById(newRecipe._id));
+      await dispatch(fetchRecipeById(resultRecipe._id));
       // Navigate to the new recipe page
       navigate(`/dashboard/recipe/${newRecipe._id}`);
     } catch (err: any) {
@@ -121,7 +112,7 @@ const RecipeForm = () => {
     >
       <Formik
         initialValues={initialValues}
-        validationSchema={validationSchema}
+        validationSchema={recipeValidationSchema}
         onSubmit={handleSubmit}
       >
         {() => (
@@ -150,5 +141,21 @@ const RecipeForm = () => {
     </Box>
   );
 };
+
+function convertParsedIngredientsToIngredients(
+  parsedIngredients: ParsedIngredient[]
+) {
+  return parsedIngredients.map((parsedIngredient) => {
+    const ingredient: Ingredient = {
+      name: parsedIngredient.name,
+      amount: parsedIngredient.amount || 0,
+      measuringUnit:
+        MEASURING_UNITS_MAPPING[
+          parsedIngredient.unit as keyof typeof MEASURING_UNITS_MAPPING
+        ], // Type Gymnastics
+    };
+    return ingredient;
+  });
+}
 
 export default RecipeForm;

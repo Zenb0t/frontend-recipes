@@ -19,8 +19,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppSelector } from "../hooks/reduxHooks";
-import { selectRecipeById } from "../features/recipeBook/recipeSlice";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import {
+  deleteRecipe,
+  selectRecipeById,
+} from "../features/recipeBook/recipeSlice";
 import { FavoriteButton } from "../components/favorite-button";
 import { MdOutlineEdit, MdDeleteForever } from "react-icons/md";
 import { useRef } from "react";
@@ -133,7 +136,7 @@ export function RecipeDetailsPage() {
                 Edit
               </Button>
             </Tooltip>
-            <DeleteRecipeDialog />
+            <DeleteRecipeDialog id={recipeId} />
           </Box>
         </Flex>
         <Box mx={4}>
@@ -190,18 +193,28 @@ export function RecipeDetailsPage() {
   );
 }
 
-//Dialog are you sure want to delete?
-function DeleteRecipeDialog() {
+interface DeleteRecipeDialogProps {
+  id: string | undefined;
+}
+
+function DeleteRecipeDialog({ id: recipeId }: DeleteRecipeDialogProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleCancel = () => {
     onClose();
   };
 
   const handleDelete = () => {
-    // TODO: add delete logic
+    if (!recipeId) {
+      return null;
+    }
+    dispatch(deleteRecipe(recipeId!));
     onClose();
+    navigate("/dashboard/allrecipes");
+
   };
 
   return (

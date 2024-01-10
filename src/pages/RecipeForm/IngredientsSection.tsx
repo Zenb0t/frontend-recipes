@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 import { Recipe } from "../../types/recipe";
-import { Ingredient, MeasuringUnit } from "../../types/ingredient";
+import { MeasuringUnit } from "../../types/ingredient";
 
 const IngredientsSection = () => {
   const { values, setFieldValue, errors, touched } = useFormikContext<Recipe>();
@@ -25,6 +25,7 @@ const IngredientsSection = () => {
       ? errorsField[field]
       : null;
   };
+ 
 
   const renderIngredient = (index: number, remove: any) => {
     return (
@@ -43,8 +44,8 @@ const IngredientsSection = () => {
         </FormControl>
 
         {/* Measuring Unit */}
-        <FormControl isInvalid={!!getIngredientError(index, "unit")} mr={2}>
-          <Field as={Select} name={`ingredients[${index}].unit`}>
+        <FormControl isInvalid={!!getIngredientError(index, "measuringUnit")} mr={2}>
+          <Field as={Select} name={`ingredients[${index}].measuringUnit`}>
             {Object.values(MeasuringUnit).map((unit) => (
               <option key={unit} value={unit}>
                 {unit}
@@ -52,7 +53,7 @@ const IngredientsSection = () => {
             ))}
           </Field>
           <FormErrorMessage>
-            {getIngredientError(index, "unit")}
+            {getIngredientError(index, "measuringUnit")}
           </FormErrorMessage>
         </FormControl>
 
@@ -84,9 +85,9 @@ const IngredientsSection = () => {
       <FieldArray name="ingredients">
         {({ push, remove }) => (
           <>
-            {values.ingredients.map((_, index) =>
-              renderIngredient(index, remove)
-            )}
+            {values.ingredients.map((ingredient, index) => {
+              return renderIngredient(index, remove);
+            })}
             {/* Add Ingredient Button */}
             <Button
               mt={2}

@@ -1,11 +1,10 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
-import { Recipe } from "../../types/recipe";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { ParsedRecipe } from "../../types/recipe";
 import { ReduxStatus } from "../../consts";
 import { scrapeRecipeUrl } from "../../api/scrapperApi";
 
 export interface ScrapperState {
-  recipe: Recipe | null ;
+  recipe: ParsedRecipe | null;
   status: ReduxStatus;
   error: any;
 }

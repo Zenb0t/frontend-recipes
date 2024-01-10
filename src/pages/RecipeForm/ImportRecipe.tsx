@@ -1,4 +1,4 @@
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, useFormikContext } from "formik";
 import {
   FormControl,
   FormErrorMessage,
@@ -15,9 +15,7 @@ import RecipeInfoSection from "./RecipeInfoSection";
 import { useToast, Divider, Spinner } from "@chakra-ui/react";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";
-import {
-  createRecipe,
-} from "../../features/recipeBook/recipeSlice";
+import { createRecipe } from "../../features/recipeBook/recipeSlice";
 import {
   ParsedRecipe,
   Recipe,
@@ -45,10 +43,6 @@ const ImportRecipe = () => {
     dispatch(scrapeRecipe(values.recipeUrl));
     // Handle form submission here
   };
-
-  useEffect(() => {
-    console.log("Rerendering");
-  }, [scrapedRecipe]);
 
   return (
     <>
@@ -100,25 +94,27 @@ interface EditRecipeFormProps {
 }
 
 const EditImportedRecipeForm = ({ recipe }: EditRecipeFormProps) => {
-  console.log("Recipe: ", recipe);
   //Hooks
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const toast = useToast();
 
+
   //Selectors
   const user = useAppSelector((state) => state.users.userInfo);
 
-  console.log("Ingredients: ", recipe.ingredients);
+  const convertedIngredients = convertParsedIngredientsToIngredients(
+    recipe?.ingredients || []
+  );
 
   const imageUrl = recipe.imageUrl?.[0] ?? "";
 
-  const initialValues: ParsedRecipe = {
+  const initialValues: Recipe = {
     _id: recipe?._id || "",
     title: recipe?.title || "",
     description: recipe?.description || "",
     totalTimeInMinutes: recipe?.totalTimeInMinutes || 0,
-    ingredients: recipe?.ingredients || [],
+    ingredients: convertedIngredients,
     instructions: recipe?.instructions || [],
     imageUrl: imageUrl,
     ownerId: recipe?.ownerId || "",
@@ -126,7 +122,7 @@ const EditImportedRecipeForm = ({ recipe }: EditRecipeFormProps) => {
     servings: recipe?.servings || 0,
   };
 
-  const handleSubmit = async (values: ParsedRecipe) => {
+  const handleSubmit = async (values: Recipe) => {
     console.log("Submitting recipe: ", values);
     console.log("User: ", user);
     try {
@@ -139,7 +135,7 @@ const EditImportedRecipeForm = ({ recipe }: EditRecipeFormProps) => {
         title: values.title,
         description: values.description,
         totalTimeInMinutes: values.totalTimeInMinutes,
-        ingredients: convertParsedIngredientsToIngredients(values.ingredients),
+        ingredients: values.ingredients,
         instructions: values.instructions,
         imageUrl: values.imageUrl as string, // Coerce to string to satisfy type checker
         ownerId: values.ownerId,
@@ -188,26 +184,28 @@ const EditImportedRecipeForm = ({ recipe }: EditRecipeFormProps) => {
         onSubmit={handleSubmit}
       >
         {() => (
-          <Form>
-            <RecipeInfoSection />
-            <Box px={8}>
-              <Divider />
-            </Box>
-            <IngredientsSection />
-            <Box px={8}>
-              <Divider />
-            </Box>
-            <InstructionsSection />
-            <Box px={8}>
-              <Divider />
-            </Box>
-            <TimingSection />
-            <Flex justify="space-around" mt={2}>
-              <Button type="submit" colorScheme="green">
-                Submit
-              </Button>
-            </Flex>
-          </Form>
+          <>
+            <Form>
+              <RecipeInfoSection />
+              <Box px={8}>
+                <Divider />
+              </Box>
+              <IngredientsSection />
+              <Box px={8}>
+                <Divider />
+              </Box>
+              <InstructionsSection />
+              <Box px={8}>
+                <Divider />
+              </Box>
+              <TimingSection />
+              <Flex justify="space-around" mt={2}>
+                <Button type="submit" colorScheme="green">
+                  Submit
+                </Button>
+              </Flex>
+            </Form>
+          </>
         )}
       </Formik>
     </Box>

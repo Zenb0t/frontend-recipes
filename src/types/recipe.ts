@@ -45,7 +45,7 @@ export const recipeValidationSchema = Yup.object({
   ingredients: Yup.array().of(
     Yup.object({
       name: Yup.string().required("Required"),
-      unit: Yup.string().required("Required"),
+      measuringUnit: Yup.string().required("Required"),
       amount: Yup.number().required("Required").positive("Must be positive"),
     })
   ),

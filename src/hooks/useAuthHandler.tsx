@@ -1,10 +1,9 @@
-// src/hooks/useAuthHandler.ts
 import { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "./reduxHooks";
-import { setUserToken, sendUser } from "../features/user/user-slice"; // Adjust the path as necessary
-import sanitizedConfig from "../config"; // Adjust the path as necessary
+import { setUserToken, sendUser } from "../features/user/user-slice"; 
+import sanitizedConfig from "../config"; 
 
 const useAuthHandler = () => {
   const {

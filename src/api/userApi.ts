@@ -11,7 +11,7 @@ import http from "./api";
 export const sendUser = async (user: UserModel | User) => {
   try {
     const res = await http.post(`/u/`, user);
-    return res;
+    return res.data;
   } catch (error) {
     console.error(error);
     throw error;

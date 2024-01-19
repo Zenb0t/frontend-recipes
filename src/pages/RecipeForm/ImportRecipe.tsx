@@ -9,7 +9,7 @@ import { Button } from "@chakra-ui/button";
 import { Box, Flex } from "@chakra-ui/layout";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { scrapeRecipe } from "../../features/recipeBook/scrapperSlice";
+import { clearRecipe, scrapeRecipe } from "../../features/recipeBook/scrapperSlice";
 import { useEffect } from "react";
 import RecipeInfoSection from "./RecipeInfoSection";
 import { useToast, Divider, Spinner } from "@chakra-ui/react";
@@ -155,6 +155,9 @@ const EditImportedRecipeForm = ({ recipe }: EditRecipeFormProps) => {
         duration: 5000,
         isClosable: true,
       });
+
+      // Clear the form
+      dispatch(clearRecipe());
 
       // Navigate to the new recipe page, assuming newRecipe contains the ID
       navigate(`/dashboard/recipe/${resultRecipe._id}`);

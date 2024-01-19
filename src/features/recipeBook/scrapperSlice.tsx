@@ -33,7 +33,11 @@ export const scrapeRecipe = createAsyncThunk(
 export const scrapperSlice = createSlice({
   name: "scrapper",
   initialState,
-  reducers: {},
+  reducers: {
+    clearRecipe(state) {
+      state.recipe = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(scrapeRecipe.fulfilled, (state, action) => {
       state.status = ReduxStatus.SUCCESS;
@@ -48,5 +52,7 @@ export const scrapperSlice = createSlice({
     });
   },
 });
+
+export const { clearRecipe } = scrapperSlice.actions;
 
 export default scrapperSlice.reducer;
